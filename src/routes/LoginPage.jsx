@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
-import CardBox from "./CardBox";
+import LoginForm from "../components/Login/LoginForm";
 
-class Feed extends Component {
+class LoginPage extends Component {
   render() {
     const { Content } = Layout;
     return (
@@ -10,21 +10,16 @@ class Feed extends Component {
         <Content
           style={{
             margin: "24px 16px 0",
-            minHeight: "89vh",
+            minHeight: "100vh",
             paddingBottom: "16px",
-            paddingTop: "9vh",
-            paddingLeft: "15%"
+            paddingTop: "9vh"
           }}
         >
-          <CardBox />
-          <CardBox />
-          <CardBox />
-          <CardBox />
-          <CardBox />
+          <LoginForm />
         </Content>
       </Layout>
     );
   }
 }
 
-export default Feed;
+export default LoginPage;

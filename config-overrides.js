@@ -8,7 +8,12 @@ module.exports = override(
   }),
   addLessLoader({
     javascriptEnabled: true,
-    modifyVars: { "@primary-color": "#722ed1" }
+    modifyVars: {
+      "@primary-color": "#722ed1",
+      "@border-radius-base": "2px",
+      "@btn-border-radius-base": "30px",
+      "@btn-border-radius-sm": "30px"
+    }
   })
 );
 

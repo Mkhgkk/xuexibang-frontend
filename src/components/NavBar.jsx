@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Menu, Avatar } from "antd";
+import { NavLink } from "react-router-dom";
 
 class NavBar extends Component {
   render() {
@@ -18,7 +19,9 @@ class NavBar extends Component {
         >
           <div className="logo">作业帮</div>
           <Menu theme="light" mode="horizontal">
-            <Menu.Item>Login</Menu.Item>
+            <Menu.Item>
+              <NavLink to="/login">Login</NavLink>
+            </Menu.Item>
             <Menu.Item>Register</Menu.Item>
 
             <Menu.Item>

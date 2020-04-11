@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Layout, Menu } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import { NavLink } from "react-router-dom";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -20,8 +21,11 @@ class SideBar extends Component {
       >
         <Menu theme="light" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
-            <PieChartOutlined />
-            <span>Feed</span>
+            <NavLink to="/">
+              {" "}
+              <PieChartOutlined />
+              <span>Feed</span>
+            </NavLink>
           </Menu.Item>
 
           <SubMenu

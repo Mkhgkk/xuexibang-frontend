@@ -3,22 +3,21 @@ import React from "react";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import { Route, Switch, Redirect } from "react-router-dom";
-import SideBar from "./components/SideBar";
 import NavBar from "./components/NavBar";
-import Feed from "./components/dashboard/Feed";
-import { Layout } from "antd";
+import Feed from "./routes/Feed";
+import LoginPage from "./routes/LoginPage";
+import RegisterPage from "./routes/RegisterPage";
 
 function App() {
   return (
     <div className="App">
       <ToastContainer />
       <NavBar />
-      <Layout>
-        <SideBar />
-        <Switch>
-          <Route exact path="/" component={Feed} />
-        </Switch>
-      </Layout>
+      <Switch>
+        <Route exact path="/" component={Feed} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/register" component={RegisterPage} />
+      </Switch>
     </div>
   );
 }
