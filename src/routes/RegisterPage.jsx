@@ -2,10 +2,21 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 import RegisterForm from "../components/register/RegisterForm";
 import photo from "../image/register.svg";
+import EmailSent from "../components/register/EmailSent";
 
 class RegisterPage extends Component {
+  state = {
+    emailSent: false
+  };
+
+  ShowEmailSent = () => {
+    this.setState({ emailSent: true });
+  };
+
   render() {
     const { Content } = Layout;
+    const { emailSent } = this.state;
+
     return (
       <Layout>
         <Content
@@ -26,8 +37,14 @@ class RegisterPage extends Component {
               alignItems: "center"
             }}
           >
-            <RegisterForm />
-            <img src={photo} alt="login" style={{ width: "28%" }} />
+            {emailSent ? (
+              <EmailSent />
+            ) : (
+              <>
+                <RegisterForm showEmailSent={this.showEmailSent} />
+                <img src={photo} alt="login" style={{ width: "28%" }} />
+              </>
+            )}
           </div>
         </Content>
       </Layout>

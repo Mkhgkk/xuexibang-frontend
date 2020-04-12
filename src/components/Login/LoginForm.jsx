@@ -5,11 +5,16 @@ import { Link } from "react-router-dom";
 
 class LoginForm extends Component {
   render() {
+    const onFinish = values => {
+      console.log("Received values of form: ", values);
+    };
+
     return (
       <Form
         name="normal_login"
         initialValues={{ remember: true }}
         style={{ width: "25%" }}
+        onFinish={onFinish}
       >
         <p style={{ marginBottom: "1.5em", fontSize: "1.2em" }}>
           Login and start 学习帮
