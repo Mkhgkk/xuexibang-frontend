@@ -9,7 +9,7 @@ class RegisterPage extends Component {
     emailSent: false
   };
 
-  ShowEmailSent = () => {
+  showEmailSent = () => {
     this.setState({ emailSent: true });
   };
 

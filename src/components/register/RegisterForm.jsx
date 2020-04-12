@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Form, Input, Tooltip, Button, Checkbox } from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Checkbox } from "antd";
+
 import { Link } from "react-router-dom";
 
 class RegisterForm extends Component {
   render() {
-    console.log(this.props);
     const onFinish = values => {
       console.log("Success:", values);
       this.props.showEmailSent();
@@ -19,7 +18,7 @@ class RegisterForm extends Component {
       <Form
         name="register"
         scrollToFirstError
-        style={{ width: "30%", paddingRight: "3em" }}
+        style={{ width: "30%", paddingRight: "3em", textAlign: "center" }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -79,26 +78,6 @@ class RegisterForm extends Component {
           ]}
         >
           <Input.Password />
-        </Form.Item>
-        <Form.Item
-          name="nickname"
-          label={
-            <span>
-              Nickname&nbsp;
-              <Tooltip title="What do you want others to call you?">
-                <QuestionCircleOutlined />
-              </Tooltip>
-            </span>
-          }
-          rules={[
-            {
-              required: true,
-              message: "Please input your nickname!",
-              whitespace: true
-            }
-          ]}
-        >
-          <Input />
         </Form.Item>
         <Form.Item
           name="agreement"

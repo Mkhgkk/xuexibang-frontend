@@ -13,10 +13,16 @@ class LoginForm extends Component {
       <Form
         name="normal_login"
         initialValues={{ remember: true }}
-        style={{ width: "25%" }}
+        style={{ width: "25%", textAlign: "center" }}
         onFinish={onFinish}
       >
-        <p style={{ marginBottom: "1.5em", fontSize: "1.2em" }}>
+        <p
+          style={{
+            marginBottom: "1.5em",
+            fontSize: "1.2em",
+            textAlign: "center"
+          }}
+        >
           Login and start 学习帮
         </p>
         <Form.Item
