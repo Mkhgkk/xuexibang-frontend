@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
 import RegisterForm from "../components/register/RegisterForm";
+import photo from "../image/register.svg";
 
 class RegisterPage extends Component {
   render() {
@@ -15,7 +16,19 @@ class RegisterPage extends Component {
             paddingTop: "9vh"
           }}
         >
-          <RegisterForm />
+          <div
+            style={{
+              margin: "0 auto",
+              display: "flex",
+              width: "100%",
+              height: "80vh",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <RegisterForm />
+            <img src={photo} alt="login" style={{ width: "28%" }} />
+          </div>
         </Content>
       </Layout>
     );

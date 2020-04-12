@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
 import LoginForm from "../components/Login/LoginForm";
+import photo from "../image/login.svg";
 
 class LoginPage extends Component {
   render() {
@@ -15,7 +16,23 @@ class LoginPage extends Component {
             paddingTop: "9vh"
           }}
         >
-          <LoginForm />
+          <div
+            style={{
+              margin: "0 auto",
+              display: "flex",
+              width: "100%",
+              height: "80vh",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <img
+              src={photo}
+              alt="login"
+              style={{ width: "30%", marginRight: "2em" }}
+            />
+            <LoginForm />
+          </div>
         </Content>
       </Layout>
     );

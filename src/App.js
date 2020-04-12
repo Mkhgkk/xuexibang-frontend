@@ -1,7 +1,5 @@
 import React from "react";
-
 import "./App.css";
-import { ToastContainer } from "react-toastify";
 import { Route, Switch, Redirect } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Feed from "./routes/Feed";
@@ -11,7 +9,6 @@ import RegisterPage from "./routes/RegisterPage";
 function App() {
   return (
     <div className="App">
-      <ToastContainer />
       <NavBar />
       <Switch>
         <Route exact path="/" component={Feed} />
