@@ -7,12 +7,19 @@ class Actions extends Component {
   render() {
     return (
       <React.Fragment>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginLeft: "50px",
+            marginRight: "50px",
+          }}
+        >
           <span onClick={this.props.onClick} style={{ cursor: "pointer" }}>
             <Tooltip title="Comment">
               <CommentOutlined />
             </Tooltip>
-            <span> 23 Comments</span>
+            <span> {this.props.commentCount} Comments</span>
           </span>
 
           <div>3days left</div>

@@ -16,12 +16,12 @@ class SideBar extends Component {
           position: "relative",
           top: "8vh",
           position: "fixed",
-          paddingTop: "1em"
+          paddingTop: "1em",
         }}
       >
         <Menu theme="light" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1">
-            <NavLink to="/">
+            <NavLink to="/dashboard/feeds">
               {" "}
               <PieChartOutlined />
               <span>Feed</span>
@@ -37,9 +37,17 @@ class SideBar extends Component {
               </span>
             }
           >
-            <Menu.Item key="2">My classes</Menu.Item>
+            <Menu.Item key="2">
+              <NavLink to="/dashboard/classes">
+                <span>My classes</span>
+              </NavLink>
+            </Menu.Item>
             <Menu.Item key="3">Annoucement</Menu.Item>
-            <Menu.Item key="4">Homework</Menu.Item>
+            <Menu.Item key="4">
+              <NavLink to="/dashboard/homework">
+                <span>Homework</span>
+              </NavLink>
+            </Menu.Item>
           </SubMenu>
         </Menu>
       </Sider>

@@ -1,12 +1,35 @@
 import React, { Component } from "react";
 import { Comment, Avatar } from "antd";
+// import CommentBox from "./commentBox";
+import ReplyBox from "./replyBox";
 
-class CommentBox extends Component {
-  state = {};
+class CommentSection extends Component {
+  state = {
+    isReply: false,
+    replyValue: "nihao",
+  };
+
+  handleReplyClick = () => {
+    if (this.state.isReply === false) return this.setState({ isReply: true });
+    if (this.state.isReply === true) return this.setState({ isReply: false });
+  };
+
+  handleReplySubmit = (e) => {
+    this.setState({
+      replyValue: e.target.value,
+    });
+  };
+
   render() {
+    const { isReply } = this.state;
+
     return (
       <Comment
-        actions={[<span key="comment-nested-reply-to">Reply to</span>]}
+        actions={[
+          <span onClick={this.handleReplyClick} key="comment-nested-reply-to">
+            Reply to
+          </span>,
+        ]}
         author={<a>Han Solo</a>}
         avatar={
           <Avatar
@@ -16,15 +39,25 @@ class CommentBox extends Component {
         }
         content={
           <p>
-            We supply a series of design principles, practical patterns and high
-            quality design resources (Sketch and Axure).
+            {/* We supply a series of design principles, practical patterns and high
+            quality design resources (Sketch and Axure). */}
+            {this.props.content}
           </p>
         }
       >
+        {isReply && (
+          <ReplyBox
+            // onChange={(e) => this.props.onReply}
+            // value={this.props.replyValue}
+            replyValue={this.props.replyValue}
+            onReplyChange={this.props.onReplyChange}
+            onReplySubmit={this.props.onReplySubmit}
+          />
+        )}
         {this.props.children}
       </Comment>
     );
   }
 }
 
-export default CommentBox;
+export default CommentSection;

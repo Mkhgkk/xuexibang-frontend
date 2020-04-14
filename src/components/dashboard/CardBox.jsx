@@ -8,6 +8,23 @@ class CardBox extends Component {
   state = {
     loading: false,
     comment: false,
+    commentValue: "",
+    replyValue: "",
+    comments: [
+      {
+        _id: 1,
+        content: "come find me am dwelling in this fan shape hole of fame",
+        replies: [
+          { _id: 1, content: "What you said is not true Sir" },
+          { _id: 2, content: "And what do you know about being true" },
+        ],
+      },
+      {
+        _id: 2,
+        content: "another comment to check the sanity of reply input",
+        replies: [],
+      },
+    ],
   };
 
   onChange = (checked) => {
@@ -18,8 +35,39 @@ class CardBox extends Component {
     if (this.state.comment === false) return this.setState({ comment: true });
   };
 
+  handleCommentChange = (e) => {
+    this.setState({
+      commentValue: e.target.value,
+    });
+  };
+
+  handleSubmit = () => {
+    const comments = [
+      { content: this.state.commentValue },
+      ...this.state.comments,
+    ];
+    this.setState({ comments: comments, commentValue: "" });
+  };
+
+  handleReplyChange = (e) => {
+    this.setState({
+      replyValue: e.target.value,
+    });
+  };
+
+  handleReplySubmit = (commentId) => {
+    const comments = [...this.state.comments];
+    const comment = comments.filter((comment) => comment._id === commentId);
+
+    comment[0]["replies"].unshift({
+      _id: new Date(),
+      content: this.state.replyValue,
+    });
+    this.setState({ comments: comments, replyValue: " " });
+  };
+
   render() {
-    const { loading, comment } = this.state;
+    const { loading, comment, comments } = this.state;
     return (
       <>
         <Card
@@ -44,12 +92,7 @@ class CardBox extends Component {
               }}
             >
               <div style={{ height: "40px" }}>
-                <Tag
-                  color="green"
-                  // style={{ position: "absolute", right: "0", fontSize: "1em" }}
-                >
-                  homework
-                </Tag>
+                <Tag color="green">homework</Tag>
               </div>
 
               <h1>Database Management</h1>
@@ -65,31 +108,54 @@ class CardBox extends Component {
               <div
                 style={{
                   marginLeft: "1em",
+                  textAlign: "left",
                 }}
               >
-                <p
+                <h2
                   style={{
                     margin: 0,
-                    paddingLeft: "0.5em",
-                    fontWeight: "bolder",
+                    // paddingLeft: "0.5em",
+                    // fontWeight: "bolder",
                   }}
                 >
                   userName
-                </p>
-                <p style={{ textAlign: "right" }}>7th Sep 2020</p>
+                </h2>
+                <p style={{ textAlign: "left" }}>7th Sep 2020</p>
               </div>
             </div>
             <p style={{ margin: "30px 50px 30px 50px" }}>
-              今天下午三点，弘毅学堂邀请了联想集团副总裁贺志强做：『联想未来云课堂』第4课《人工智能的产业应用》，探索人工智能如何推动产业升级！人民网、人民智云、bilibili直播、抖音、今日头条、联想智能课堂等平台均可收看，直播链接https://liveclub.lenovo.com.cn/欢迎参加！
+              This is a common workflow for short-lived topic branches that are
+              used more as an isolated development than an organizational tool
+              for longer-running features.
             </p>
-            <Actions onClick={this.handleClick} />
+            <Actions
+              onClick={this.handleClick}
+              commentCount={this.state.comments.length}
+            />
             {comment && (
               <React.Fragment>
-                <CommentBox />
-                <CommentSection>
-                  <CommentSection />
-                  <CommentSection />
-                </CommentSection>
+                <CommentBox
+                  onCommentSubmit={this.handleSubmit}
+                  value={this.state.commentValue}
+                  onCommentChange={this.handleCommentChange}
+                />
+                {comments.map((comment) => (
+                  <CommentSection
+                    key={comment._id}
+                    content={comment.content}
+                    replyValue={this.state.replyValue}
+                    onReplyChange={this.handleReplyChange}
+                    onReplySubmit={() => this.handleReplySubmit(comment._id)}
+                  >
+                    {comment.replies &&
+                      comment.replies.map((reply) => (
+                        <CommentSection
+                          key={reply._id}
+                          content={reply.content}
+                        />
+                      ))}
+                  </CommentSection>
+                ))}
               </React.Fragment>
             )}
           </Skeleton>

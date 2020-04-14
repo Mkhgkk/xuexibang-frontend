@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Comment, Avatar, Form, Button, List, Input } from "antd";
-import moment from "moment";
+import { Comment, Avatar, Form, Button, Input } from "antd";
+// import moment from "moment";
 
 const { TextArea } = Input;
 
-class CommentBox extends Component {
+class ReplyBox extends Component {
   state = {
     value: "",
     submitting: false,
@@ -29,18 +29,18 @@ class CommentBox extends Component {
         <Form.Item>
           <TextArea
             rows={2}
-            onChange={(e) => this.props.onCommentChange(e)}
-            value={this.props.value}
+            onChange={(e) => this.props.onReplyChange(e)}
+            value={this.props.replyValue}
           />
         </Form.Item>
         <Form.Item>
           <Button
             htmlType="submit"
             loading={this.state.submitting}
-            onClick={this.props.onCommentSubmit}
+            onClick={this.props.onReplySubmit}
             type="primary"
           >
-            Add Comment
+            Add Reply
           </Button>
         </Form.Item>
       </div>
@@ -63,4 +63,4 @@ class CommentBox extends Component {
   }
 }
 
-export default CommentBox;
+export default ReplyBox;
