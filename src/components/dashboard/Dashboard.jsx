@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 import CardBox from "./CardBox";
 import SideBar from "../SideBar";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Classes from "./Classes";
 import Homework from "./Homework";
+import Announcements from "./Announcements";
+import ClassDetails from "./ClassDetails";
 
 class Dashboard extends Component {
   render() {
@@ -21,9 +23,13 @@ class Dashboard extends Component {
             paddingLeft: "15%",
           }}
         >
-          <Route path="/dashboard/feeds" component={CardBox} />
-          <Route path="/dashboard/classes" component={Classes} />
-          <Route path="/dashboard/homework" component={Homework} />
+          <Switch>
+            <Route path="/dashboard/feeds" component={CardBox} />
+            <Route path="/dashboard/classes/:id" component={ClassDetails} />
+            <Route path="/dashboard/classes" component={Classes} />
+            <Route path="/dashboard/announcements" component={Announcements} />
+            <Route path="/dashboard/homework" component={Homework} />
+          </Switch>
         </Content>
       </Layout>
     );

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Card, Avatar, Popconfirm, message } from "antd";
 import {
   EditOutlined,
-  EllipsisOutlined,
   SettingOutlined,
   QuestionCircleOutlined,
   DeleteOutlined,
@@ -15,6 +14,7 @@ class Class extends Component {
     const { Meta } = Card;
     return (
       <Card
+        hoverable="true"
         style={{ width: 300 }}
         cover={
           <img
@@ -22,24 +22,24 @@ class Class extends Component {
             src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
           />
         }
-        actions={[
-          <SettingOutlined key="setting" />,
-          <EditOutlined key="edit" />,
-          <Popconfirm
-            title="Are you sure you want to delete this?"
-            onConfirm={this.props.onDelete}
-            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-          >
-            <DeleteOutlined key="ellipsis" />
-          </Popconfirm>,
-        ]}
+        // actions={[
+        //   <SettingOutlined key="setting" />,
+        //   <EditOutlined key="edit" />,
+        //   <DeleteOutlined key="delete" />,
+        // ]}
       >
         <Meta
           //   avatar={
           //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
           //   }
           title="Data Structure"
-          description="This is the description"
+          description={[
+            <div>Teacher' name: prof. Schultz</div>,
+            <div>Number of students: 67</div>,
+            <div> </div>,
+            <div>Classroom: B302</div>,
+            <div>QQ group: 24356456445</div>,
+          ]}
         />
       </Card>
     );
