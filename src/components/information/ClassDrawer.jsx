@@ -53,6 +53,7 @@ class ClassDrawer extends Component {
       visible: false
     });
   };
+
   render() {
     const { loading, data } = this.state;
     return (
