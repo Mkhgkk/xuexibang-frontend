@@ -1,17 +1,11 @@
 import React, { Component } from "react";
 import Class from "./ClassCard";
-import { Row, Col, message } from "antd";
+import { Row, Col } from "antd";
+import { Link } from "react-router-dom";
 
 class Classes extends Component {
   state = {
     keys: [1, 2, 3, 4, 5],
-  };
-
-  handleDelete = (value) => {
-    const keys = [...this.state.keys];
-    keys.pop();
-    this.setState({ keys });
-    message.success("Class has been deleted!");
   };
 
   render() {
@@ -22,7 +16,9 @@ class Classes extends Component {
         <Row gutter={[32, 24]}>
           {this.state.keys.map((v) => (
             <Col span={6}>
-              <Class onDelete={() => this.handleDelete(v.key)} key={v.key} />
+              <Link to={`/dashboard/classes/${v.key}`}>
+                <Class key={v.key} />
+              </Link>
             </Col>
           ))}
         </Row>

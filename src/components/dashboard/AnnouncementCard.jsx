@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import { Card, Avatar, Popconfirm, message } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 
-class HomeworkCard extends Component {
+class AnnouncementCard extends Component {
   state = {};
 
   render() {
     const { Meta } = Card;
     return (
       <Card
-        extra={[<div>Deadline</div>, <div>Thu 23 : 45</div>]}
         style={{ width: 300 }}
         // cover={
         //   <img
@@ -40,4 +39,4 @@ class HomeworkCard extends Component {
   }
 }
 
-export default HomeworkCard;
+export default AnnouncementCard;

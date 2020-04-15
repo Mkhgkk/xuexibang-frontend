@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Badge } from "antd";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 
@@ -42,7 +42,11 @@ class SideBar extends Component {
                 <span>My classes</span>
               </NavLink>
             </Menu.Item>
-            <Menu.Item key="3">Annoucement</Menu.Item>
+            <Menu.Item key="3">
+              <NavLink to="/dashboard/announcements">
+                <span>Announcements</span>
+              </NavLink>
+            </Menu.Item>
             <Menu.Item key="4">
               <NavLink to="/dashboard/homework">
                 <span>Homework</span>
