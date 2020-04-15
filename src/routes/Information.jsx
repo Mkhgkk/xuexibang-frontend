@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Checkbox, Layout, Steps, Space } from "antd";
 import ProfileForm from "../components/information/ProfileForm";
+import SchoolForm from "../components/information/SchoolForm";
+import ClassesForm from "../components/information/ClassesForm";
 
 class Information extends Component {
   state = {
@@ -62,7 +64,9 @@ class Information extends Component {
               <Step title="School" description="Find your school and major." />
               <Step title="Classes" description="Save your classes." />
             </Steps>
-            <ProfileForm />
+            {currentStep === 0 && <ProfileForm />}
+            {currentStep === 1 && <SchoolForm />}
+            {currentStep === 2 && <ClassesForm />}
 
             <Space size="small">
               <Button

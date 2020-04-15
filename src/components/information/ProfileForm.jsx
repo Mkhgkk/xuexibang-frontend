@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Upload, message, Input, Tooltip, Form } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import TextArea from "antd/lib/input/TextArea";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
