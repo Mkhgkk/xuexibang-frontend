@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Upload, message, Input, Tooltip, Form } from "antd";
+import { Upload, message, Input, Tooltip, Form, Space, Button } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import TextArea from "antd/lib/input/TextArea";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -24,8 +23,14 @@ function beforeUpload(file) {
 
 class ProfileForm extends Component {
   state = {
-    loading: false
+    loading: false,
+    imageUrl: "",
+    username: ""
   };
+
+  componentDidMount() {
+    // bring user info saved
+  }
 
   handleChange = info => {
     if (info.file.status === "uploading") {
@@ -43,6 +48,10 @@ class ProfileForm extends Component {
     }
   };
 
+  handleSubmit = e => {
+    this.props.onNextButton();
+  };
+
   render() {
     const uploadButton = (
       <div>
@@ -50,21 +59,22 @@ class ProfileForm extends Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const { imageUrl } = this.state;
+
+    const { imageUrl, username } = this.state;
+    const { currentStep } = this.props;
+
     return (
       <Form
         style={{
           width: "30%",
           paddingTop: "3em",
-          paddingBottom: "1em"
+          paddingBottom: "1em",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
         }}
       >
-        <Form.Item
-          name="profile Image"
-          style={{
-            paddingLeft: "28%"
-          }}
-        >
+        <Form.Item name="profile Image" style={{ marginLeft: "10%" }}>
           <Tooltip title="upload your profile photo">
             <QuestionCircleOutlined />
           </Tooltip>
@@ -86,10 +96,26 @@ class ProfileForm extends Component {
         </Form.Item>
         <Form.Item
           name="username"
+          style={{ width: 200 }}
           rules={[{ required: true, message: "Please input your username!" }]}
         >
-          <Input placeholder="username" />
+          <Input
+            placeholder="username"
+            value={username}
+            onChange={e => {
+              this.setState({ username: e.target.value });
+            }}
+          />
         </Form.Item>
+
+        <Space size="small">
+          <Button type="primary" disabled={currentStep === 0}>
+            Back
+          </Button>
+          <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>
+            Next
+          </Button>
+        </Space>
       </Form>
     );
   }
