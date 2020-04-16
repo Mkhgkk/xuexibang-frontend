@@ -18,6 +18,7 @@ function App() {
         {/* <Route path="/classes" component={Classes} /> */}
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
+
         <Redirect from="/" to="/dashboard/feeds" />
       </Switch>
     </div>

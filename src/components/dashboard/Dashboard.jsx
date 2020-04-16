@@ -7,6 +7,8 @@ import Classes from "./Classes";
 import Homework from "./Homework";
 import Announcements from "./Announcements";
 import ClassDetails from "./ClassDetails";
+import AdminClass from "../../routes/AdminClass";
+import CreateClass from "../../routes/CreateClass";
 
 class Dashboard extends Component {
   render() {
@@ -20,7 +22,7 @@ class Dashboard extends Component {
             minHeight: "89vh",
             paddingBottom: "16px",
             paddingTop: "9vh",
-            paddingLeft: "15%",
+            paddingLeft: "15%"
           }}
         >
           <Switch>
@@ -29,6 +31,8 @@ class Dashboard extends Component {
             <Route path="/dashboard/classes" component={Classes} />
             <Route path="/dashboard/announcements" component={Announcements} />
             <Route path="/dashboard/homework" component={Homework} />
+            <Route path="/dashboard/admin/classes" component={AdminClass} />
+            <Route path="/dashboard/admin/create" component={CreateClass} />
           </Switch>
         </Content>
       </Layout>
