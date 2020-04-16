@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Avatar, Popconfirm, message } from "antd";
+import { Card, Popconfirm } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 
 class HomeworkCard extends Component {
@@ -7,16 +7,17 @@ class HomeworkCard extends Component {
 
   render() {
     const { Meta } = Card;
+    const type = this.props;
+    const deadline = type === 1 && (
+      <div>
+        <br />
+        Deadline: 22:30
+      </div>
+    );
+
     return (
       <Card
-        extra={[<div>Deadline</div>, <div>Thu 23 : 45</div>]}
         style={{ width: 300 }}
-        // cover={
-        //   <img
-        //     alt="example"
-        //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-        //   />
-        // }
         actions={[
           <QuestionCircleOutlined key="question" />,
           <Popconfirm
@@ -29,11 +30,16 @@ class HomeworkCard extends Component {
         ]}
       >
         <Meta
-          //   avatar={
-          //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-          //   }
-          title="Data Structure"
-          description="This is the description"
+          title={[
+            <div>Database Management</div>,
+            <h5 style={{ fontWeight: "normal" }}>Posted: 22:30</h5>,
+          ]}
+          description={[
+            <div>
+              Also note that Git should not complain about the git branch -d.
+            </div>,
+            deadline,
+          ]}
         />
       </Card>
     );
