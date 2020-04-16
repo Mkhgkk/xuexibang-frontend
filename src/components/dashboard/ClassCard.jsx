@@ -4,7 +4,7 @@ import {
   EditOutlined,
   SettingOutlined,
   QuestionCircleOutlined,
-  DeleteOutlined,
+  DeleteOutlined
 } from "@ant-design/icons";
 
 class Class extends Component {
@@ -12,6 +12,8 @@ class Class extends Component {
 
   render() {
     const { Meta } = Card;
+    const { editMode, onDelete } = this.props;
+
     return (
       <Card
         hoverable="true"
@@ -25,8 +27,12 @@ class Class extends Component {
         // actions={[
         //   <SettingOutlined key="setting" />,
         //   <EditOutlined key="edit" />,
-        //   <DeleteOutlined key="delete" />,
+        //   <DeleteOutlined key="delete" />
         // ]}
+
+        actions={
+          editMode && [<DeleteOutlined key="delete" onClick={onDelete} />]
+        }
       >
         <Meta
           //   avatar={
@@ -38,7 +44,7 @@ class Class extends Component {
             <div>Number of students: 67</div>,
             <div> </div>,
             <div>Classroom: B302</div>,
-            <div>QQ group: 24356456445</div>,
+            <div>QQ group: 24356456445</div>
           ]}
         />
       </Card>

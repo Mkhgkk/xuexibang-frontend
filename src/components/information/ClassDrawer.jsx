@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Drawer, List, Avatar, Divider, Col, Row, Button, Spin } from "antd";
+import {
+  Drawer,
+  List,
+  Avatar,
+  Divider,
+  Col,
+  Row,
+  Button,
+  Spin,
+  Tooltip
+} from "antd";
+import { PlusCircleTwoTone, MinusCircleOutlined } from "@ant-design/icons";
 
 const DescriptionItem = ({ title, content }) => (
   <div
@@ -79,7 +90,16 @@ class ClassDrawer extends Component {
                   actions={[
                     <a onClick={this.showDrawer} key={`a-${item.id}`}>
                       View Class
-                    </a>
+                    </a>,
+                    <Tooltip placement="rightTop" title={"Add class"}>
+                      <PlusCircleTwoTone
+                        twoToneColor="#722ed1"
+                        style={{ fontSize: "1.2em" }}
+                      />
+                    </Tooltip>
+                    // <Tooltip placement="rightTop" title={"Delete class"}>
+                    //   <MinusCircleOutlined style={{ fontSize: "1.2em" }} />
+                    // </Tooltip>
                   ]}
                 >
                   <List.Item.Meta
