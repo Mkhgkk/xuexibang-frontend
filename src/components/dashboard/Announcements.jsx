@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Divider, message } from "antd";
 import HomeworkCard from "./HomeworkCard";
-import AnnouncementCard from "./AnnouncementCard";
 
 class Announcements extends Component {
   state = {
@@ -30,7 +29,7 @@ class Announcements extends Component {
         <Row gutter={[32, 24]}>
           {this.state.keys.map((v) => (
             <Col span={6}>
-              <AnnouncementCard
+              <HomeworkCard
                 onDelete={() => this.handleDelete(v.key)}
                 key={v.key}
               />

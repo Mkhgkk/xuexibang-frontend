@@ -30,6 +30,7 @@ class Homework extends Component {
           {this.state.keys.map((v) => (
             <Col span={6}>
               <HomeworkCard
+                type={1}
                 onDelete={() => this.handleDelete(v.key)}
                 key={v.key}
               />
