@@ -26,11 +26,16 @@ class ClassDetail extends Component {
     key: "tab1",
     noTitleKey: "app",
     newModal: false,
+    newMode: "",
     infoEditMode: false
   };
 
   onTabChange = (key, type) => {
     this.setState({ [type]: key });
+  };
+
+  onMakeNew = mode => {
+    this.setState({ newMode: mode });
   };
 
   showDrawer = () => {
@@ -52,7 +57,7 @@ class ClassDetail extends Component {
   };
 
   render() {
-    const { key, newModal, infoEditMode } = this.state;
+    const { key, newModal, infoEditMode, newMode } = this.state;
     const contentList = {
       tab1: <BasicInfo editMode={infoEditMode} handleEdit={this.handleEdit} />,
       tab2: <Notification />,
@@ -70,12 +75,24 @@ class ClassDetail extends Component {
                 {infoEditMode ? "Cancel" : "Edit"}
               </Button>
             ) : key === "tab2" ? (
-              <Button type="primary" onClick={this.showDrawer}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.onMakeNew("Announcement");
+                  this.showDrawer();
+                }}
+              >
                 <PlusOutlined />
                 New Announcement
               </Button>
             ) : (
-              <Button type="primary">
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.onMakeNew("Homework");
+                  this.showDrawer();
+                }}
+              >
                 <PlusOutlined />
                 New Homework
               </Button>
@@ -89,7 +106,7 @@ class ClassDetail extends Component {
         >
           {contentList[key]}
         </Card>
-        <New visible={newModal} onClose={this.onClose} />
+        <New visible={newModal} onClose={this.onClose} mode={newMode} />
       </div>
     );
   }

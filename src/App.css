@@ -10,3 +10,6 @@
 .site-description-item-profile-p {
   color: rgba(0, 0, 0, 0.85);
 }
+.msgHover:hover {
+  color: #722ed1;
+}

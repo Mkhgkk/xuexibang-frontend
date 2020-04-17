@@ -39,7 +39,7 @@ class Notification extends Component {
   render() {
     return (
       <div style={{ overflow: "scroll", height: "60vh" }}>
-        <ListCard listData={this.state.listData} />
+        <ListCard listData={this.state.listData} mode="Announcement" />
       </div>
     );
   }

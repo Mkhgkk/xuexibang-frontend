@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Descriptions, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { TeamOutlined } from "@ant-design/icons";
+import ClassmateDrawer from "./ClassmateDrawer";
 
 const inputStyle = {
   border: "none",
@@ -10,6 +11,7 @@ const inputStyle = {
 
 class BasicInfo extends Component {
   state = {
+    viewClassMate: false,
     data: {
       university: "Wuhan university",
       major: "Software Engineering",
@@ -35,8 +37,20 @@ class BasicInfo extends Component {
     this.props.handleEdit();
   };
 
+  showDrawer = () => {
+    this.setState({
+      viewClassMate: true
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      viewClassMate: false
+    });
+  };
+
   render() {
-    const { data } = this.state;
+    const { data, viewClassMate } = this.state;
     const { editMode } = this.props;
     return (
       <div style={{ overflow: "scroll", height: "60vh", paddingTop: "1em" }}>
@@ -74,8 +88,8 @@ class BasicInfo extends Component {
             )}
           </Descriptions.Item>
           <Descriptions.Item label="Classmate">
-            <Button disabled={editMode}>
-              <UserOutlined />
+            <Button onClick={this.showDrawer} disabled={editMode}>
+              <TeamOutlined />
               24
             </Button>
           </Descriptions.Item>
@@ -141,6 +155,7 @@ class BasicInfo extends Component {
             Save
           </Button>
         )}
+        <ClassmateDrawer visible={viewClassMate} onClose={this.onClose} />
       </div>
     );
   }

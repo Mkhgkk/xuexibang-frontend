@@ -11,13 +11,29 @@ import {
   message
 } from "antd";
 
-class New extends Component {
+class Edit extends Component {
   state = {
     data: {
       date: "",
       content: "",
       deadline: ""
     }
+  };
+
+  componentDidMount = () => {
+    const data = {
+      date: this.props.data.date,
+      content: this.props.data.content,
+      deadline: this.props.data.deadline
+    };
+    this.setState({
+      data
+    });
+  };
+
+  onChangeTime = (value, dateString) => {
+    console.log("Selected Time: ", value);
+    console.log("Formatted Selected Time: ", dateString);
   };
 
   onChange = ({ currentTarget: input }) => {
@@ -39,18 +55,18 @@ class New extends Component {
   };
 
   success = () => {
-    message.success(`${this.props.mode} has been posted.`);
+    message.success(`${this.props.mode} has been changed.`);
   };
 
   render() {
     const { onClose, visible, mode } = this.props;
+    const { data } = this.state;
+
     return (
       <div>
         <Drawer
           title={
-            mode === "Announcement"
-              ? "Create an announcement"
-              : "Create a homework"
+            mode === "Announcement" ? "Edit announcement" : "Edit homework"
           }
           width={600}
           onClose={onClose}
@@ -74,12 +90,19 @@ class New extends Component {
                 }
                 type="primary"
               >
-                Submit
+                Save
               </Button>
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form
+            layout="vertical"
+            hideRequiredMark
+            initialValues={{
+              ["description"]: data.content
+              // ["deadline"]: data.deadline
+            }}
+          >
             <p style={{ fontWeight: 600 }}>线性代数 123456</p>
 
             <Row gutter={16}>
@@ -107,9 +130,7 @@ class New extends Component {
               <Col span={24}>
                 <Form.Item
                   name="deadline"
-                  label={
-                    mode === "Announcement" ? "Deadline (optional)" : "Deadline"
-                  }
+                  label="Deadline"
                   rules={[
                     {
                       required: false
@@ -119,7 +140,7 @@ class New extends Component {
                   <DatePicker
                     name="deadline"
                     showTime
-                    onChange={this.onChange}
+                    onChange={this.onChangeTime}
                   />
                 </Form.Item>
               </Col>
@@ -131,4 +152,4 @@ class New extends Component {
   }
 }
 
-export default New;
+export default Edit;
