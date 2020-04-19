@@ -19,7 +19,7 @@ class Dashboard extends Component {
         <Content
           style={{
             margin: "24px 16px 0",
-            minHeight: "89vh",
+            minHeight: "97vh",
             paddingBottom: "16px",
             paddingTop: "9vh",
             paddingLeft: "15%"
