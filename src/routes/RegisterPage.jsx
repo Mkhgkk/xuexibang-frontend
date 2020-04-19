@@ -4,6 +4,8 @@ import RegisterForm from "../components/register/RegisterForm";
 import photo from "../image/register.svg";
 import EmailSent from "../components/register/EmailSent";
 
+const { Content } = Layout;
+
 class RegisterPage extends Component {
   state = {
     emailSent: false
@@ -14,7 +16,6 @@ class RegisterPage extends Component {
   };
 
   render() {
-    const { Content } = Layout;
     const { emailSent } = this.state;
 
     return (

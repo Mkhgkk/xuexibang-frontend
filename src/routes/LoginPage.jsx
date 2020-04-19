@@ -3,9 +3,10 @@ import { Layout } from "antd";
 import LoginForm from "../components/Login/LoginForm";
 import photo from "../image/login.svg";
 
+const { Content } = Layout;
+
 class LoginPage extends Component {
   render() {
-    const { Content } = Layout;
     return (
       <Layout>
         <Content

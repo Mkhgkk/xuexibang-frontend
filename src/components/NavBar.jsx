@@ -29,11 +29,13 @@ class NavBar extends Component {
             </Menu.Item>
 
             <Menu.Item>
-              <Avatar
-                style={{ marginRight: "0.5em" }}
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              />
-              <span>Username</span>
+              <NavLink to="/mypage">
+                <Avatar
+                  style={{ marginRight: "0.5em" }}
+                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                />
+                <span>Username</span>
+              </NavLink>
             </Menu.Item>
             <Menu.Item>Sign out</Menu.Item>
           </Menu>
