@@ -1,10 +1,26 @@
 import React, { Component } from "react";
-import { Layout, Menu, Avatar } from "antd";
+import { Layout, Menu, Avatar, Modal, Button } from "antd";
 import { NavLink, Link } from "react-router-dom";
+import { FrownTwoTone } from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 class NavBar extends Component {
+  showConfirm = () => {
+    confirm({
+      title: "Do you want to logout 学习帮?",
+      icon: <FrownTwoTone twoToneColor="#722ed1" />,
+      okText: "Logout",
+      onOk() {
+        //remove token
+        window.location.replace("/login");
+      },
+      onCancel() {}
+    });
+  };
   render() {
     const { Header } = Layout;
+
     return (
       <Layout className="layout">
         <Header
@@ -28,16 +44,24 @@ class NavBar extends Component {
               <NavLink to="/register">Register</NavLink>
             </Menu.Item>
 
-            <Menu.Item>
-              <NavLink to="/mypage">
-                <Avatar
-                  style={{ marginRight: "0.5em" }}
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                />
-                <span>Username</span>
-              </NavLink>
-            </Menu.Item>
-            <Menu.Item>Sign out</Menu.Item>
+            <NavLink
+              to="/mypage"
+              style={{ color: "#595959", marginRight: "2em" }}
+            >
+              <Avatar
+                style={{ marginRight: "0.5em" }}
+                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              />
+              <span>Username</span>
+            </NavLink>
+
+            <span
+              onClick={this.showConfirm}
+              style={{ marginRight: "2em" }}
+              className="cursor"
+            >
+              Sign out
+            </span>
           </Menu>
         </Header>
       </Layout>

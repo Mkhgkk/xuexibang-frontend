@@ -27,3 +27,7 @@
 .mypageInput:focus {
   border-bottom: 1px solid #722ed1;
 }
+
+.cursor:hover {
+  cursor: pointer;
+}

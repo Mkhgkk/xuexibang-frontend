@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
-import CardBox from "./CardBox";
-import SideBar from "../SideBar";
+import CardBox from "../components/dashboard/CardBox";
+import SideBar from "../components/SideBar";
 import { Route, Switch } from "react-router-dom";
-import Classes from "./Classes";
-import Homework from "./Homework";
-import Announcements from "./Announcements";
-import ClassDetails from "./ClassDetails";
-import AdminClass from "../../routes/AdminClass";
-import CreateClass from "../../routes/CreateClass";
+import Classes from "../components/dashboard/Classes";
+import Homework from "../components/dashboard/Homework";
+import Announcements from "../components/dashboard/Announcements";
+import ClassDetails from "../components/dashboard/ClassDetails";
+import AdminClass from "./AdminClass";
+import CreateClass from "./CreateClass";
 
 class Dashboard extends Component {
   render() {
     const { Content } = Layout;
     return (
       <Layout>
-        <SideBar />
+        <SideBar {...this.props} />
         <Content
           style={{
             margin: "24px 16px 0",

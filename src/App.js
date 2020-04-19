@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 import LoginPage from "./routes/LoginPage";
 import RegisterPage from "./routes/RegisterPage";
 import Information from "./routes/Information";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./routes/Dashboard";
 import Userpage from "./routes/Userpage";
 
 function App() {
