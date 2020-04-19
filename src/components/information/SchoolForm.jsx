@@ -46,7 +46,7 @@ function SchoolForm({ currentStep, onBackButton, onNextButton }) {
       <Form.Item
         name="major"
         label="Major"
-        rules={[{ required: true, message: "Please input your username!" }]}
+        rules={[{ required: true, message: "Please input your major" }]}
       >
         <AutoComplete
           style={{ width: 300, textAlign: "left" }}
