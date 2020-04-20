@@ -2,11 +2,11 @@ import React from "react";
 import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import NavBar from "./components/NavBar";
-// import Feed from "./routes/Feed";
 import LoginPage from "./routes/LoginPage";
 import RegisterPage from "./routes/RegisterPage";
 import Information from "./routes/Information";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./routes/Dashboard";
+import Userpage from "./routes/Userpage";
 
 function App() {
   return (
@@ -15,9 +15,9 @@ function App() {
       <Switch>
         <Route path="/information" component={Information} />
         <Route path="/dashboard" component={Dashboard} />
-        {/* <Route path="/classes" component={Classes} /> */}
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/mypage" component={Userpage} />
 
         <Redirect from="/" to="/dashboard/feeds" />
       </Switch>

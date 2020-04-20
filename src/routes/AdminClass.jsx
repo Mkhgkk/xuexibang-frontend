@@ -18,7 +18,6 @@ class AdminClass extends Component {
               path="/dashboard/admin/classes/:id"
               component={ClassDetail}
             />
-            {/* <ClassDetail /> */}
           </Col>
         </Row>
       </div>

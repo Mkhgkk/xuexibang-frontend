@@ -14,15 +14,20 @@
   color: #722ed1;
 }
 
-.test {
-  width: 105;
-  height: 105;
-  border: 1px solid #d9d9d9;
-  display: flex;
-  align-items: center;
-  margin-left: 0.5em;
-  margin-bottom: 0.5em;
+.mypageInput {
+  border: none;
+  width: 250px;
+  border-bottom: 1px solid #d9d9d9;
 }
-.test:hover {
-  border: 1px solid #722ed1;
+
+.mypageInput:hover {
+  border-bottom: 1px solid #722ed1;
+}
+
+.mypageInput:focus {
+  border-bottom: 1px solid #722ed1;
+}
+
+.cursor:hover {
+  cursor: pointer;
 }

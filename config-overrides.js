@@ -16,6 +16,3 @@ module.exports = override(
     }
   })
 );
-
-// @btn-border-radius-base: @border-radius-base;
-// @btn-border-radius-sm: @border-radius-base;
