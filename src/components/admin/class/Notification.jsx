@@ -12,7 +12,7 @@ class Notification extends Component {
         content:
           "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
         date: "15th May",
-        deadline: "1st Sep"
+        deadline: "1st Sep",
       },
       {
         _id: "123",
@@ -22,7 +22,7 @@ class Notification extends Component {
         content:
           "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
         date: "15th May",
-        deadline: "1st Sep"
+        deadline: "1st Sep",
       },
       {
         _id: "123",
@@ -32,9 +32,9 @@ class Notification extends Component {
         content:
           "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
         date: "15th May",
-        deadline: "1st Sep"
-      }
-    ]
+        deadline: "1st Sep",
+      },
+    ],
   };
   render() {
     return (
