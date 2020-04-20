@@ -8,12 +8,18 @@ import CommentSection from "./../../dashboard/commentSection";
 class ListCard extends Component {
   state = {
     viewEdit: false,
+    box: false,
   };
 
   onClose = () => {
     this.setState({
       viewEdit: false,
     });
+  };
+
+  handleCommentClick = (itemId) => {
+    const box = this.state.box;
+    this.setState({ box: box === true ? false : true });
   };
 
   render() {
@@ -39,7 +45,7 @@ class ListCard extends Component {
                 <div>
                   <ul className="ant-list-item-action">
                     <li>
-                      <div>
+                      <div onClick={() => this.props.onCommentToggle(item._id)}>
                         <MessageOutlined style={{ marginRight: 8 }} /> 2
                       </div>
                       <em className="ant-list-item-action-split"></em>
@@ -64,38 +70,43 @@ class ListCard extends Component {
                   </ul>
                 </div>
 
-                <div>
-                  {item.comments && (
-                    <React.Fragment>
-                      <CommentBox
-                        onCommentSubmit={() =>
-                          this.props.handleCommentSubmit(item._id)
-                        }
-                        value={this.props.commentValue}
-                        onCommentChange={this.props.handleCommentChange}
-                      />
-                      {item.comments.map((comment) => (
-                        <CommentSection
-                          key={comment._id}
-                          content={comment.content}
-                          replyValue={this.props.replyValue}
-                          onReplyChange={this.props.handleReplyChange}
-                          onReplySubmit={() =>
-                            this.props.handleReplySubmit(item._id, comment._id)
+                {item.commentToggler && (
+                  <div>
+                    {item.comments && (
+                      <React.Fragment>
+                        <CommentBox
+                          onCommentSubmit={() =>
+                            this.props.handleCommentSubmit(item._id)
                           }
-                        >
-                          {comment.replies &&
-                            comment.replies.map((reply) => (
-                              <CommentSection
-                                key={reply._id}
-                                content={reply.content}
-                              />
-                            ))}
-                        </CommentSection>
-                      ))}
-                    </React.Fragment>
-                  )}
-                </div>
+                          value={this.props.commentValue}
+                          onCommentChange={this.props.handleCommentChange}
+                        />
+                        {item.comments.map((comment) => (
+                          <CommentSection
+                            key={comment._id}
+                            content={comment.content}
+                            replyValue={this.props.replyValue}
+                            onReplyChange={this.props.handleReplyChange}
+                            onReplySubmit={() =>
+                              this.props.handleReplySubmit(
+                                item._id,
+                                comment._id
+                              )
+                            }
+                          >
+                            {comment.replies &&
+                              comment.replies.map((reply) => (
+                                <CommentSection
+                                  key={reply._id}
+                                  content={reply.content}
+                                />
+                              ))}
+                          </CommentSection>
+                        ))}
+                      </React.Fragment>
+                    )}
+                  </div>
+                )}
               </div>
               <Edit
                 visible={viewEdit}

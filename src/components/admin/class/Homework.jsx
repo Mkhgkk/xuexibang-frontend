@@ -28,6 +28,7 @@ class Homework extends Component {
             replies: [],
           },
         ],
+        commentToggler: false,
       },
       {
         _id: "124",
@@ -38,6 +39,13 @@ class Homework extends Component {
           "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
         date: "15th May",
         deadline: "1st Sep",
+        comments: [
+          {
+            _id: 1,
+            content: "this is a comment for testing",
+          },
+        ],
+        commentToggler: false,
       },
       {
         _id: "125",
@@ -52,6 +60,16 @@ class Homework extends Component {
     ],
     commentValue: "",
     replyValue: "",
+  };
+
+  handleCommentToggle = (itemId) => {
+    const listData = [...this.state.listData];
+    const index = listData.map((item) => item._id).indexOf(itemId);
+    listData[index]["commentToggler"] = listData[index]["commentToggler"]
+      ? false
+      : true;
+
+    this.setState({ listData });
   };
 
   handleCommentSubmit = (_id) => {
@@ -100,6 +118,7 @@ class Homework extends Component {
           handleReplySubmit={this.handleReplySubmit}
           handleCommentChange={this.handleCommentChange}
           handleReplyChange={this.handleReplyChange}
+          onCommentToggle={this.handleCommentToggle}
         />
       </div>
     );
