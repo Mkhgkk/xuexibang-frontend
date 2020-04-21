@@ -7,12 +7,12 @@ const { TextArea } = Input;
 class CommentBox extends Component {
   state = {
     value: "",
-    submitting: false,
+    submitting: false
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
-      value: e.target.value,
+      value: e.target.value
     });
   };
 
@@ -28,8 +28,8 @@ class CommentBox extends Component {
       <div>
         <Form.Item>
           <TextArea
-            rows={2}
-            onChange={(e) => this.props.onCommentChange(e)}
+            rows={1}
+            onChange={e => this.props.onCommentChange(e)}
             value={this.props.value}
           />
         </Form.Item>

@@ -8,16 +8,16 @@ import CommentSection from "./../../dashboard/commentSection";
 class ListCard extends Component {
   state = {
     viewEdit: false,
-    box: false,
+    box: false
   };
 
   onClose = () => {
     this.setState({
-      viewEdit: false,
+      viewEdit: false
     });
   };
 
-  handleCommentClick = (itemId) => {
+  handleCommentClick = itemId => {
     const box = this.state.box;
     this.setState({ box: box === true ? false : true });
   };
@@ -32,7 +32,7 @@ class ListCard extends Component {
           itemLayout="vertical"
           size="large"
           dataSource={listData}
-          renderItem={(item) => (
+          renderItem={item => (
             <List.Item key={item._id}>
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
@@ -81,7 +81,7 @@ class ListCard extends Component {
                           value={this.props.commentValue}
                           onCommentChange={this.props.handleCommentChange}
                         />
-                        {item.comments.map((comment) => (
+                        {item.comments.map(comment => (
                           <CommentSection
                             key={comment._id}
                             content={comment.content}
@@ -95,7 +95,7 @@ class ListCard extends Component {
                             }
                           >
                             {comment.replies &&
-                              comment.replies.map((reply) => (
+                              comment.replies.map(reply => (
                                 <CommentSection
                                   key={reply._id}
                                   content={reply.content}

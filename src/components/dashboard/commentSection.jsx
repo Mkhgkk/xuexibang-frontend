@@ -6,7 +6,7 @@ import ReplyBox from "./replyBox";
 class CommentSection extends Component {
   state = {
     isReply: false,
-    replyValue: "nihao",
+    replyValue: "nihao"
   };
 
   handleReplyClick = () => {
@@ -14,9 +14,9 @@ class CommentSection extends Component {
     if (this.state.isReply === true) return this.setState({ isReply: false });
   };
 
-  handleReplySubmit = (e) => {
+  handleReplySubmit = e => {
     this.setState({
-      replyValue: e.target.value,
+      replyValue: e.target.value
     });
   };
 
@@ -28,7 +28,7 @@ class CommentSection extends Component {
         actions={[
           <span onClick={this.handleReplyClick} key="comment-nested-reply-to">
             Reply to
-          </span>,
+          </span>
         ]}
         author={<a>Han Solo</a>}
         avatar={

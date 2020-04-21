@@ -7,12 +7,12 @@ const { TextArea } = Input;
 class ReplyBox extends Component {
   state = {
     value: "",
-    submitting: false,
+    submitting: false
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
-      value: e.target.value,
+      value: e.target.value
     });
   };
 
@@ -28,8 +28,8 @@ class ReplyBox extends Component {
       <div>
         <Form.Item>
           <TextArea
-            rows={2}
-            onChange={(e) => this.props.onReplyChange(e)}
+            rows={1}
+            onChange={e => this.props.onReplyChange(e)}
             value={this.props.replyValue}
           />
         </Form.Item>
