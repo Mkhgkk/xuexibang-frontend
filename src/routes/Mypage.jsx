@@ -3,20 +3,21 @@ import { Layout, Card, Row, Col, Button, message } from "antd";
 import background from "../image/thumbnail1.svg";
 import Infopart from "../components/mypage/Infopart";
 import Authpart from "../components/mypage/Authpart";
+import * as userService from "../services/userService";
 
 const { Content } = Layout;
 
-class Userpage extends Component {
+class Mypage extends Component {
   state = {
     editMode: false,
-    userData: {
-      email: "testuser1@test.com",
-      userName: "Han solo",
-      university: "Wuhan university",
-      major: "Software Engineering",
-      avatar:
-        "https://images.unsplash.com/photo-1587204759660-d24d89443807?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
-    }
+    user: {}
+  };
+
+  componentDidMount = async () => {
+    const { data: user } = await userService.getUserDetail();
+    this.setState({
+      user
+    });
   };
 
   onClick = () => {
@@ -26,9 +27,9 @@ class Userpage extends Component {
   };
 
   handleChange = ({ currentTarget: input }) => {
-    const userData = { ...this.state.userData };
-    userData[input.name] = input.value;
-    this.setState({ userData });
+    const user = { ...this.state.user };
+    user[input.name] = input.value;
+    this.setState({ user });
   };
 
   handleSubmit = () => {
@@ -36,7 +37,7 @@ class Userpage extends Component {
   };
 
   render() {
-    const { editMode, userData } = this.state;
+    const { editMode, user } = this.state;
     return (
       <Layout>
         <Content
@@ -87,12 +88,12 @@ class Userpage extends Component {
               <Col span={16}>
                 <Infopart
                   editMode={editMode}
-                  userData={userData}
+                  user={user}
                   onChange={this.handleChange}
                 />
               </Col>
               <Col span={8}>
-                <Authpart editMode={editMode} avatar={userData.avatar} />
+                <Authpart editMode={editMode} avatar={user.avatar} />
               </Col>
             </Row>
           </Card>
@@ -101,4 +102,4 @@ class Userpage extends Component {
     );
   }
 }
-export default Userpage;
+export default Mypage;

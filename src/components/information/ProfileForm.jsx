@@ -55,16 +55,11 @@ class ProfileForm extends Component {
     }
   };
 
-  // handleChange = ({ currentTarget: input }) => {
-  //   this.setState({ userName: input.value });
-  // };
-
   handleSubmit = async () => {
     const { userName, imageUrl } = this.state;
 
     try {
       await userSerivce.changeUserInfo({ userName, avatar: imageUrl });
-      // if (user.userName) this.props.onNextButton();
       if (userName) this.props.onNextButton();
     } catch (ex) {
       if (ex.response && ex.response.status === 400)

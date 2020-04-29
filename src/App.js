@@ -6,7 +6,7 @@ import LoginPage from "./routes/LoginPage";
 import RegisterPage from "./routes/RegisterPage";
 import Information from "./routes/Information";
 import Dashboard from "./routes/Dashboard";
-import Userpage from "./routes/Userpage";
+import Mypage from "./routes/Mypage";
 import { getCurrentUser } from "./services/authService";
 
 class App extends Component {
@@ -27,7 +27,7 @@ class App extends Component {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
-          <Route path="/mypage" component={Userpage} />
+          <Route path="/mypage" component={Mypage} />
 
           <Redirect from="/" to="/dashboard/feeds" />
         </Switch>

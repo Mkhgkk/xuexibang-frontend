@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Layout, Menu, Avatar, Modal } from "antd";
 import { NavLink, Link } from "react-router-dom";
-import { FrownTwoTone } from "@ant-design/icons";
-import auth from "../services/authService";
+import { FrownTwoTone, UserOutlined } from "@ant-design/icons";
+import authService from "../services/authService";
 import { getUserDetail } from "../services/userService";
 
 const { confirm } = Modal;
@@ -16,7 +16,6 @@ class NavBar extends Component {
   componentDidMount = async () => {
     const { data: user } = await getUserDetail();
     this.setState({ user });
-    console.log(this.state.user);
   };
 
   showConfirm = () => {
@@ -25,7 +24,7 @@ class NavBar extends Component {
       icon: <FrownTwoTone twoToneColor="#722ed1" />,
       okText: "Logout",
       onOk() {
-        auth.logout();
+        authService.logout();
         window.location.replace("/login");
       },
       onCancel() {}
@@ -34,6 +33,8 @@ class NavBar extends Component {
 
   render() {
     const { auth } = this.props;
+    const { user } = this.state;
+
     return (
       <Layout className="layout">
         <Header
@@ -56,11 +57,15 @@ class NavBar extends Component {
                 to="/mypage"
                 style={{ color: "#595959", marginRight: "2em" }}
               >
-                <Avatar
-                  style={{ marginRight: "0.5em" }}
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                />
-                <span>Username</span>
+                {user.avatar ? (
+                  <Avatar style={{ marginRight: "0.5em" }} src={user.avatar} />
+                ) : (
+                  <Avatar
+                    style={{ marginRight: "0.5em", backgroundColor: "#9254de" }}
+                    icon={<UserOutlined />}
+                  />
+                )}
+                <span>{user.userName}</span>
               </NavLink>
 
               <span

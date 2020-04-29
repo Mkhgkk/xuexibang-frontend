@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Class from "./ClassCard";
 import { Row, Col, Form, Input, Button } from "antd";
 import { Link } from "react-router-dom";
-import ClassDrawer from "../information/ClassDrawer";
+import ClassList from "../information/ClassList";
 
 const { Search } = Input;
 
@@ -58,7 +58,7 @@ class Classes extends Component {
                 enterButton
               />
             </Form>
-            {this.state.classNumber && <ClassDrawer />}
+            {this.state.classNumber && <ClassList />}
           </div>
         )}
         <Row gutter={[32, 24]}>

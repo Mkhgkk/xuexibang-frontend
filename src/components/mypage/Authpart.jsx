@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Avatar, Button, Upload, message } from "antd";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -79,8 +79,10 @@ class Authpart extends Component {
               )}
             </Upload>
           </div>
-        ) : (
+        ) : avatar ? (
           <Avatar size={105} src={avatar} />
+        ) : (
+          <Avatar size={105} icon={<UserOutlined />} />
         )}
 
         {editMode && (

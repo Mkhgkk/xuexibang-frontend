@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   MailOutlined,
   UserOutlined,
@@ -7,16 +6,32 @@ import {
   NodeIndexOutlined
 } from "@ant-design/icons";
 import { Space } from "antd";
+import { getUniversity } from "../../services/universityService";
+import { getMajor } from "../../services/majorService";
 
 class Infopart extends Component {
+  state = {
+    university: "",
+    major: ""
+  };
+
+  componentDidMount = async () => {
+    const { user } = this.props;
+    const { data: university } = await getUniversity(user.university);
+    const { data: major } = await getMajor(user.major);
+
+    this.setState({ university: university.name, major: major.name });
+  };
+
   render() {
-    const { editMode, userData, onChange } = this.props;
+    const { editMode, user, onChange } = this.props;
+    const { university, major } = this.state;
     return (
       <div style={{ paddingRight: "2em" }}>
         <p>
           <Space>
             <MailOutlined />
-            {userData.email}
+            {user.email}
           </Space>
         </p>
         <p>
@@ -25,12 +40,12 @@ class Infopart extends Component {
             {editMode ? (
               <input
                 className="mypageInput"
-                value={userData.userName}
+                value={user.userName}
                 name="userName"
                 onChange={onChange}
               />
             ) : (
-              userData.userName
+              user.userName
             )}
           </Space>
         </p>
@@ -40,12 +55,12 @@ class Infopart extends Component {
             {editMode ? (
               <input
                 className="mypageInput"
-                value={userData.university}
+                value={user.university}
                 name="university"
                 onChange={this.handleChange}
               />
             ) : (
-              userData.university
+              university
             )}
           </Space>
         </p>
@@ -55,12 +70,12 @@ class Infopart extends Component {
             {editMode ? (
               <input
                 className="mypageInput"
-                value={userData.major}
+                value={user.major}
                 name="major"
                 onChange={this.handleChange}
               />
             ) : (
-              userData.major
+              major
             )}
           </Space>
         </p>

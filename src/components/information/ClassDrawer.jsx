@@ -1,16 +1,7 @@
 import React, { Component } from "react";
-import {
-  Drawer,
-  List,
-  Avatar,
-  Divider,
-  Col,
-  Row,
-  Button,
-  Spin,
-  Tooltip
-} from "antd";
-import { PlusCircleTwoTone, MinusCircleOutlined } from "@ant-design/icons";
+import { Drawer, Divider, Col, Row, Button } from "antd";
+import { getUniversity } from "../../services/universityService";
+import { getMajor } from "../../services/majorService";
 
 const DescriptionItem = ({ title, content }) => (
   <div
@@ -35,140 +26,78 @@ const DescriptionItem = ({ title, content }) => (
 );
 
 class ClassDrawer extends Component {
-  state = { visible: false, loading: true, data: {} };
-
-  componentDidMount() {
-    //props에 있는 번호불러와서서치 하고 펫치함
-    const data = {
-      name: "线性代数",
-      classNumber: "123456",
-      photo:
-        "https://dss1.bdstatic.com/6OF1bjeh1BF3odCf/it/u=2610458130,2042626113&fm=74&app=80&f=JPEG&size=f121,121?sec=1880279984&t=a5d4b2a53129de0117253c5343c0e2d6",
-      university: "Wuhan University",
-      major: "Software Engineering",
-      professor: "Mr.An",
-      classWeek: "1-16week",
-      classTime: "9:00-11:00",
-      classRoom: "Fengyuan1-301"
-    };
-    this.setState({ data, loading: false });
-  }
-  showDrawer = () => {
-    this.setState({
-      visible: true
-    });
+  state = {
+    university: "",
+    major: ""
   };
 
-  onClose = () => {
-    this.setState({
-      visible: false
-    });
+  componentDidMount = async () => {
+    const { course } = this.props;
+    const { data: university } = await getUniversity(course.university);
+    const { data: major } = await getMajor(course.major);
+
+    this.setState({ university: university.name, major: major.name });
   };
 
   render() {
-    const { loading, data } = this.state;
-    return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {loading ? (
-          <Spin style={{ marginTop: "2em" }} />
-        ) : (
-          <>
-            <List
-              style={{ width: "400px" }}
-              dataSource={[
-                {
-                  name: data.name,
-                  description: data.classNumber,
-                  avatar: data.photo
-                }
-              ]}
-              bordered
-              renderItem={item => (
-                <List.Item
-                  style={{ backgroundColor: "white" }}
-                  key={item.id}
-                  actions={[
-                    <a onClick={this.showDrawer} key={`a-${item.id}`}>
-                      View Class
-                    </a>,
-                    <Tooltip placement="rightTop" title={"Add class"}>
-                      <PlusCircleTwoTone
-                        twoToneColor="#722ed1"
-                        style={{ fontSize: "1.2em" }}
-                      />
-                    </Tooltip>
-                    // <Tooltip placement="rightTop" title={"Delete class"}>
-                    //   <MinusCircleOutlined style={{ fontSize: "1.2em" }} />
-                    // </Tooltip>
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={item.name}
-                    description={item.description}
-                  />
-                </List.Item>
-              )}
-            />
-            <Drawer
-              width={400}
-              placement="right"
-              closable={false}
-              onClose={this.onClose}
-              visible={this.state.visible}
-            >
-              <div style={{ display: "flex", marginTop: "2em" }}>
-                <h2>线性代数</h2>
-                <p style={{ fontSize: "0.9em" }}>1234456</p>
-              </div>
-              <Divider />
-              <Row>
-                <Col span={24}>
-                  <DescriptionItem
-                    title="University"
-                    content={data.university}
-                  />
-                </Col>
-                <Col span={24}>
-                  <DescriptionItem title="Major" content={data.major} />
-                </Col>
-              </Row>
-              <Divider />
-              <Row>
-                <Col span={24}>
-                  <DescriptionItem title="Professor" content={data.professor} />
-                </Col>
-                <Col span={24}>
-                  <DescriptionItem
-                    title="Class week"
-                    content={data.classWeek}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col span={24}>
-                  <DescriptionItem
-                    title="Class time"
-                    content={data.classTime}
-                  />
-                </Col>
-                <Col span={24}>
-                  <DescriptionItem
-                    title="Class room"
-                    content={data.classRoom}
-                  />
-                </Col>
-              </Row>
+    const {
+      course,
+      onClose,
+      visible,
+      addCourse,
+      removeCourse,
+      added
+    } = this.props;
+    const { university, major } = this.state;
 
-              <Divider />
-              <Button type="primary">Add Class</Button>
-              {/* <Button type="primary" disabled>
-            Added
-          </Button> */}
-            </Drawer>
-          </>
+    return (
+      <Drawer
+        width={400}
+        placement="right"
+        closable={false}
+        onClose={onClose}
+        visible={visible}
+      >
+        <div style={{ display: "flex", marginTop: "2em" }}>
+          <h2>{course.name}</h2>
+          <p style={{ fontSize: "0.9em" }}>{course.number}</p>
+        </div>
+        <Divider />
+        <Row>
+          <Col span={24}>
+            <DescriptionItem title="University" content={university} />
+          </Col>
+          <Col span={24}>
+            <DescriptionItem title="Major" content={major} />
+          </Col>
+        </Row>
+        <Divider />
+        <Row>
+          <Col span={24}>
+            <DescriptionItem title="Professor" content={course.laoshi} />
+          </Col>
+          <Col span={24}>
+            <DescriptionItem title="Class week" content={course.weeks} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <DescriptionItem title="Class time" content={course.time} />
+          </Col>
+          <Col span={24}>
+            <DescriptionItem title="Class room" content={course.classroom} />
+          </Col>
+        </Row>
+
+        <Divider />
+        {!added ? (
+          <Button type="primary" onClick={() => addCourse(course._id)}>
+            Add Class
+          </Button>
+        ) : (
+          <Button onClick={() => removeCourse(course._id)}>Added</Button>
         )}
-      </div>
+      </Drawer>
     );
   }
 }

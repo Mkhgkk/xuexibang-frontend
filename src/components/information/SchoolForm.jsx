@@ -55,7 +55,7 @@ class SchoolForm extends Component {
       major,
       ready
     } = this.state;
-    console.log(university, major);
+
     return (
       <>
         {ready && (
