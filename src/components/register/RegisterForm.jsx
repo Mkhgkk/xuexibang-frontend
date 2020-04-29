@@ -1,26 +1,37 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
-
-import { Link } from "react-router-dom";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import * as userSerivce from "../../services/userService";
+import auth from "../../services/authService";
+import { Link, Redirect } from "react-router-dom";
 
 class RegisterForm extends Component {
-  render() {
-    const onFinish = values => {
-      console.log("Success:", values);
-      this.props.showEmailSent();
-    };
+  onSubmit = async values => {
+    try {
+      const email = values.email;
+      const password = values.password;
 
-    const onFinishFailed = errorInfo => {
-      console.log("Failed:", errorInfo);
-    };
+      const response = await userSerivce.register({ email, password });
+      //auth.loginWithJwt(response.headers["x-auth-token"]);
+      auth.loginWithJwt(response.data);
+      console.log(response);
+      window.location = "/userDetail";
+      // this.props.showEmailSent();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        message.error(ex.response.data);
+      }
+    }
+  };
+
+  render() {
+    // if (auth.getCurrentUser()) return <Redirect to="/dashboard/feeds" />;
 
     return (
       <Form
         name="register"
         scrollToFirstError
         style={{ width: "30%", paddingRight: "3em", textAlign: "center" }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={this.onSubmit}
       >
         <p style={{ marginBottom: "1.5em", fontSize: "1.2em" }}>
           Register for 学习帮

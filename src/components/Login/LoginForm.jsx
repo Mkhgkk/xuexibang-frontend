@@ -1,20 +1,30 @@
 import React, { Component } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import auth from "../../services/authService";
 
 class LoginForm extends Component {
-  render() {
-    const onFinish = values => {
-      console.log("Received values of form: ", values);
-    };
+  onSubmit = async values => {
+    try {
+      await auth.login(values.email, values.password);
+      window.location = "/dashboard/feeds";
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        message.error(ex.response.data);
+      }
+    }
+  };
 
+  render() {
+    // if (auth.getCurrentUser()) return <Redirect to="/dashboard/feeds" />;
     return (
       <Form
         name="normal_login"
         initialValues={{ remember: true }}
         style={{ width: "25%", textAlign: "center" }}
-        onFinish={onFinish}
+        onFinish={this.onSubmit}
+        onFinishFailed={this.onFinishFailed}
       >
         <p
           style={{
@@ -58,6 +68,7 @@ class LoginForm extends Component {
           <Button
             type="primary"
             htmlType="submit"
+            onSubmit={this.onSubmit}
             className="login-form-button"
             style={{ width: "100%", marginBottom: "0.8em " }}
           >

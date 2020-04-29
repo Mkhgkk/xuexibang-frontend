@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import NavBar from "./components/NavBar";
@@ -7,22 +7,33 @@ import RegisterPage from "./routes/RegisterPage";
 import Information from "./routes/Information";
 import Dashboard from "./routes/Dashboard";
 import Userpage from "./routes/Userpage";
+import { getCurrentUser } from "./services/authService";
 
-function App() {
-  return (
-    <div className="App">
-      <NavBar />
-      <Switch>
-        <Route path="/information" component={Information} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegisterPage} />
-        <Route path="/mypage" component={Userpage} />
+class App extends Component {
+  state = {};
 
-        <Redirect from="/" to="/dashboard/feeds" />
-      </Switch>
-    </div>
-  );
+  componentDidMount() {
+    const auth = getCurrentUser();
+    this.setState({ auth });
+  }
+
+  render() {
+    const { auth } = this.state;
+    return (
+      <div className="App">
+        <NavBar auth={auth} />
+        <Switch>
+          <Route path="/userDetail" component={Information} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/mypage" component={Userpage} />
+
+          <Redirect from="/" to="/dashboard/feeds" />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
