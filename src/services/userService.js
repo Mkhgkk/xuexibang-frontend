@@ -10,10 +10,7 @@ export function register(user) {
 }
 
 export function deleteUser(email, password) {
-  return http.delete(apiEndPoint, {
-    email,
-    password
-  });
+  return http.delete(apiEndPoint + "/delete/" + email + "/" + password);
 }
 
 export function getUserDetail() {

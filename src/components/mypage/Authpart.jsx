@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { Avatar, Button, Upload, message } from "antd";
+import { Avatar, Button, Upload, message, Modal } from "antd";
 import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import ChangePassword from "./ChangePassword";
+import DeleteUser from "./DeleteUser";
+
+const { confirm } = Modal;
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -23,7 +28,15 @@ function beforeUpload(file) {
 class Authpart extends Component {
   state = {
     loading: false,
-    imageUrl: this.props.avatar
+    imageUrl: this.props.avatar,
+    passwordModal: false,
+    deleteModal: false
+  };
+
+  handleCloseModal = name => {
+    this.setState({
+      [name]: false
+    });
   };
 
   handleChange = info => {
@@ -43,7 +56,7 @@ class Authpart extends Component {
   };
 
   render() {
-    const { imageUrl } = this.state;
+    const { imageUrl, passwordModal, deleteModal } = this.state;
     const { editMode, avatar } = this.props;
 
     const uploadButton = (
@@ -87,10 +100,30 @@ class Authpart extends Component {
 
         {editMode && (
           <>
-            <Button style={{ marginTop: "1em" }}>Change password</Button>
-            <Button style={{ marginTop: "1em" }}>Delete account</Button>
+            <Button
+              style={{ marginTop: "1em" }}
+              onClick={() => {
+                this.setState({ passwordModal: true });
+              }}
+            >
+              Change password
+            </Button>
+            <Button
+              style={{ marginTop: "1em" }}
+              onClick={() => {
+                this.setState({ deleteModal: true });
+              }}
+            >
+              Delete account
+            </Button>
           </>
         )}
+
+        <ChangePassword
+          visible={passwordModal}
+          onCancel={this.handleCloseModal}
+        />
+        <DeleteUser visible={deleteModal} onCancel={this.handleCloseModal} />
       </div>
     );
   }

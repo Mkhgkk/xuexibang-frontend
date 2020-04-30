@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Space, Button, Select, message } from "antd";
 import { getUniversities } from "../../services/universityService";
 import { getMajors } from "../../services/majorService";
-import * as userSerivce from "../../services/userService";
+import * as userService from "../../services/userService";
 
 const { Option } = Select;
 
@@ -21,7 +21,7 @@ class SchoolForm extends Component {
   };
 
   componentDidMount = async () => {
-    const { data: user } = await userSerivce.getUserDetail();
+    const { data: user } = await userService.getUserDetail();
 
     const { data: schoolOptions } = await getUniversities();
     const { data: majorOptions } = await getMajors();
@@ -38,7 +38,7 @@ class SchoolForm extends Component {
   handleSubmit = async () => {
     const { university, major } = this.state;
     try {
-      await userSerivce.changeUserInfo({ university, major });
+      await userService.changeUserInfo({ university, major });
       if (university && major) this.props.onNextButton();
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
