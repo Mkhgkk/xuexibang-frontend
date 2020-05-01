@@ -1,165 +1,287 @@
 import React, { Component } from "react";
-import { Skeleton, Card, Avatar, Tag } from "antd";
+import { Skeleton, Card, Avatar, Tag, Spin, message } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import CommentSection from "./commentSection";
 import Actions from "./actions";
 import CommentBox from "./commentBox";
+import { getFeeds } from "./../../services/feedService";
+import { getComments, postComment } from "./../../services/commentService";
+import { getReplies, postReply } from "./../../services/replyService";
+
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 class CardBox extends Component {
   state = {
+    feeds: [],
     loading: false,
-    comment: false,
     commentValue: "",
     replyValue: "",
-    comments: [
-      {
-        _id: 1,
-        content: "come find me am dwelling in this fan shape hole of fame",
-        replies: [
-          { _id: 1, content: "What you said is not true Sir" },
-          { _id: 2, content: "And what do you know about being true" },
-        ],
-      },
-      {
-        _id: 2,
-        content: "another comment to check the sanity of reply input",
-        replies: [],
-      },
-    ],
   };
 
-  onChange = (checked) => {
-    this.setState({ loading: !checked });
-  };
-  handleClick = () => {
-    if (this.state.comment === true) return this.setState({ comment: false });
-    if (this.state.comment === false) return this.setState({ comment: true });
-  };
-
-  handleCommentChange = (e) => {
-    this.setState({
-      commentValue: e.target.value,
-    });
+  componentDidMount = async () => {
+    try {
+      const { data } = await getFeeds();
+      this.setState({ feeds: data });
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
-  handleSubmit = () => {
-    const comments = [
-      { content: this.state.commentValue },
-      ...this.state.comments,
-    ];
-    this.setState({ comments: comments, commentValue: "" });
+  fetchComments = (feedId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+
+    const setComments = async (feedId) => {
+      const { data } = await getComments(feedId);
+      feed.comments = data;
+      feed.commmentLoading = false;
+      this.setState({ feeds });
+    };
+
+    setComments(feedId);
   };
 
-  handleReplyChange = (e) => {
-    this.setState({
-      replyValue: e.target.value,
-    });
+  fetchReplies = (feedId, commentId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
+
+    const setReplies = async (commentId) => {
+      const { data } = await getReplies(commentId);
+      comment.replies = data;
+      // comment.commmentLoading = false;
+      this.setState({ feeds });
+    };
+
+    setReplies(commentId);
   };
 
-  handleReplySubmit = (commentId) => {
-    const comments = [...this.state.comments];
-    const comment = comments.filter((comment) => comment._id === commentId);
+  handleCommentClick = (feedId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    feed.comment = feed.comment === true ? false : true;
+    feed.commmentLoading = feed.commmentLoading === true ? false : true;
+    this.setState({ feeds });
+  };
 
-    comment[0]["replies"].unshift({
-      _id: new Date(),
-      content: this.state.replyValue,
-    });
-    this.setState({ comments: comments, replyValue: " " });
+  handleCommentChange = (e, feedId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    feed.commentValue = e.target.value;
+    feed.submitButtonDisabled =
+      feed.commentValue === "" || undefined ? true : false;
+    this.setState({ feeds });
+  };
+
+  disableCommentButton = (feedId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    feed.submitButtonDisabled = true;
+    this.setState({ feeds });
+  };
+
+  disableReplyButton = (feedId, commentId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
+
+    comment.submitButtonDisabled = true;
+    this.setState({ feeds });
+  };
+
+  handleCommentSubmit = (feedId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+
+    feed.commentButtonLoading = true;
+
+    this.setState({ feeds });
+
+    const postAndSetComment = async (feedId) => {
+      try {
+        const { data } = await postComment(feedId, feed.commentValue);
+
+        if (!feed.comments) {
+          feed.comments = [{ data }];
+        } else {
+          feed.comments.unshift(data);
+        }
+
+        feed.commentValue = "";
+        feed.commentButtonLoading = false;
+        feed.submitButtonDisabled = true;
+
+        this.setState({ feeds });
+      } catch (ex) {
+        message.error("Something went wrong, please try again!");
+      }
+    };
+
+    postAndSetComment(feedId);
+  };
+
+  handleReplyChange = (e, feedId, commentId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
+
+    comment.replyValue = e.target.value;
+
+    comment.submitButtonDisabled =
+      comment.replyValue === "" || undefined ? true : false;
+
+    this.setState({ feeds });
+  };
+
+  handleReplySubmit = (feedId, commentId) => {
+    let feeds = [...this.state.feeds];
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
+
+    comment.replyButtonLoading = true;
+
+    this.setState({ feeds });
+
+    const postAndSetReply = async (commentId) => {
+      try {
+        const { data } = await postReply(commentId, comment.replyValue);
+
+        if (!comment.replies) {
+          comment.replies = [{ data }];
+        } else {
+          comment.replies.unshift(data);
+        }
+
+        comment.replyValue = "";
+        comment.replyButtonLoading = false;
+        comment.submitButtonDisabled = true;
+
+        this.setState({ feeds });
+      } catch (ex) {
+        console.log(ex);
+        message.error("Something went wrong, please try again!");
+      }
+    };
+
+    postAndSetReply(commentId);
   };
 
   render() {
-    const { loading, comment, comments } = this.state;
+    const { loading, feeds } = this.state;
     return (
       <>
-        <Card
-          style={{ width: "60%", margin: "0 auto", marginTop: 16 }}
-          // actions={[
-          //   <span>
-          //     <Tooltip title="Comment">
-          //       <CommentOutlined />
-          //     </Tooltip>
-          //     <span> 23 Comments</span>
-          //   </span>,
-          //   <div>3days left</div>,
-          // ]}
-        >
-          <Skeleton loading={loading} avatar active>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div style={{ height: "40px" }}>
-                <Tag color="green">homework</Tag>
-              </div>
-
-              <h1>Database Management</h1>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+        {feeds.map((feed) => (
+          <Card
+            key={feed._id}
+            style={{ width: "60%", margin: "0 auto", marginTop: 16 }}
+          >
+            <Skeleton loading={loading} avatar active>
               <div
                 style={{
-                  marginLeft: "1em",
-                  textAlign: "left",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <h2
+                <div style={{ height: "40px" }}>
+                  <Tag color="green">{feed.type}</Tag>
+                </div>
+
+                <h1>{feed.course.name}</h1>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                <div
                   style={{
-                    margin: 0,
-                    // paddingLeft: "0.5em",
-                    // fontWeight: "bolder",
+                    marginLeft: "1em",
+                    textAlign: "left",
                   }}
                 >
-                  userName
-                </h2>
-                <p style={{ textAlign: "left" }}>7th Sep 2020</p>
-              </div>
-            </div>
-            <p style={{ margin: "30px 50px 30px 50px" }}>
-              This is a common workflow for short-lived topic branches that are
-              used more as an isolated development than an organizational tool
-              for longer-running features.
-            </p>
-            <Actions
-              onClick={this.handleClick}
-              commentCount={this.state.comments.length}
-            />
-            {comment && (
-              <React.Fragment>
-                <CommentBox
-                  onCommentSubmit={this.handleSubmit}
-                  value={this.state.commentValue}
-                  onCommentChange={this.handleCommentChange}
-                />
-                {comments.map((comment) => (
-                  <CommentSection
-                    key={comment._id}
-                    content={comment.content}
-                    replyValue={this.state.replyValue}
-                    onReplyChange={this.handleReplyChange}
-                    onReplySubmit={() => this.handleReplySubmit(comment._id)}
+                  <h2
+                    style={{
+                      margin: 0,
+                      // paddingLeft: "0.5em",
+                      // fontWeight: "bolder",
+                    }}
                   >
-                    {comment.replies &&
-                      comment.replies.map((reply) => (
+                    {feed.postedBy.name}
+                  </h2>
+                  <p style={{ textAlign: "left" }}>{feed.datePosted}</p>
+                </div>
+              </div>
+              <p style={{ margin: "30px 50px 30px 50px" }}>{feed.content}</p>
+              <Actions
+                onClick={() => this.handleCommentClick(feed._id)}
+                commentCount={2}
+              />
+              {feed.comment && (
+                <React.Fragment>
+                  <CommentBox
+                    onCommentSubmit={() => this.handleCommentSubmit(feed._id)}
+                    commentButtonLoading={feed.commentButtonLoading}
+                    disableCommentButton={() =>
+                      this.disableCommentButton(feed._id)
+                    }
+                    submitButtonDisabled={feed.submitButtonDisabled}
+                    value={feed.commentValue}
+                    onCommentChange={(e) =>
+                      this.handleCommentChange(e, feed._id)
+                    }
+                  />
+                  {/* comment loading spinner */}
+                  {feed.commmentLoading && (
+                    <div style={{ textAlign: "center" }}>
+                      <Spin size="small" indicator={loadingIcon} />
+                    </div>
+                  )}
+                  {/* commets */}
+                  {!feed.comments
+                    ? this.fetchComments(feed._id)
+                    : feed.comments.map((comment) => (
                         <CommentSection
-                          key={reply._id}
-                          content={reply.content}
-                        />
+                          key={comment._id}
+                          content={comment.content}
+                          replyValue={comment.replyValue}
+                          onReplyChange={(e) =>
+                            this.handleReplyChange(e, feed._id, comment._id)
+                          }
+                          replyButtonLoading={comment.replyButtonLoading}
+                          submitButtonDisabled={comment.submitButtonDisabled}
+                          disableCommentButton={() =>
+                            this.disableReplyButton(feed._id, comment._id)
+                          }
+                          onReplySubmit={() =>
+                            this.handleReplySubmit(feed._id, comment._id)
+                          }
+                        >
+                          {/* reply loading spinner */}
+                          {/* {comment && (
+                            <div style={{ textAlign: "center" }}>
+                              <Spin size="small" indicator={loadingIcon} />
+                            </div>
+                          )} */}
+                          {!comment.replies
+                            ? this.fetchReplies(feed._id, comment._id)
+                            : comment.replies.map((reply) => (
+                                <CommentSection
+                                  key={reply._id}
+                                  content={reply.content}
+                                />
+                              ))}
+                        </CommentSection>
                       ))}
-                  </CommentSection>
-                ))}
-              </React.Fragment>
-            )}
-          </Skeleton>
-        </Card>
+                </React.Fragment>
+              )}
+            </Skeleton>
+          </Card>
+        ))}
       </>
     );
   }

@@ -7,12 +7,16 @@ const { TextArea } = Input;
 class CommentBox extends Component {
   state = {
     value: "",
-    submitting: false
+    submitting: false,
   };
 
-  handleChange = e => {
+  componentDidMount = () => {
+    this.props.disableCommentButton();
+  };
+
+  handleChange = (e) => {
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     });
   };
 
@@ -29,14 +33,15 @@ class CommentBox extends Component {
         <Form.Item>
           <TextArea
             rows={1}
-            onChange={e => this.props.onCommentChange(e)}
+            onChange={(e) => this.props.onCommentChange(e)}
             value={this.props.value}
           />
         </Form.Item>
         <Form.Item>
           <Button
             htmlType="submit"
-            loading={this.state.submitting}
+            disabled={this.props.submitButtonDisabled}
+            loading={this.props.commentButtonLoading}
             onClick={this.props.onCommentSubmit}
             type="primary"
           >
