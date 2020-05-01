@@ -1,4 +1,5 @@
 {
     "debug.console.fontSize": 10,
-    "markdown.preview.fontSize": 11
+    "markdown.preview.fontSize": 11,
+    "python.pythonPath": "C:\\Users\\emmac\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
 }
