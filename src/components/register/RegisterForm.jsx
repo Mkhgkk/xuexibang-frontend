@@ -13,7 +13,7 @@ class RegisterForm extends Component {
       const response = await userSerivce.register({ email, password });
       //auth.loginWithJwt(response.headers["x-auth-token"]);
       auth.loginWithJwt(response.data);
-      console.log(response);
+
       window.location = "/userDetail";
       // this.props.showEmailSent();
     } catch (ex) {
