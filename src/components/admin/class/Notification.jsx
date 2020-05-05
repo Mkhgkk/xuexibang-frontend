@@ -1,58 +1,19 @@
 import React, { Component } from "react";
 import ListCard from "./ListCard";
+import { getAnnouncementById } from "../../../services/feedService";
 
 class Notification extends Component {
   state = {
-    listData: [
-      {
-        _id: "123",
-        userName: "username",
-        avatar:
-          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-        content:
-          "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-        date: "15th May",
-        deadline: "1st Sep",
-        comments: [
-          {
-            _id: 1,
-            content: "come find me am dwelling in this fan shape hole of fame",
-            replies: [
-              { _id: 1, content: "What you said is not true Sir" },
-              { _id: 2, content: "And what do you know about being true" }
-            ]
-          },
-          {
-            _id: 2,
-            content: "another comment to check the sanity of reply input",
-            replies: []
-          }
-        ],
-        commentToggler: false
-      },
-      {
-        _id: "123",
-        userName: "username",
-        avatar:
-          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-        content:
-          "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-        date: "15th May",
-        deadline: "1st Sep"
-      },
-      {
-        _id: "123",
-        userName: "username",
-        avatar:
-          "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-        content:
-          "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-        date: "15th May",
-        deadline: "1st Sep"
-      }
-    ],
+    listData: [],
+
     commentValue: "",
     replyValue: ""
+  };
+
+  componentDidMount = async () => {
+    const id = this.props.courseId;
+    const { data: listData } = await getAnnouncementById(id);
+    this.setState({ listData });
   };
 
   handleCommentToggle = itemId => {

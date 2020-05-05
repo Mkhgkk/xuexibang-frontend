@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import ClassCard from "./ClassCard";
+import { getAdminCourses } from "../../../services/courseService";
 
 class ClassList extends Component {
+  state = {
+    courses: []
+  };
+
+  componentDidMount = async () => {
+    const { data: courses } = await getAdminCourses();
+    this.setState({ courses });
+  };
   render() {
+    const { courses } = this.state;
     return (
       <div style={{ overflow: "scroll", height: "80vh" }}>
-        <ClassCard />
-        <ClassCard />
-        <ClassCard />
-        <ClassCard />
-        <ClassCard />
-        <ClassCard />
-        <ClassCard />
-        <ClassCard />
+        {courses.map(course => (
+          <ClassCard course={course} />
+        ))}
       </div>
     );
   }

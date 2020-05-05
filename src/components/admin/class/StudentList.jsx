@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Avatar, Tooltip, Space } from "antd";
 import { MessageOutlined, StarFilled } from "@ant-design/icons";
 
-const StudentList = ({ student }) => {
+const StudentList = ({ student, admin }) => {
   return (
     <Row style={{ marginBottom: "1em" }}>
       <Col span={6}>
@@ -15,7 +15,7 @@ const StudentList = ({ student }) => {
           alignItems: "center"
         }}
       >
-        {student.name}
+        {student.userName}
       </Col>
       <Col
         span={6}
@@ -26,7 +26,7 @@ const StudentList = ({ student }) => {
         }}
       >
         <Space size="small">
-          {student.manage && (
+          {admin.includes(student._id) && (
             <Tooltip title="班长">
               <StarFilled style={{ fontSize: "1.3em" }} />
             </Tooltip>

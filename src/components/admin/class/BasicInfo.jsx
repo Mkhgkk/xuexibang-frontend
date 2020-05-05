@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Descriptions, Button } from "antd";
 import { TeamOutlined } from "@ant-design/icons";
 import ClassmateDrawer from "./ClassmateDrawer";
+import { getUniversity } from "../../../services/universityService";
+import { getMajor } from "../../../services/majorService";
+import { getStudent } from "../../../services/courseService";
 
 const inputStyle = {
   border: "none",
@@ -10,112 +13,116 @@ const inputStyle = {
 };
 
 class BasicInfo extends Component {
-  state = {
-    viewClassMate: false,
-    data: {
-      university: "Wuhan university",
-      major: "Software Engineering",
-      classWeek: "1-16 week",
-      semester: "2020 Spring",
-      professor: "Mr.An",
-      classmate: 24,
-      classNumber: "123456",
-      QQnumber: "12345",
-      classTime: "Monday 09:00-11:00",
-      classRoom: "Fengyuan3 201",
-      note: ""
+  constructor(props) {
+    super(props);
+    this.state = {
+      viewClassMate: false,
+      university: "",
+      major: "",
+      students: []
+    };
+  }
+
+  componentDidUpdate = async () => {
+    const { course } = this.props;
+    if (
+      this.state.university._id !== course.university ||
+      this.state.major._id !== course.major
+    ) {
+      const { data: university } = await getUniversity(course.university);
+      const { data: major } = await getMajor(course.major);
+      const { data: students } = await getStudent(course._id);
+      this.setState({
+        university,
+        major,
+        students
+      });
     }
   };
 
-  handleChange = ({ currentTarget: input }) => {
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
-    this.setState({ data });
-  };
-
-  handleSubmit = () => {
-    this.props.handleEdit();
-  };
-
-  showDrawer = () => {
+  toggleDrawer = () => {
     this.setState({
-      viewClassMate: true
+      viewClassMate: !this.state.viewClassMate
     });
   };
 
-  onClose = () => {
-    this.setState({
-      viewClassMate: false
-    });
-  };
+  // onClose = () => {
+  //   this.setState({
+  //     viewClassMate: false
+  //   });
+  // };
 
   render() {
-    const { data, viewClassMate } = this.state;
-    const { editMode } = this.props;
+    const { viewClassMate, university, major, students } = this.state;
+    const { editMode, course, onChange, onSubmit } = this.props;
+
     return (
       <div style={{ overflow: "scroll", height: "60vh", paddingTop: "1em" }}>
         <Descriptions bordered size="middle" column={2}>
           <Descriptions.Item label="University">
-            {data.university}
+            {university.name}
           </Descriptions.Item>
-          <Descriptions.Item label="Major">{data.major}</Descriptions.Item>
+          <Descriptions.Item label="Major">{major.name}</Descriptions.Item>
 
           <Descriptions.Item label="Class Week">
             {editMode ? (
               <input
                 style={inputStyle}
-                value={data.classWeek}
-                name="classWeek"
-                onChange={this.handleChange}
+                value={course.weeks}
+                name="weeks"
+                onChange={onChange}
               />
             ) : (
-              data.classWeek
+              course.weeks
             )}
           </Descriptions.Item>
           <Descriptions.Item label="Semester">
-            {data.semester}
+            {course.semester}
           </Descriptions.Item>
           <Descriptions.Item label="Professor">
             {editMode ? (
               <input
                 style={inputStyle}
-                value={data.professor}
-                name="professor"
-                onChange={this.handleChange}
+                value={course.laoshi}
+                name="laoshi"
+                onChange={onChange}
               />
             ) : (
-              data.professor
+              course.laoshi
             )}
           </Descriptions.Item>
           <Descriptions.Item label="Classmate">
-            <Button onClick={this.showDrawer} disabled={editMode}>
+            <Button onClick={this.toggleDrawer} disabled={editMode}>
               <TeamOutlined />
-              24
+              {students.length}
             </Button>
           </Descriptions.Item>
-          <Descriptions.Item label="Class Number">123456</Descriptions.Item>
+          <Descriptions.Item label="Class Number">
+            {course.number}
+          </Descriptions.Item>
           <Descriptions.Item label="QQ number">
             {editMode ? (
               <input
+                type="stringfclas"
                 style={inputStyle}
-                value={data.QQnumber}
-                name="QQnumber"
-                onChange={this.handleChange}
+                value={course.qqNumber}
+                name="qqNumber"
+                onChange={onChange}
               />
             ) : (
-              data.QQnumber
+              course.qqNumber
             )}
           </Descriptions.Item>
           <Descriptions.Item label="Class time">
             {editMode ? (
               <input
                 style={inputStyle}
-                value={data.classTime}
-                name="classTime"
-                onChange={this.handleChange}
+                value={course.time}
+                name="time"
+                onChange={onChange}
               />
             ) : (
-              data.classTime
+              course.time
             )}
           </Descriptions.Item>
 
@@ -123,12 +130,12 @@ class BasicInfo extends Component {
             {editMode ? (
               <input
                 style={inputStyle}
-                value={data.classRoom}
-                name="classRoom"
-                onChange={this.handleChange}
+                value={course.classroom}
+                name="classroom"
+                onChange={onChange}
               />
             ) : (
-              data.classRoom
+              course.classroom
             )}
           </Descriptions.Item>
 
@@ -136,26 +143,32 @@ class BasicInfo extends Component {
             {editMode ? (
               <textarea
                 style={inputStyle}
-                value={data.note}
+                value={course.notes}
                 className="classDetailTextArea"
-                name="note"
-                onChange={this.handleChange}
+                name="notes"
+                onChange={onChange}
               />
             ) : (
-              data.note
+              course.notes
             )}
           </Descriptions.Item>
         </Descriptions>
         {editMode && (
           <Button
             type="primary"
-            onClick={this.handleSubmit}
+            onClick={onSubmit}
             style={{ float: "right", marginTop: "2em" }}
           >
             Save
           </Button>
         )}
-        <ClassmateDrawer visible={viewClassMate} onClose={this.onClose} />
+        <ClassmateDrawer
+          visible={viewClassMate}
+          onClose={this.toggleDrawer}
+          students={students}
+          courseName={course.name}
+          admin={course.admin}
+        />
       </div>
     );
   }

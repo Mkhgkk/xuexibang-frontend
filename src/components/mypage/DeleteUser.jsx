@@ -27,7 +27,7 @@ class DeleteUser extends Component {
     try {
       await userSerivce.deleteUser(email, password);
       logout();
-      window.location = "/";
+      window.location = "/login";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         message.error(ex.response.data);

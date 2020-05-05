@@ -6,6 +6,7 @@ import {
   SettingOutlined
 } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
+import auth from "../services/authService";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -13,6 +14,7 @@ const { SubMenu } = Menu;
 class SideBar extends Component {
   render() {
     const path = this.props.location.pathname;
+    const user = auth.getCurrentUser();
     return (
       <Sider
         theme="light"
@@ -69,27 +71,28 @@ class SideBar extends Component {
               </NavLink>
             </Menu.Item>
           </SubMenu>
-
-          <SubMenu
-            key="admin"
-            title={
-              <span>
-                <SettingOutlined />
-                <span>Admin</span>
-              </span>
-            }
-          >
-            <Menu.Item key="/dashboard/admin/classes">
-              <NavLink to="/dashboard/admin/classes">
-                <span>Classes</span>
-              </NavLink>
-            </Menu.Item>
-            <Menu.Item key="/dashboard/admin/create">
-              <NavLink to="/dashboard/admin/create">
-                <span>Create Class</span>
-              </NavLink>
-            </Menu.Item>
-          </SubMenu>
+          {user.isAdmin && (
+            <SubMenu
+              key="admin"
+              title={
+                <span>
+                  <SettingOutlined />
+                  <span>Admin</span>
+                </span>
+              }
+            >
+              <Menu.Item key="/dashboard/admin/classes">
+                <NavLink to="/dashboard/admin/classes">
+                  <span>Classes</span>
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item key="/dashboard/admin/create">
+                <NavLink to="/dashboard/admin/create">
+                  <span>Create Class</span>
+                </NavLink>
+              </Menu.Item>
+            </SubMenu>
+          )}
         </Menu>
       </Sider>
     );

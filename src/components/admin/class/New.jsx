@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   Drawer,
   Form,
@@ -10,26 +9,32 @@ import {
   DatePicker,
   message
 } from "antd";
+import { newFeed } from "../../../services/feedService";
 
 class New extends Component {
   state = {
-    data: {
-      date: "",
-      content: "",
-      deadline: ""
+    content: "",
+    deadline: ""
+  };
+
+  onSubmitAnnounce = async e => {
+    e.preventDefault();
+    const { course } = this.props;
+
+    const feed = {
+      type: "announcement",
+      course: course._id,
+      content: this.state.content,
+      deadline: this.state.deadline.toJSON()
+    };
+    try {
+      await newFeed(feed);
+      this.success();
+      this.props.onClose();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
     }
-  };
-
-  onChange = ({ currentTarget: input }) => {
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
-    this.setState({ data });
-  };
-
-  onSubmitAnnounce = value => {
-    console.log("onOk: ", value);
-    this.success();
-    this.props.onClose();
   };
 
   onSubmitHomework = value => {
@@ -43,7 +48,7 @@ class New extends Component {
   };
 
   render() {
-    const { onClose, visible, mode } = this.props;
+    const { onClose, visible, mode, course } = this.props;
     return (
       <div>
         <Drawer
@@ -80,7 +85,9 @@ class New extends Component {
           }
         >
           <Form layout="vertical" hideRequiredMark>
-            <p style={{ fontWeight: 600 }}>线性代数 123456</p>
+            <p style={{ fontWeight: 600 }}>
+              {course.name} {course.number}
+            </p>
 
             <Row gutter={16}>
               <Col span={24}>
@@ -96,7 +103,9 @@ class New extends Component {
                 >
                   <Input.TextArea
                     name="content"
-                    onChange={this.onChange}
+                    onChange={e => {
+                      this.setState({ content: e.target.value });
+                    }}
                     rows={8}
                     placeholder="please enter description"
                   />
@@ -119,7 +128,9 @@ class New extends Component {
                   <DatePicker
                     name="deadline"
                     showTime
-                    onChange={this.onChange}
+                    onChange={e => {
+                      this.setState({ deadline: e });
+                    }}
                   />
                 </Form.Item>
               </Col>

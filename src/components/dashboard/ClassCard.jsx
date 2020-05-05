@@ -1,50 +1,35 @@
 import React, { Component } from "react";
-import { Card, Avatar, Popconfirm, message } from "antd";
-import {
-  EditOutlined,
-  SettingOutlined,
-  QuestionCircleOutlined,
-  DeleteOutlined
-} from "@ant-design/icons";
+import { Card } from "antd";
+import { getStudent } from "../../services/courseService";
 
 class Class extends Component {
-  state = {};
+  state = { students: [] };
+
+  componentDidMount = async () => {
+    const { course } = this.props;
+
+    const { data: students } = await getStudent(course._id);
+    this.setState({ students });
+  };
 
   render() {
     const { Meta } = Card;
-    const { editMode, onDelete } = this.props;
+    const { course } = this.props;
+    const { students } = this.state;
 
     return (
       <Card
         hoverable="true"
         style={{ width: 300 }}
-        cover={
-          <img
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-          />
-        }
-        // actions={[
-        //   <SettingOutlined key="setting" />,
-        //   <EditOutlined key="edit" />,
-        //   <DeleteOutlined key="delete" />
-        // ]}
-
-        actions={
-          editMode && [<DeleteOutlined key="delete" onClick={onDelete} />]
-        }
+        cover={<img alt="thumbnail" src={course.thumbnail} />}
       >
         <Meta
-          //   avatar={
-          //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-          //   }
-          title="Data Structure"
+          title={course.name}
           description={[
-            <div>Teacher' name: prof. Schultz</div>,
-            <div>Number of students: 67</div>,
-            <div> </div>,
-            <div>Classroom: B302</div>,
-            <div>QQ group: 24356456445</div>
+            <div>Teacher' name: {course.laoshi}</div>,
+            <div>Number of students: {students.length}</div>,
+            <div>Classroom: {course.classroom}</div>,
+            <div>QQ group: {course.qqNumber}</div>
           ]}
         />
       </Card>

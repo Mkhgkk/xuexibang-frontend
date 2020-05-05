@@ -2,16 +2,16 @@ import React from "react";
 import { Card } from "antd";
 import { Link } from "react-router-dom";
 
-const ClassCard = props => {
+const ClassCard = ({ course }) => {
   return (
-    <Link to="/dashboard/admin/classes/123">
+    <Link to={`/dashboard/admin/classes/${course._id}`}>
       <Card
-        title="线性代数"
+        title={course.name}
         extra={<a href="#">View</a>}
         style={{ width: 280, marginBottom: "1em", opacity: "0.8" }}
         size="small"
       >
-        <p>Monday 9:00-11:00</p>
+        <p>{course.time}</p>
       </Card>
     </Link>
   );

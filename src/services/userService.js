@@ -17,6 +17,10 @@ export function getUserDetail() {
   return http.get(apiEndPoint + "/me");
 }
 
+export function getAuthor(id) {
+  return http.get(`${apiEndPoint}/user/${id}`);
+}
+
 export function changePassword(email, password, newPassword) {
   return http.put(apiEndPoint + "/password", {
     email,

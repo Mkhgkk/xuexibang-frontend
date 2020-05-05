@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Card, Button } from "antd";
+import { Card, Button, message } from "antd";
+
 import BasicInfo from "./BasicInfo";
 import Notification from "./Notification";
 import Homework from "./Homework";
 import New from "./New";
 import { PlusOutlined } from "@ant-design/icons";
+import * as courseService from "../../../services/courseService";
 
 const tabList = [
   {
@@ -27,7 +29,41 @@ class ClassDetail extends Component {
     noTitleKey: "app",
     newModal: false,
     newMode: "",
-    infoEditMode: false
+    infoEditMode: false,
+    course: {}
+  };
+
+  componentDidMount = async () => {
+    const id = this.props.match.params.id;
+    const { data: course } = await courseService.getCourse(id);
+    this.setState({ course });
+  };
+
+  componentDidUpdate = async () => {
+    if (this.state.course._id !== this.props.match.params.id) {
+      const id = this.props.match.params.id;
+      const { data: course } = await courseService.getCourse(id);
+      this.setState({ course });
+    }
+  };
+
+  handleChange = ({ currentTarget: input }) => {
+    const course = { ...this.state.course };
+    course[input.name] = input.value;
+    this.setState({ course });
+  };
+
+  handleSubmit = async e => {
+    e.preventDefault();
+    const { course } = this.state;
+
+    try {
+      await courseService.saveCourse(course);
+      this.handleEdit();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
+    }
   };
 
   onTabChange = (key, type) => {
@@ -57,21 +93,27 @@ class ClassDetail extends Component {
   };
 
   render() {
-    const { key, newModal, infoEditMode, newMode } = this.state;
+    const { key, newModal, infoEditMode, newMode, course } = this.state;
     const contentList = {
-      tab1: <BasicInfo editMode={infoEditMode} handleEdit={this.handleEdit} />,
-      tab2: <Notification />,
+      tab1: (
+        <BasicInfo
+          editMode={infoEditMode}
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+          course={course}
+        />
+      ),
+      tab2: <Notification courseId={course._id} />,
       tab3: <Homework />
     };
     return (
       <div>
         <Card
           style={{ width: "100%" }}
-          title="线性代数"
+          title={course.name}
           extra={
             key === "tab1" ? (
               <Button onClick={this.handleEdit}>
-                {" "}
                 {infoEditMode ? "Cancel" : "Edit"}
               </Button>
             ) : key === "tab2" ? (
@@ -106,7 +148,12 @@ class ClassDetail extends Component {
         >
           {contentList[key]}
         </Card>
-        <New visible={newModal} onClose={this.onClose} mode={newMode} />
+        <New
+          visible={newModal}
+          onClose={this.onClose}
+          mode={newMode}
+          course={course}
+        />
       </div>
     );
   }

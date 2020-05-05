@@ -6,6 +6,7 @@ import Authpart from "../components/mypage/Authpart";
 import * as userService from "../services/userService";
 import { getUniversity } from "../services/universityService";
 import { getMajor } from "../services/majorService";
+
 const { Content } = Layout;
 
 class Mypage extends Component {

@@ -3,14 +3,21 @@ import Class from "./ClassCard";
 import { Row, Col, Form, Input, Button } from "antd";
 import { Link } from "react-router-dom";
 import ClassList from "../information/ClassList";
+import { getMyCourses } from "../../services/courseService";
 
 const { Search } = Input;
 
 class Classes extends Component {
   state = {
-    keys: [1, 2, 3, 4, 5],
     editMode: false,
-    classNumber: ""
+    classNumber: "",
+    myCourses: []
+  };
+
+  componentDidMount = async () => {
+    const { data: myCourses } = await getMyCourses();
+    this.setState({ myCourses });
+    console.log(this.state.myCourses);
   };
 
   handleEdit = () => {
@@ -19,12 +26,8 @@ class Classes extends Component {
     });
   };
 
-  handleDelete = () => {
-    console.log("handleDelete");
-  };
-
   render() {
-    const { editMode } = this.state;
+    const { editMode, myCourses } = this.state;
 
     return (
       <React.Fragment>
@@ -32,7 +35,7 @@ class Classes extends Component {
           onClick={this.handleEdit}
           style={{ position: "absolute", right: 20 }}
         >
-          {editMode ? "Save" : "Edit"}
+          {editMode ? "Save" : "Add courses"}
         </Button>
         <h1 style={{ textAlign: "center", marginBottom: "2em" }}>My Classes</h1>
 
@@ -62,14 +65,10 @@ class Classes extends Component {
           </div>
         )}
         <Row gutter={[32, 24]}>
-          {this.state.keys.map(v => (
+          {myCourses.map(v => (
             <Col span={6}>
-              <Link to={`/dashboard/classes/${v.key}`}>
-                <Class
-                  key={v.key}
-                  editMode={editMode}
-                  onDelete={this.handleDelete}
-                />
+              <Link to={`/dashboard/classes/${v._id}`}>
+                <Class key={v._id} course={v} />
               </Link>
             </Col>
           ))}

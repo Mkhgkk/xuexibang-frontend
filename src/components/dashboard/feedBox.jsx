@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Skeleton, Card, Avatar, Tag } from "antd";
+import { Card } from "antd";
 
 class FeedBox extends Component {
   state = {};
