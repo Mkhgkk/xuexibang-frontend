@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Descriptions, Button } from "antd";
 import { TeamOutlined } from "@ant-design/icons";
 import ClassmateDrawer from "./ClassmateDrawer";
-import { getUniversity } from "../../../services/universityService";
-import { getMajor } from "../../../services/majorService";
 import { getStudent } from "../../../services/courseService";
 
 const inputStyle = {
@@ -17,24 +15,16 @@ class BasicInfo extends Component {
     super(props);
     this.state = {
       viewClassMate: false,
-      university: "",
-      major: "",
       students: []
     };
   }
 
-  componentDidUpdate = async () => {
+  componentDidUpdate = async prevProps => {
     const { course } = this.props;
-    if (
-      this.state.university._id !== course.university ||
-      this.state.major._id !== course.major
-    ) {
-      const { data: university } = await getUniversity(course.university);
-      const { data: major } = await getMajor(course.major);
+
+    if (course._id !== prevProps.course._id) {
       const { data: students } = await getStudent(course._id);
       this.setState({
-        university,
-        major,
         students
       });
     }
@@ -53,16 +43,18 @@ class BasicInfo extends Component {
   // };
 
   render() {
-    const { viewClassMate, university, major, students } = this.state;
+    const { viewClassMate, students } = this.state;
     const { editMode, course, onChange, onSubmit } = this.props;
 
     return (
       <div style={{ overflow: "scroll", height: "60vh", paddingTop: "1em" }}>
         <Descriptions bordered size="middle" column={2}>
           <Descriptions.Item label="University">
-            {university.name}
+            {course.university && course.university.name}
           </Descriptions.Item>
-          <Descriptions.Item label="Major">{major.name}</Descriptions.Item>
+          <Descriptions.Item label="Major">
+            {course.major && course.major.name}
+          </Descriptions.Item>
 
           <Descriptions.Item label="Class Week">
             {editMode ? (

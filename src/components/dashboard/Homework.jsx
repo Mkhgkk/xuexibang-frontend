@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import { Row, Col, Divider, message } from "antd";
 import HomeworkCard from "./HomeworkCard";
+import { getHomework } from "../../services/feedService";
 
 class Homework extends Component {
   state = {
-    keys: [1, 2, 3, 4, 5],
+    homework: []
   };
 
-  handleDelete = (value) => {
-    const keys = [...this.state.keys];
-    keys.pop();
-    this.setState({ keys });
-    message.success("Class has been deleted!");
+  componentDidMount = async () => {
+    const { data: homework } = await getHomework();
+    this.setState(homework);
   };
 
   render() {
+    const { homework } = this.state;
     return (
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>My Homework</h1>
@@ -27,13 +27,9 @@ class Homework extends Component {
         </Divider>
 
         <Row gutter={[32, 24]}>
-          {this.state.keys.map((v) => (
+          {homework.map(v => (
             <Col span={6}>
-              <HomeworkCard
-                type={1}
-                onDelete={() => this.handleDelete(v.key)}
-                key={v.key}
-              />
+              <HomeworkCard type={1} key={v._id} homework={v} />
             </Col>
           ))}
         </Row>

@@ -67,6 +67,7 @@ class Mypage extends Component {
 
   render() {
     const { editMode, user, university, major } = this.state;
+    console.log(user);
     return (
       <Layout>
         <Content

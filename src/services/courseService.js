@@ -31,7 +31,15 @@ export function newCourse(course) {
 }
 
 export function saveCourse(course) {
-  return http.put(apiEndPoint + "/" + course._id, course);
+  return http.put(apiEndPoint + "/" + course._id, {
+    laoshi: course.laoshi,
+    weeks: course.weeks,
+    time: course.time,
+    classroom: course.classroom,
+    qqNumber: course.qqNumber,
+    notes: course.notes,
+    admin: course.admin
+  });
 }
 
 export function deleteCourse(id) {

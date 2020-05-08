@@ -81,7 +81,6 @@ class ClassesForm extends Component {
             onChange={e => this.setState({ classNumber: e.target.value })}
             onSearch={this.onSearch}
             enterButton
-            on
           />
         </Form>
         {courses ? (
