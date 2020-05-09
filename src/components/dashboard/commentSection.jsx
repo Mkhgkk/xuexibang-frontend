@@ -22,6 +22,7 @@ class CommentSection extends Component {
 
   render() {
     const { isReply } = this.state;
+    const { currentUser } = this.props;
 
     return (
       <Comment
@@ -55,6 +56,7 @@ class CommentSection extends Component {
             submitButtonDisabled={this.props.submitButtonDisabled}
             onReplyChange={this.props.onReplyChange}
             onReplySubmit={this.props.onReplySubmit}
+            currentUser={currentUser}
           />
         )}
         {this.props.children}

@@ -56,12 +56,7 @@ class CommentBox extends Component {
     const { Editor } = this;
     return (
       <Comment
-        avatar={
-          <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
-          />
-        }
+        avatar={<Avatar src={this.props.currentUser.avatar} alt="Han Solo" />}
         content={<Editor />}
       />
     );

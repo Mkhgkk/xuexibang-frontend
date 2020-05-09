@@ -8,30 +8,35 @@ import Information from "./routes/Information";
 import Dashboard from "./routes/Dashboard";
 import Mypage from "./routes/Mypage";
 import { getCurrentUser } from "./services/authService";
+import UserContext from "./context/userContext";
+import { getUserDetail } from "./services/userService";
 
 class App extends Component {
   state = {};
 
-  componentDidMount() {
+  async componentDidMount() {
     const auth = getCurrentUser();
-    this.setState({ auth });
+    const { data: user } = await getUserDetail();
+    this.setState({ auth, user });
   }
 
   render() {
     const { auth } = this.state;
     return (
-      <div className="App">
-        <NavBar auth={auth} />
-        <Switch>
-          <Route path="/userDetail" component={Information} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/register" component={RegisterPage} />
-          <Route path="/mypage" component={Mypage} />
+      <UserContext.Provider value={{ currentUser: this.state.user }}>
+        <div className="App">
+          <NavBar auth={auth} />
+          <Switch>
+            <Route path="/userDetail" component={Information} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/register" component={RegisterPage} />
+            <Route path="/mypage" component={Mypage} />
 
-          <Redirect from="/" to="/dashboard/feeds" />
-        </Switch>
-      </div>
+            <Redirect from="/" to="/dashboard/feeds" />
+          </Switch>
+        </div>
+      </UserContext.Provider>
     );
   }
 }
