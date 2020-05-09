@@ -8,19 +8,33 @@ import {
 import HomeworkList from "./HomeworkList";
 import ClassmateDrawer from "../admin/class/ClassmateDrawer";
 import * as courseService from "../../services/courseService";
+import * as feedService from "../../services/feedService";
+import * as userSerivce from "../../services/userService";
 
 class ClassDetails extends Component {
   state = {
     viewClassMate: false,
     course: {},
-    students: []
+    students: [],
+    homework: [],
+    announcement: [],
+    myCourses: []
   };
 
   componentDidMount = async () => {
     const id = this.props.match.params.id;
+    const { data: user } = await userSerivce.getUserDetail();
     const { data: course } = await courseService.getCourse(id);
-    const { data: students } = await courseService.getStudent(course._id);
-    this.setState({ course, students });
+    const { data: students } = await courseService.getStudent(id);
+    const { data: homework } = await feedService.getHomeworkById(id);
+    const { data: announcement } = await feedService.getAnnouncementById(id);
+    this.setState({
+      course,
+      students,
+      homework,
+      announcement,
+      myCourses: user.courses
+    });
   };
 
   toggleDrawer = () => {
@@ -29,14 +43,29 @@ class ClassDetails extends Component {
     });
   };
 
-  handleDelete = () => {
+  handleDelete = async () => {
+    let myCourses = [...this.state.myCourses];
+    myCourses = myCourses.filter(x => x !== this.state.course._id);
+    this.setState({ myCourses });
+    try {
+      await userSerivce.changeUserInfo({ courses: myCourses });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
+    }
     this.props.history.replace("/dashboard/classes");
     message.success("Class has been deleted!");
   };
 
   render() {
     const { Meta } = Card;
-    const { course, students, viewClassMate } = this.state;
+    const {
+      course,
+      students,
+      viewClassMate,
+      homework,
+      announcement
+    } = this.state;
     return (
       <div
         style={{
@@ -51,7 +80,7 @@ class ClassDetails extends Component {
           actions={[
             <div onClick={this.toggleDrawer}>
               <TeamOutlined key="share" style={{ marginRight: "1em" }} />
-              {this.state.students.length}
+              {students.length}
             </div>,
             <Popconfirm
               title="Are you sure you want to delete this?"
@@ -79,14 +108,14 @@ class ClassDetails extends Component {
               >
                 Homework
               </Divider>,
-              <HomeworkList type={1} courseId={course._id} />,
+              <HomeworkList type={1} courseId={course._id} data={homework} />,
               <Divider
                 orientation="center"
                 style={{ color: "#333", fontWeight: "normal" }}
               >
                 Announcements
               </Divider>,
-              <HomeworkList />
+              <HomeworkList courseId={course._id} data={announcement} />
             ]}
           />
         </Card>

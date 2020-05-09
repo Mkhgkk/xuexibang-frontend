@@ -1,54 +1,19 @@
 import React, { Component } from "react";
-import {
-  Drawer,
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  DatePicker,
-  message
-} from "antd";
-import { newFeed } from "../../../services/feedService";
+import { Drawer, Form, Button, Col, Row, Input, DatePicker } from "antd";
 
 class New extends Component {
-  state = {
-    content: "",
-    deadline: ""
-  };
-
-  onSubmitAnnounce = async e => {
-    e.preventDefault();
-    const { course } = this.props;
-
-    const feed = {
-      type: "announcement",
-      course: course._id,
-      content: this.state.content,
-      deadline: this.state.deadline.toJSON()
-    };
-    try {
-      await newFeed(feed);
-      this.success();
-      this.props.onClose();
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400)
-        message.error(ex.response.data);
-    }
-  };
-
-  onSubmitHomework = value => {
-    console.log("onOk: ", value);
-    this.success();
-    this.props.onClose();
-  };
-
-  success = () => {
-    message.success(`${this.props.mode} has been posted.`);
-  };
+  state = {};
 
   render() {
-    const { onClose, visible, mode, course } = this.props;
+    const {
+      onClose,
+      visible,
+      mode,
+      course,
+      onSubmitAnnounce,
+      onSubmitHomework,
+      onChange
+    } = this.props;
     return (
       <div>
         <Drawer
@@ -73,9 +38,7 @@ class New extends Component {
               </Button>
               <Button
                 onClick={
-                  mode === "Announcement"
-                    ? this.onSubmitAnnounce
-                    : this.onSubmitHomework
+                  mode === "Announcement" ? onSubmitAnnounce : onSubmitHomework
                 }
                 type="primary"
               >
@@ -85,9 +48,7 @@ class New extends Component {
           }
         >
           <Form layout="vertical" hideRequiredMark>
-            <p style={{ fontWeight: 600 }}>
-              {course.name} {course.number}
-            </p>
+            <p style={{ fontWeight: 600 }}>{course.name}</p>
 
             <Row gutter={16}>
               <Col span={24}>
@@ -100,12 +61,14 @@ class New extends Component {
                       message: "please enter description"
                     }
                   ]}
+                  initialValues={{
+                    ["content"]: null,
+                    ["deadline"]: null
+                  }}
                 >
                   <Input.TextArea
                     name="content"
-                    onChange={e => {
-                      this.setState({ content: e.target.value });
-                    }}
+                    onChange={e => onChange("content", e.target.value)}
                     rows={8}
                     placeholder="please enter description"
                   />
@@ -113,27 +76,25 @@ class New extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
-                <Form.Item
-                  name="deadline"
-                  label={
-                    mode === "Announcement" ? "Deadline (optional)" : "Deadline"
-                  }
-                  rules={[
-                    {
-                      required: false
-                    }
-                  ]}
-                >
-                  <DatePicker
+              {mode === "Homework" && (
+                <Col span={24}>
+                  <Form.Item
                     name="deadline"
-                    showTime
-                    onChange={e => {
-                      this.setState({ deadline: e });
-                    }}
-                  />
-                </Form.Item>
-              </Col>
+                    label="Deadline"
+                    rules={[
+                      {
+                        required: false
+                      }
+                    ]}
+                  >
+                    <DatePicker
+                      name="deadline"
+                      showTime
+                      onChange={e => onChange("deadline", e)}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
             </Row>
           </Form>
         </Drawer>

@@ -1,19 +1,10 @@
 import React, { Component } from "react";
 import ListCard from "./ListCard";
-import { getAnnouncementById } from "../../../services/feedService";
 
 class Notification extends Component {
   state = {
-    listData: [],
-
     commentValue: "",
     replyValue: ""
-  };
-
-  componentDidMount = async () => {
-    const id = this.props.courseId;
-    const { data: listData } = await getAnnouncementById(id);
-    this.setState({ listData });
   };
 
   handleCommentToggle = itemId => {
@@ -61,11 +52,13 @@ class Notification extends Component {
   };
 
   render() {
+    const { auth, listData, onOpenEdit } = this.props;
     return (
       <div style={{ overflow: "scroll", height: "60vh" }}>
         <ListCard
-          listData={this.state.listData}
+          listData={listData}
           mode="Announcement"
+          auth={auth}
           commentValue={this.state.commentValue}
           replyValue={this.state.replyValue}
           handleCommentSubmit={this.handleCommentSubmit}
@@ -73,6 +66,7 @@ class Notification extends Component {
           handleCommentChange={this.handleCommentChange}
           handleReplyChange={this.handleReplyChange}
           onCommentToggle={this.handleCommentToggle}
+          onOpenEdit={onOpenEdit}
         />
       </div>
     );

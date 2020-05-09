@@ -1,20 +1,15 @@
 import React, { Component } from "react";
 import { List, Avatar } from "antd";
 import { MessageOutlined } from "@ant-design/icons";
-import Edit from "./Edit";
 import CommentBox from "./../../dashboard/commentBox";
 import CommentSection from "./../../dashboard/commentSection";
+import moment from "moment";
 
 class ListCard extends Component {
   state = {
     viewEdit: false,
-    box: false
-  };
-
-  onClose = () => {
-    this.setState({
-      viewEdit: false
-    });
+    box: false,
+    data: this.props.listData
   };
 
   handleCommentClick = itemId => {
@@ -23,21 +18,21 @@ class ListCard extends Component {
   };
 
   render() {
-    const { listData, mode } = this.props;
-    const { viewEdit } = this.state;
+    const { mode, auth, onOpenEdit } = this.props;
+    const { data } = this.state;
 
     return (
       <>
         <List
           itemLayout="vertical"
           size="large"
-          dataSource={listData}
+          dataSource={data}
           renderItem={item => (
             <List.Item key={item._id}>
               <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={item.userName}
-                description={item.date}
+                avatar={<Avatar src={item.postedBy && item.postedBy.avatar} />}
+                title={item.postedBy && item.postedBy.userName}
+                description={moment(item.datePosted).calendar()}
               />
               <div>
                 <di>{item.content}</di>
@@ -50,23 +45,33 @@ class ListCard extends Component {
                       </div>
                       <em className="ant-list-item-action-split"></em>
                     </li>
-                    <li>
-                      <div>
-                        {item.deadline && <p>Deadline: {item.deadline}</p>}
-                      </div>
-                      <em className="ant-list-item-action-split"></em>
-                    </li>
-                    <li>
-                      <div>
-                        <p
-                          onClick={() => {
-                            this.setState({ viewEdit: true });
-                          }}
-                        >
-                          Edit
-                        </p>
-                      </div>
-                    </li>
+                    {mode === "Homework" && (
+                      <li>
+                        <div>
+                          <p>
+                            Deadline:
+                            {moment(item.deadline)
+                              .add(0, "days")
+                              .calendar()}
+                          </p>
+                        </div>
+
+                        <em className="ant-list-item-action-split"></em>
+                      </li>
+                    )}
+                    {item.postedBy && item.postedBy._id === auth._id && (
+                      <li>
+                        <div>
+                          <p
+                            onClick={() => {
+                              onOpenEdit(item);
+                            }}
+                          >
+                            Edit
+                          </p>
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 </div>
 
@@ -108,12 +113,6 @@ class ListCard extends Component {
                   </div>
                 )}
               </div>
-              <Edit
-                visible={viewEdit}
-                mode={mode}
-                onClose={this.onClose}
-                data={item}
-              />
             </List.Item>
           )}
         />

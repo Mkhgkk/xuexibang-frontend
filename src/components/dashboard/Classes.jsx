@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Class from "./ClassCard";
-import { Row, Col, Form, Input, Button } from "antd";
+import { Row, Col, Form, Input, Button, message, Spin } from "antd";
 import { Link } from "react-router-dom";
 import ClassList from "../information/ClassList";
-import { getMyCourses } from "../../services/courseService";
+import { getMyCourses, getSearchedCourse } from "../../services/courseService";
+import * as userSerivce from "../../services/userService";
 
 const { Search } = Input;
 
@@ -11,13 +12,16 @@ class Classes extends Component {
   state = {
     editMode: false,
     classNumber: "",
-    myCourses: []
+    myCourses: [],
+    userCoursesId: [],
+    courses: null,
+    loading: false
   };
 
   componentDidMount = async () => {
+    const { data: user } = await userSerivce.getUserDetail();
     const { data: myCourses } = await getMyCourses();
-    this.setState({ myCourses });
-    console.log(this.state.myCourses);
+    this.setState({ myCourses, userCoursesId: user.courses });
   };
 
   handleEdit = () => {
@@ -26,8 +30,50 @@ class Classes extends Component {
     });
   };
 
+  addCourse = async courseId => {
+    const userCoursesId = [courseId, ...this.state.userCoursesId];
+    this.setState({ userCoursesId, loading: true });
+    try {
+      await userSerivce.changeUserInfo({ courses: userCoursesId });
+      const { data: myCourses } = await getMyCourses();
+      this.setState({ myCourses, loading: false });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
+      this.setState({ loading: false });
+    }
+  };
+
+  removeCourse = async courseId => {
+    let userCoursesId = [...this.state.userCoursesId];
+    userCoursesId = userCoursesId.filter(x => x !== courseId);
+    this.setState({ userCoursesId, loading: true });
+    try {
+      await userSerivce.changeUserInfo({ courses: userCoursesId });
+      const { data: myCourses } = await getMyCourses();
+      this.setState({ myCourses, loading: false });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
+      this.setState({ loading: false });
+    }
+  };
+
+  onSearch = async () => {
+    const { classNumber: number } = this.state;
+    this.setState({ loading: true });
+
+    try {
+      const { data: courses } = await getSearchedCourse(number);
+      this.setState({ courses, loading: false });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400)
+        message.error(ex.response.data);
+    }
+  };
+
   render() {
-    const { editMode, myCourses } = this.state;
+    const { editMode, myCourses, courses, userCoursesId, loading } = this.state;
 
     return (
       <React.Fragment>
@@ -57,22 +103,33 @@ class Classes extends Component {
 
               <Search
                 placeholder="Enter your class number"
-                onSearch={value => this.setState({ classNumber: value })}
+                onChange={e => this.setState({ classNumber: e.target.value })}
+                onSearch={this.onSearch}
                 enterButton
               />
             </Form>
-            {this.state.classNumber && <ClassList />}
+            {courses && (
+              <ClassList
+                addCourse={this.addCourse}
+                courses={courses}
+                userCourses={userCoursesId}
+                removeCourse={this.removeCourse}
+              />
+            )}
           </div>
         )}
-        <Row gutter={[32, 24]}>
-          {myCourses.map(v => (
-            <Col span={6}>
-              <Link to={`/dashboard/classes/${v._id}`}>
-                <Class key={v._id} course={v} />
-              </Link>
-            </Col>
-          ))}
-        </Row>
+
+        <Spin spinning={loading}>
+          <Row gutter={[32, 24]}>
+            {myCourses.map(v => (
+              <Col span={6}>
+                <Link to={`/dashboard/classes/${v._id}`}>
+                  <Class key={v._id} course={v} />
+                </Link>
+              </Col>
+            ))}
+          </Row>
+        </Spin>
       </React.Fragment>
     );
   }
