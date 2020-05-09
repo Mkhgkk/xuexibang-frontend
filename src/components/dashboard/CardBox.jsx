@@ -200,7 +200,7 @@ class CardBox extends Component {
                       alignItems: "center",
                     }}
                   >
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    <Avatar src={feed.postedBy.avatar} />
                     <div
                       style={{
                         marginLeft: "1em",
@@ -270,6 +270,7 @@ class CardBox extends Component {
                               onReplySubmit={() =>
                                 this.handleReplySubmit(feed._id, comment._id)
                               }
+                              postedBy={feed.postedBy}
                               currentUser={value.currentUser}
                             >
                               {/* reply loading spinner */}
@@ -284,6 +285,7 @@ class CardBox extends Component {
                                     <CommentSection
                                       key={reply._id}
                                       content={reply.content}
+                                      postedBy={reply.postedBy}
                                     />
                                   ))}
                             </CommentSection>

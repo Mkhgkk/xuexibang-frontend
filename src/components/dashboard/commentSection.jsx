@@ -32,12 +32,13 @@ class CommentSection extends Component {
 
   render() {
     const { isReply } = this.state;
+    const { postedBy } = this.props;
     const { currentUser } = this.props;
 
     return (
       <Comment
         actions={[this.checkCanReply()]}
-        author={<a>{this.props.postedBy.userName}</a>}
+        author={<a>{postedBy.userName}</a>}
         avatar={
           <Avatar
             src={this.props.postedBy.avatar}
