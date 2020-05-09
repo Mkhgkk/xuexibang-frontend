@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Comment, Avatar, Form, Button, Input } from "antd";
-// import moment from "moment";
 
 const { TextArea } = Input;
 
@@ -54,14 +53,10 @@ class ReplyBox extends Component {
 
   render() {
     const { Editor } = this;
+    const { currentUser } = this.props;
     return (
       <Comment
-        avatar={
-          <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
-          />
-        }
+        avatar={<Avatar src={currentUser.avatar} alt="Han Solo" />}
         content={<Editor />}
       />
     );
