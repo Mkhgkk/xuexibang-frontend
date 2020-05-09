@@ -10,11 +10,12 @@ class Homework extends Component {
 
   componentDidMount = async () => {
     const { data: homework } = await getHomework();
-    this.setState(homework);
+    this.setState({ homework });
   };
 
   render() {
     const { homework } = this.state;
+
     return (
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>My Homework</h1>

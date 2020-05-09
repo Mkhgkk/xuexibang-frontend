@@ -6,6 +6,7 @@ import { Route } from "react-router-dom";
 
 class AdminClass extends Component {
   render() {
+    const { auth } = this.props;
     return (
       <div>
         <h2 style={{ marginBottom: "1em" }}>List of classes I manage</h2>
@@ -17,6 +18,7 @@ class AdminClass extends Component {
             <Route
               path="/dashboard/admin/classes/:id"
               component={ClassDetail}
+              auth={auth}
             />
           </Col>
         </Row>

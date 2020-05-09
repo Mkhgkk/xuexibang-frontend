@@ -1,152 +1,96 @@
 import React, { Component } from "react";
-
-import {
-  Drawer,
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  DatePicker,
-  message
-} from "antd";
+import { Drawer, Form, Button, Col, Row, Input, DatePicker } from "antd";
+import moment from "moment";
 
 class Edit extends Component {
   state = {
-    data: {
-      date: "",
-      content: "",
-      deadline: ""
-    }
+    data: {}
   };
 
   componentDidMount = () => {
-    const data = {
-      date: this.props.data.date,
-      content: this.props.data.content,
-      deadline: this.props.data.deadline
-    };
-    this.setState({
-      data
-    });
+    this.setState({ data: this.props.data });
   };
-
-  onChangeTime = (value, dateString) => {
-    console.log("Selected Time: ", value);
-    console.log("Formatted Selected Time: ", dateString);
+  componentDidUpdate = prevProps => {
+    if (prevProps.data !== this.props.data) {
+      this.setState({ data: this.props.data });
+    }
   };
-
-  onChange = ({ currentTarget: input }) => {
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
-    this.setState({ data });
-  };
-
-  onSubmitAnnounce = value => {
-    console.log("onOk: ", value);
-    this.success();
-    this.props.onClose();
-  };
-
-  onSubmitHomework = value => {
-    console.log("onOk: ", value);
-    this.success();
-    this.props.onClose();
-  };
-
-  success = () => {
-    message.success(`${this.props.mode} has been changed.`);
-  };
-
   render() {
-    const { onClose, visible, mode } = this.props;
-    const { data } = this.state;
+    const {
+      onClose,
+      visible,
 
+      onChange,
+      onSubmitAnnounce,
+      onSubmitHomework
+    } = this.props;
+
+    const { data } = this.state;
     return (
       <div>
-        <Drawer
-          title={
-            mode === "Announcement" ? "Edit announcement" : "Edit homework"
-          }
-          width={600}
-          onClose={onClose}
-          visible={visible}
-          bodyStyle={{ paddingBottom: 80 }}
-          placement="left"
-          footer={
-            <div
-              style={{
-                textAlign: "right"
-              }}
-            >
-              <Button onClick={onClose} style={{ marginRight: 8 }}>
-                Cancel
-              </Button>
-              <Button
-                onClick={
-                  mode === "Announcement"
-                    ? this.onSubmitAnnounce
-                    : this.onSubmitHomework
-                }
-                type="primary"
+        {data && (
+          <Drawer
+            title={
+              data.type === "announcement"
+                ? "Edit announcement"
+                : "Edit homework"
+            }
+            width={600}
+            onClose={onClose}
+            visible={visible}
+            bodyStyle={{ paddingBottom: 80 }}
+            placement="left"
+            footer={
+              <div
+                style={{
+                  textAlign: "right"
+                }}
               >
-                Save
-              </Button>
-            </div>
-          }
-        >
-          <Form
-            layout="vertical"
-            hideRequiredMark
-            initialValues={{
-              ["description"]: data.content
-              // ["deadline"]: data.deadline
-            }}
+                <Button onClick={onClose} style={{ marginRight: 8 }}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={
+                    data.type === "announcement"
+                      ? onSubmitAnnounce
+                      : onSubmitHomework
+                  }
+                  type="primary"
+                >
+                  Save
+                </Button>
+              </div>
+            }
           >
-            <p style={{ fontWeight: 600 }}>线性代数 123456</p>
+            <p style={{ fontWeight: 600 }}>{data.course && data.course.name}</p>
 
             <Row gutter={16}>
               <Col span={24}>
-                <Form.Item
-                  name="description"
-                  label="Description"
-                  rules={[
-                    {
-                      required: true,
-                      message: "please enter description"
-                    }
-                  ]}
-                >
-                  <Input.TextArea
-                    name="content"
-                    onChange={this.onChange}
-                    rows={8}
-                    placeholder="please enter description"
-                  />
-                </Form.Item>
+                <p>Description</p>
+                <Input.TextArea
+                  value={data.content}
+                  name="content"
+                  onChange={e => onChange("content", e.target.value)}
+                  rows={8}
+                  placeholder="please enter description"
+                />
               </Col>
             </Row>
-            <Row>
-              <Col span={24}>
-                <Form.Item
-                  name="deadline"
-                  label="Deadline"
-                  rules={[
-                    {
-                      required: false
-                    }
-                  ]}
-                >
+            {data.type === "homework" && (
+              <Row>
+                <Col span={24} style={{ marginTop: "2em" }}>
+                  <p>Deadline</p>
                   <DatePicker
                     name="deadline"
                     showTime
-                    onChange={this.onChangeTime}
+                    onChange={e => onChange("deadline", e)}
+                    value={moment(data.deadline)}
                   />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </Drawer>
+                </Col>
+              </Row>
+            )}
+          </Drawer>
+        )}
       </div>
     );
   }
