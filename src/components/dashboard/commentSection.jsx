@@ -20,31 +20,31 @@ class CommentSection extends Component {
     });
   };
 
+  checkCanReply = () => {
+    return (
+      this.props.canReply && (
+        <span onClick={this.handleReplyClick} key="comment-nested-reply-to">
+          Reply to
+        </span>
+      )
+    );
+  };
+
   render() {
     const { isReply } = this.state;
     const { currentUser } = this.props;
 
     return (
       <Comment
-        actions={[
-          <span onClick={this.handleReplyClick} key="comment-nested-reply-to">
-            Reply to
-          </span>,
-        ]}
-        author={<a>Han Solo</a>}
+        actions={[this.checkCanReply()]}
+        author={<a>{this.props.postedBy.userName}</a>}
         avatar={
           <Avatar
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            alt="Han Solo"
+            src={this.props.postedBy.avatar}
+            alt={this.props.postedBy.userName}
           />
         }
-        content={
-          <p>
-            {/* We supply a series of design principles, practical patterns and high
-            quality design resources (Sketch and Axure). */}
-            {this.props.content}
-          </p>
-        }
+        content={<p>{this.props.content}</p>}
       >
         {isReply && (
           <ReplyBox
