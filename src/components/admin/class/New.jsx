@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Drawer, Form, Button, Col, Row, Input, DatePicker } from "antd";
+import { Drawer, Button, Col, Row, Input, DatePicker } from "antd";
 
 class New extends Component {
-  state = {};
-
   render() {
     const {
       onClose,
@@ -12,8 +10,10 @@ class New extends Component {
       course,
       onSubmitAnnounce,
       onSubmitHomework,
-      onChange
+      onChange,
+      new: value
     } = this.props;
+
     return (
       <div>
         <Drawer
@@ -47,56 +47,37 @@ class New extends Component {
             </div>
           }
         >
-          <Form layout="vertical" hideRequiredMark>
-            <p style={{ fontWeight: 600 }}>{course.name}</p>
+          <p style={{ fontWeight: 600 }}>{course.name}</p>
 
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item
-                  name="description"
-                  label="Description"
-                  rules={[
-                    {
-                      required: true,
-                      message: "please enter description"
-                    }
-                  ]}
-                  initialValues={{
-                    ["content"]: null,
-                    ["deadline"]: null
+          <Row gutter={16}>
+            <Col span={24}>
+              <p>Description</p>
+              <Input.TextArea
+                value={value.content}
+                name="content"
+                onChange={e => {
+                  onChange("content", e.target.value);
+                }}
+                rows={8}
+                placeholder="please enter description"
+              />
+            </Col>
+          </Row>
+          <Row>
+            {mode === "Homework" && (
+              <Col span={24} style={{ marginTop: "2em" }}>
+                <p>Deadline</p>
+                <DatePicker
+                  name="deadline"
+                  showTime
+                  onChange={e => {
+                    onChange("deadline", e);
                   }}
-                >
-                  <Input.TextArea
-                    name="content"
-                    onChange={e => onChange("content", e.target.value)}
-                    rows={8}
-                    placeholder="please enter description"
-                  />
-                </Form.Item>
+                  value={value.deadline}
+                />
               </Col>
-            </Row>
-            <Row>
-              {mode === "Homework" && (
-                <Col span={24}>
-                  <Form.Item
-                    name="deadline"
-                    label="Deadline"
-                    rules={[
-                      {
-                        required: false
-                      }
-                    ]}
-                  >
-                    <DatePicker
-                      name="deadline"
-                      showTime
-                      onChange={e => onChange("deadline", e)}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
-            </Row>
-          </Form>
+            )}
+          </Row>
         </Drawer>
       </div>
     );

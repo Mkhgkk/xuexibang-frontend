@@ -7,11 +7,8 @@ import CommentBox from "./commentBox";
 import { getFeeds } from "./../../services/feedService";
 import { getComments, postComment } from "./../../services/commentService";
 import { getReplies, postReply } from "./../../services/replyService";
-<<<<<<< HEAD
 import UserContext from "../../context/userContext";
-=======
 import moment from "moment";
->>>>>>> doggie
 
 const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -174,11 +171,10 @@ class CardBox extends Component {
   render() {
     const { loading, feeds } = this.state;
     return (
-<<<<<<< HEAD
       <UserContext.Consumer>
-        {(value) => (
+        {value => (
           <React.Fragment>
-            {feeds.map((feed) => (
+            {feeds.map(feed => (
               <Card
                 key={feed._id}
                 style={{ width: "60%", margin: "0 auto", marginTop: 16 }}
@@ -189,11 +185,15 @@ class CardBox extends Component {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "center"
                     }}
                   >
                     <div style={{ height: "40px" }}>
-                      <Tag color="green">{feed.type}</Tag>
+                      <Tag
+                        color={feed.type === "homework" ? "orange" : "green"}
+                      >
+                        {feed.type}
+                      </Tag>
                     </div>
 
                     <h1>{feed.course.name}</h1>
@@ -202,26 +202,28 @@ class CardBox extends Component {
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <Avatar src={feed.postedBy.avatar} />
                     <div
                       style={{
                         marginLeft: "1em",
-                        textAlign: "left",
+                        textAlign: "left"
                       }}
                     >
                       <h2
                         style={{
-                          margin: 0,
+                          margin: 0
                           // paddingLeft: "0.5em",
                           // fontWeight: "bolder",
                         }}
                       >
                         {feed.postedBy.userName}
                       </h2>
-                      <p style={{ textAlign: "left" }}>{feed.datePosted}</p>
+                      <p style={{ textAlign: "left" }}>
+                        {moment(feed.datePosted).calendar()}
+                      </p>
                     </div>
                   </div>
                   <p style={{ margin: "30px 50px 30px 50px" }}>
@@ -243,7 +245,7 @@ class CardBox extends Component {
                         }
                         submitButtonDisabled={feed.submitButtonDisabled}
                         value={feed.commentValue}
-                        onCommentChange={(e) =>
+                        onCommentChange={e =>
                           this.handleCommentChange(e, feed._id)
                         }
                         currentUser={value.currentUser}
@@ -257,12 +259,12 @@ class CardBox extends Component {
                       {/* commets */}
                       {!feed.comments
                         ? this.fetchComments(feed._id)
-                        : feed.comments.map((comment) => (
+                        : feed.comments.map(comment => (
                             <CommentSection
                               key={comment._id}
                               content={comment.content}
                               replyValue={comment.replyValue}
-                              onReplyChange={(e) =>
+                              onReplyChange={e =>
                                 this.handleReplyChange(e, feed._id, comment._id)
                               }
                               replyButtonLoading={comment.replyButtonLoading}
@@ -280,112 +282,13 @@ class CardBox extends Component {
                             >
                               {/* reply loading spinner */}
                               {/* {comment && (
-=======
-      <>
-        {feeds.map(feed => (
-          <Card
-            key={feed._id}
-            style={{ width: "60%", margin: "0 auto", marginTop: 16 }}
-          >
-            <Skeleton loading={loading} avatar active>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <div style={{ height: "40px" }}>
-                  <Tag color={feed.type === "homework" ? "orange" : "green"}>
-                    {feed.type}
-                  </Tag>
-                </div>
-
-                <h1>{feed.course.name}</h1>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center"
-                }}
-              >
-                <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                <div
-                  style={{
-                    marginLeft: "1em",
-                    textAlign: "left"
-                  }}
-                >
-                  <h2
-                    style={{
-                      margin: 0
-                      // paddingLeft: "0.5em",
-                      // fontWeight: "bolder",
-                    }}
-                  >
-                    {feed.postedBy.userName}
-                  </h2>
-                  <p style={{ textAlign: "left" }}>
-                    {moment(feed.datePosted).calendar()}
-                  </p>
-                </div>
-              </div>
-              <p style={{ margin: "30px 50px 30px 50px" }}>{feed.content}</p>
-              <Actions
-                onClick={() => this.handleCommentClick(feed._id)}
-                commentCount={2}
-              />
-              {feed.comment && (
-                <React.Fragment>
-                  <CommentBox
-                    onCommentSubmit={() => this.handleCommentSubmit(feed._id)}
-                    commentButtonLoading={feed.commentButtonLoading}
-                    disableCommentButton={() =>
-                      this.disableCommentButton(feed._id)
-                    }
-                    submitButtonDisabled={feed.submitButtonDisabled}
-                    value={feed.commentValue}
-                    onCommentChange={e => this.handleCommentChange(e, feed._id)}
-                  />
-                  {/* comment loading spinner */}
-                  {feed.commmentLoading && (
-                    <div style={{ textAlign: "center" }}>
-                      <Spin size="small" indicator={loadingIcon} />
-                    </div>
-                  )}
-                  {/* commets */}
-                  {!feed.comments
-                    ? this.fetchComments(feed._id)
-                    : feed.comments.map(comment => (
-                        <CommentSection
-                          key={comment._id}
-                          content={comment.content}
-                          replyValue={comment.replyValue}
-                          onReplyChange={e =>
-                            this.handleReplyChange(e, feed._id, comment._id)
-                          }
-                          replyButtonLoading={comment.replyButtonLoading}
-                          submitButtonDisabled={comment.submitButtonDisabled}
-                          disableCommentButton={() =>
-                            this.disableReplyButton(feed._id, comment._id)
-                          }
-                          onReplySubmit={() =>
-                            this.handleReplySubmit(feed._id, comment._id)
-                          }
-                        >
-                          {/* reply loading spinner */}
-                          {/* {comment && (
->>>>>>> doggie
                             <div style={{ textAlign: "center" }}>
                               <Spin size="small" indicator={loadingIcon} />
                             </div>
                           )} */}
-<<<<<<< HEAD
                               {!comment.replies
                                 ? this.fetchReplies(feed._id, comment._id)
-                                : comment.replies.map((reply) => (
+                                : comment.replies.map(reply => (
                                     <CommentSection
                                       key={reply._id}
                                       content={reply.content}
@@ -402,24 +305,6 @@ class CardBox extends Component {
           </React.Fragment>
         )}
       </UserContext.Consumer>
-=======
-                          {!comment.replies
-                            ? this.fetchReplies(feed._id, comment._id)
-                            : comment.replies.map(reply => (
-                                <CommentSection
-                                  key={reply._id}
-                                  content={reply.content}
-                                />
-                              ))}
-                        </CommentSection>
-                      ))}
-                </React.Fragment>
-              )}
-            </Skeleton>
-          </Card>
-        ))}
-      </>
->>>>>>> doggie
     );
   }
 }

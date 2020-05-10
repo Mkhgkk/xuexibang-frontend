@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { List, Avatar } from "antd";
-import { MessageOutlined } from "@ant-design/icons";
+import { MessageOutlined, DeleteOutlined } from "@ant-design/icons";
 import CommentBox from "./../../dashboard/commentBox";
 import CommentSection from "./../../dashboard/commentSection";
 import moment from "moment";
@@ -10,6 +10,12 @@ class ListCard extends Component {
     viewEdit: false,
     box: false,
     data: this.props.listData
+  };
+
+  componentDidUpdate = () => {
+    if (this.props.listData !== this.state.data) {
+      this.setState({ data: this.props.listData });
+    }
   };
 
   handleCommentClick = itemId => {
@@ -55,7 +61,6 @@ class ListCard extends Component {
                               .calendar()}
                           </p>
                         </div>
-
                         <em className="ant-list-item-action-split"></em>
                       </li>
                     )}
