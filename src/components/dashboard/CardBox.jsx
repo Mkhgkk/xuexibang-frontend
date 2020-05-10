@@ -17,7 +17,7 @@ class CardBox extends Component {
     feeds: [],
     loading: false,
     commentValue: "",
-    replyValue: ""
+    replyValue: "",
   };
 
   componentDidMount = async () => {
@@ -29,11 +29,11 @@ class CardBox extends Component {
     }
   };
 
-  fetchComments = feedId => {
+  fetchComments = (feedId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
+    let feed = feeds.find((feed) => feed._id === feedId);
 
-    const setComments = async feedId => {
+    const setComments = async (feedId) => {
       const { data } = await getComments(feedId);
       feed.comments = data;
       feed.commmentLoading = false;
@@ -45,10 +45,10 @@ class CardBox extends Component {
 
   fetchReplies = (feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
-    let comment = feed.comments.find(comment => comment._id === commentId);
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
 
-    const setReplies = async commentId => {
+    const setReplies = async (commentId) => {
       const { data } = await getReplies(commentId);
       comment.replies = data;
       // comment.commmentLoading = false;
@@ -58,9 +58,9 @@ class CardBox extends Component {
     setReplies(commentId);
   };
 
-  handleCommentClick = feedId => {
+  handleCommentClick = (feedId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
+    let feed = feeds.find((feed) => feed._id === feedId);
     feed.comment = feed.comment === true ? false : true;
     feed.commmentLoading = feed.commmentLoading === true ? false : true;
     this.setState({ feeds });
@@ -68,38 +68,38 @@ class CardBox extends Component {
 
   handleCommentChange = (e, feedId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
+    let feed = feeds.find((feed) => feed._id === feedId);
     feed.commentValue = e.target.value;
     feed.submitButtonDisabled =
       feed.commentValue === "" || undefined ? true : false;
     this.setState({ feeds });
   };
 
-  disableCommentButton = feedId => {
+  disableCommentButton = (feedId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
+    let feed = feeds.find((feed) => feed._id === feedId);
     feed.submitButtonDisabled = true;
     this.setState({ feeds });
   };
 
   disableReplyButton = (feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
-    let comment = feed.comments.find(comment => comment._id === commentId);
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
 
     comment.submitButtonDisabled = true;
     this.setState({ feeds });
   };
 
-  handleCommentSubmit = feedId => {
+  handleCommentSubmit = (feedId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
+    let feed = feeds.find((feed) => feed._id === feedId);
 
     feed.commentButtonLoading = true;
 
     this.setState({ feeds });
 
-    const postAndSetComment = async feedId => {
+    const postAndSetComment = async (feedId) => {
       try {
         const { data } = await postComment(feedId, feed.commentValue);
 
@@ -124,8 +124,8 @@ class CardBox extends Component {
 
   handleReplyChange = (e, feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
-    let comment = feed.comments.find(comment => comment._id === commentId);
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
 
     comment.replyValue = e.target.value;
 
@@ -137,14 +137,14 @@ class CardBox extends Component {
 
   handleReplySubmit = (feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find(feed => feed._id === feedId);
-    let comment = feed.comments.find(comment => comment._id === commentId);
+    let feed = feeds.find((feed) => feed._id === feedId);
+    let comment = feed.comments.find((comment) => comment._id === commentId);
 
     comment.replyButtonLoading = true;
 
     this.setState({ feeds });
 
-    const postAndSetReply = async commentId => {
+    const postAndSetReply = async (commentId) => {
       try {
         const { data } = await postReply(commentId, comment.replyValue);
 
