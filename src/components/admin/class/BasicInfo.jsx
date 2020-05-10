@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Descriptions, Button } from "antd";
-import { TeamOutlined } from "@ant-design/icons";
+import { Descriptions, Button, Popconfirm, message } from "antd";
+import { TeamOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import ClassmateDrawer from "./ClassmateDrawer";
-import { getStudent } from "../../../services/courseService";
+import { getStudent, deleteCourse } from "../../../services/courseService";
 
 const inputStyle = {
   border: "none",
@@ -36,11 +36,16 @@ class BasicInfo extends Component {
     });
   };
 
-  // onClose = () => {
-  //   this.setState({
-  //     viewClassMate: false
-  //   });
-  // };
+  handleDelete = async id => {
+    try {
+      await deleteCourse(id);
+      message.success("Class has been deleted!");
+      window.location.replace("/dashboard/admin/classes");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        message.error("This class has already been deleted.");
+    }
+  };
 
   render() {
     const { viewClassMate, students } = this.state;
@@ -146,13 +151,32 @@ class BasicInfo extends Component {
           </Descriptions.Item>
         </Descriptions>
         {editMode && (
-          <Button
-            type="primary"
-            onClick={onSubmit}
-            style={{ float: "right", marginTop: "2em" }}
-          >
-            Save
-          </Button>
+          <>
+            <Button
+              type="primary"
+              onClick={onSubmit}
+              style={{ float: "right", marginTop: "2em" }}
+            >
+              Save
+            </Button>
+            <Popconfirm
+              title="Are you sure delete this course?"
+              icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+              onConfirm={() => this.handleDelete(course._id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                style={{
+                  float: "right",
+                  marginTop: "2em",
+                  marginRight: "0.5em"
+                }}
+              >
+                Delete
+              </Button>
+            </Popconfirm>
+          </>
         )}
         <ClassmateDrawer
           visible={viewClassMate}

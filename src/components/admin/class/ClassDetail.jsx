@@ -139,21 +139,29 @@ class ClassDetail extends Component {
     e.preventDefault();
     const { course } = this.state;
 
-    const feed = {
-      type: "homework",
-      course: course._id,
-      content: this.state.new.content,
-      deadline: this.state.new.deadline.toJSON()
-    };
-    try {
-      await feedService.newFeed(feed);
-      const { data: homework } = await feedService.getHomeworkById(course._id);
-      message.success(`New homework has been posted.`);
-      this.onClose();
-      this.setState({ homework, new: {} });
-    } catch (ex) {
-      if (ex.response && ex.response.status === 400)
-        message.error(ex.response.data);
+    if (moment.isMoment(this.state.new.deadline) && this.state.new.content) {
+      const feed = {
+        type: "homework",
+        course: course._id,
+        content: this.state.new.content,
+        deadline: this.state.new.deadline.toJSON()
+      };
+      try {
+        await feedService.newFeed(feed);
+        const { data: homework } = await feedService.getHomeworkById(
+          course._id
+        );
+        message.success(`New homework has been posted.`);
+        this.onClose();
+        this.setState({ homework, new: {} });
+      } catch (ex) {
+        if (ex.response && ex.response.status === 400)
+          message.error(ex.response.data);
+      }
+    } else if (!moment.isMoment(this.state.new.deadline)) {
+      message.error("Please select deadline");
+    } else {
+      message.error("Please fill the form compeletly");
     }
   };
 
@@ -220,6 +228,42 @@ class ClassDetail extends Component {
       viewEdit: false,
       feed: {}
     });
+  };
+
+  onDeleteAnnounce = async id => {
+    const originalAnnouncement = this.state.announcement;
+
+    const announcement = originalAnnouncement.filter(a => a._id !== id);
+    this.setState({ announcement });
+
+    try {
+      await feedService.deleteFeed(id);
+      message.success("Announcement has been deleted.");
+      this.onCloseEdit();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        message.error("This announcement has already been deleted.");
+
+      this.setState({ announcement: originalAnnouncement });
+    }
+  };
+
+  onDeleteHomework = async id => {
+    const originalHomework = this.state.homework;
+
+    const homework = originalHomework.filter(a => a._id !== id);
+    this.setState({ homework });
+
+    try {
+      await feedService.deleteFeed(id);
+      message.success("Homework has been deleted.");
+      this.onCloseEdit();
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        message.error("This homework has already been deleted.");
+
+      this.setState({ homework: originalHomework });
+    }
   };
 
   render() {
@@ -312,6 +356,7 @@ class ClassDetail extends Component {
           onSubmitAnnounce={this.onSubmitAnnounce}
           onSubmitHomework={this.onSubmitHomework}
           onChange={this.onNewChange}
+          new={this.state.new}
         />
         <Edit
           visible={viewEdit}
@@ -320,6 +365,8 @@ class ClassDetail extends Component {
           onChange={this.onChangeEdit}
           onSubmitAnnounce={this.onSaveAnnounce}
           onSubmitHomework={this.onSaveHomework}
+          onDeleteAnnounce={this.onDeleteAnnounce}
+          onDeleteHomework={this.onDeleteHomework}
         />
       </div>
     );

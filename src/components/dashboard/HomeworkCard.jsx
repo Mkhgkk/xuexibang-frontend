@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Card, Button } from "antd";
-import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Card, Tooltip } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
+import { Link } from "react-router-dom";
+import { black } from "color-name";
 
 class HomeworkCard extends Component {
   render() {
@@ -26,7 +28,14 @@ class HomeworkCard extends Component {
       >
         <Meta
           title={[
-            <div>{homework.course.name}</div>,
+            <Link
+              to={`/dashboard/classes/${homework.course._id}`}
+              style={{ color: "#1f1f1f" }}
+            >
+              <Tooltip placement="topLeft" title={homework.course.name}>
+                <div>{homework.course.name}</div>
+              </Tooltip>
+            </Link>,
             <h5 style={{ fontWeight: "normal" }}>
               {moment(homework.datePosted).calendar()}
             </h5>

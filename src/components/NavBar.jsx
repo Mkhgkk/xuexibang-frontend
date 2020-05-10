@@ -3,13 +3,17 @@ import { Layout, Menu, Avatar, Modal } from "antd";
 import { NavLink, Link } from "react-router-dom";
 import { FrownTwoTone, UserOutlined } from "@ant-design/icons";
 import authService from "../services/authService";
-import { getUserDetail } from "../services/userService";
 import UserContext from "../context/userContext";
 
 const { confirm } = Modal;
 const { Header } = Layout;
 
 class NavBar extends Component {
+  // componentDidMount = () => {
+  //   const { userName } = this.context;
+  //   console.log(userName);
+  // };
+
   showConfirm = () => {
     confirm({
       title: "Do you want to logout 学习帮?",
@@ -19,16 +23,14 @@ class NavBar extends Component {
         authService.logout();
         window.location.replace("/login");
       },
-      onCancel() {},
+      onCancel() {}
     });
   };
 
   render() {
-    const { auth } = this.props;
-
     return (
       <UserContext.Consumer>
-        {(value) => (
+        {value => (
           <Layout className="layout">
             <Header
               style={{
@@ -37,14 +39,14 @@ class NavBar extends Component {
                 backgroundColor: "white",
                 position: "fixed",
                 width: "100%",
-                zIndex: "1",
+                zIndex: "1"
               }}
             >
               <div className="logo">
                 <Link to="/">作业帮</Link>
               </div>
 
-              {auth ? (
+              {value.currentUser ? (
                 <Menu theme="light" mode="horizontal">
                   <NavLink
                     to="/mypage"
@@ -59,7 +61,7 @@ class NavBar extends Component {
                       <Avatar
                         style={{
                           marginRight: "0.5em",
-                          backgroundColor: "#9254de",
+                          backgroundColor: "#9254de"
                         }}
                         icon={<UserOutlined />}
                       />

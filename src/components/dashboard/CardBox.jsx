@@ -172,9 +172,9 @@ class CardBox extends Component {
     const { loading, feeds } = this.state;
     return (
       <UserContext.Consumer>
-        {(value) => (
+        {value => (
           <React.Fragment>
-            {feeds.map((feed) => (
+            {feeds.map(feed => (
               <Card
                 key={feed._id}
                 style={{ width: "60%", margin: "0 auto", marginTop: 16 }}
@@ -185,11 +185,15 @@ class CardBox extends Component {
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "center"
                     }}
                   >
                     <div style={{ height: "40px" }}>
-                      <Tag color="green">{feed.type}</Tag>
+                      <Tag
+                        color={feed.type === "homework" ? "orange" : "green"}
+                      >
+                        {feed.type}
+                      </Tag>
                     </div>
 
                     <h1>{feed.course.name}</h1>
@@ -198,26 +202,28 @@ class CardBox extends Component {
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "center",
+                      alignItems: "center"
                     }}
                   >
                     <Avatar src={feed.postedBy.avatar} />
                     <div
                       style={{
                         marginLeft: "1em",
-                        textAlign: "left",
+                        textAlign: "left"
                       }}
                     >
                       <h2
                         style={{
-                          margin: 0,
+                          margin: 0
                           // paddingLeft: "0.5em",
                           // fontWeight: "bolder",
                         }}
                       >
                         {feed.postedBy.userName}
                       </h2>
-                      <p style={{ textAlign: "left" }}>{feed.datePosted}</p>
+                      <p style={{ textAlign: "left" }}>
+                        {moment(feed.datePosted).calendar()}
+                      </p>
                     </div>
                   </div>
                   <p style={{ margin: "30px 50px 30px 50px" }}>
@@ -239,7 +245,7 @@ class CardBox extends Component {
                         }
                         submitButtonDisabled={feed.submitButtonDisabled}
                         value={feed.commentValue}
-                        onCommentChange={(e) =>
+                        onCommentChange={e =>
                           this.handleCommentChange(e, feed._id)
                         }
                         currentUser={value.currentUser}
@@ -253,12 +259,12 @@ class CardBox extends Component {
                       {/* commets */}
                       {!feed.comments
                         ? this.fetchComments(feed._id)
-                        : feed.comments.map((comment) => (
+                        : feed.comments.map(comment => (
                             <CommentSection
                               key={comment._id}
                               content={comment.content}
                               replyValue={comment.replyValue}
-                              onReplyChange={(e) =>
+                              onReplyChange={e =>
                                 this.handleReplyChange(e, feed._id, comment._id)
                               }
                               replyButtonLoading={comment.replyButtonLoading}
@@ -282,7 +288,7 @@ class CardBox extends Component {
                           )} */}
                               {!comment.replies
                                 ? this.fetchReplies(feed._id, comment._id)
-                                : comment.replies.map((reply) => (
+                                : comment.replies.map(reply => (
                                     <CommentSection
                                       key={reply._id}
                                       content={reply.content}

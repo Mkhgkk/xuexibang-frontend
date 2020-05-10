@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Drawer, Form, Button, Col, Row, Input, DatePicker } from "antd";
+import { Drawer, Button, Col, Row, Input, DatePicker, Popconfirm } from "antd";
 import moment from "moment";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 class Edit extends Component {
   state = {
@@ -19,13 +20,14 @@ class Edit extends Component {
     const {
       onClose,
       visible,
-
       onChange,
       onSubmitAnnounce,
-      onSubmitHomework
+      onSubmitHomework,
+      onDeleteAnnounce,
+      onDeleteHomework
     } = this.props;
-
     const { data } = this.state;
+
     return (
       <div>
         {data && (
@@ -46,9 +48,19 @@ class Edit extends Component {
                   textAlign: "right"
                 }}
               >
-                <Button onClick={onClose} style={{ marginRight: 8 }}>
-                  Cancel
-                </Button>
+                <Popconfirm
+                  title={`Are you sure delete this ${data.type}?`}
+                  icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+                  onConfirm={
+                    data.type === "announcement"
+                      ? () => onDeleteAnnounce(data._id)
+                      : () => onDeleteHomework(data._id)
+                  }
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button style={{ marginRight: 8 }}>Delete</Button>
+                </Popconfirm>
                 <Button
                   onClick={
                     data.type === "announcement"
