@@ -189,7 +189,11 @@ class CardBox extends Component {
                     }}
                   >
                     <div style={{ height: "40px" }}>
-                      <Tag color="green">{feed.type}</Tag>
+                      <Tag
+                        color={feed.type === "homework" ? "orange" : "green"}
+                      >
+                        {feed.type}
+                      </Tag>
                     </div>
 
                     <h1>{feed.course.name}</h1>
@@ -217,7 +221,9 @@ class CardBox extends Component {
                       >
                         {feed.postedBy.userName}
                       </h2>
-                      <p style={{ textAlign: "left" }}>{feed.datePosted}</p>
+                      <p style={{ textAlign: "left" }}>
+                        {moment(feed.datePosted).calendar()}
+                      </p>
                     </div>
                   </div>
                   <p style={{ margin: "30px 50px 30px 50px" }}>
@@ -271,6 +277,7 @@ class CardBox extends Component {
                               onReplySubmit={() =>
                                 this.handleReplySubmit(feed._id, comment._id)
                               }
+                              canReply={true}
                               postedBy={feed.postedBy}
                               currentUser={value.currentUser}
                             >
