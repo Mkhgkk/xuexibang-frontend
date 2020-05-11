@@ -9,7 +9,7 @@ class ListCard extends Component {
   state = {
     viewEdit: false,
     box: false,
-    data: this.props.listData
+    data: this.props.listData,
   };
 
   componentDidUpdate = () => {
@@ -18,7 +18,7 @@ class ListCard extends Component {
     }
   };
 
-  handleCommentClick = itemId => {
+  handleCommentClick = (itemId) => {
     const box = this.state.box;
     this.setState({ box: box === true ? false : true });
   };
@@ -33,7 +33,7 @@ class ListCard extends Component {
           itemLayout="vertical"
           size="large"
           dataSource={data}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item key={item._id}>
               <List.Item.Meta
                 avatar={<Avatar src={item.postedBy && item.postedBy.avatar} />}
@@ -56,9 +56,7 @@ class ListCard extends Component {
                         <div>
                           <p>
                             Deadline:
-                            {moment(item.deadline)
-                              .add(0, "days")
-                              .calendar()}
+                            {moment(item.deadline).add(0, "days").calendar()}
                           </p>
                         </div>
                         <em className="ant-list-item-action-split"></em>
@@ -91,7 +89,7 @@ class ListCard extends Component {
                           value={this.props.commentValue}
                           onCommentChange={this.props.handleCommentChange}
                         />
-                        {item.comments.map(comment => (
+                        {item.comments.map((comment) => (
                           <CommentSection
                             key={comment._id}
                             content={comment.content}
@@ -105,7 +103,7 @@ class ListCard extends Component {
                             }
                           >
                             {comment.replies &&
-                              comment.replies.map(reply => (
+                              comment.replies.map((reply) => (
                                 <CommentSection
                                   key={reply._id}
                                   content={reply.content}

@@ -5,13 +5,13 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 
 class Edit extends Component {
   state = {
-    data: {}
+    data: {},
   };
 
   componentDidMount = () => {
     this.setState({ data: this.props.data });
   };
-  componentDidUpdate = prevProps => {
+  componentDidUpdate = (prevProps) => {
     if (prevProps.data !== this.props.data) {
       this.setState({ data: this.props.data });
     }
@@ -24,7 +24,7 @@ class Edit extends Component {
       onSubmitAnnounce,
       onSubmitHomework,
       onDeleteAnnounce,
-      onDeleteHomework
+      onDeleteHomework,
     } = this.props;
     const { data } = this.state;
 
@@ -45,7 +45,7 @@ class Edit extends Component {
             footer={
               <div
                 style={{
-                  textAlign: "right"
+                  textAlign: "right",
                 }}
               >
                 <Popconfirm
@@ -82,7 +82,7 @@ class Edit extends Component {
                 <Input.TextArea
                   value={data.content}
                   name="content"
-                  onChange={e => onChange("content", e.target.value)}
+                  onChange={(e) => onChange("content", e.target.value)}
                   rows={8}
                   placeholder="please enter description"
                 />
@@ -95,7 +95,7 @@ class Edit extends Component {
                   <DatePicker
                     name="deadline"
                     showTime
-                    onChange={e => onChange("deadline", e)}
+                    onChange={(e) => onChange("deadline", e)}
                     value={moment(data.deadline)}
                   />
                 </Col>

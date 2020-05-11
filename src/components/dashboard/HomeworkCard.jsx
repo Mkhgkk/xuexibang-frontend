@@ -19,11 +19,9 @@ class HomeworkCard extends Component {
             <div>
               Deadline:
               <br />
-              {moment(homework.deadline)
-                .add(0, "days")
-                .calendar()}
+              {moment(homework.deadline).add(0, "days").calendar()}
             </div>
-          )
+          ),
         ]}
       >
         <Meta
@@ -38,7 +36,7 @@ class HomeworkCard extends Component {
             </Link>,
             <h5 style={{ fontWeight: "normal" }}>
               {moment(homework.datePosted).calendar()}
-            </h5>
+            </h5>,
           ]}
           description={[<div>{homework.content}</div>]}
         />

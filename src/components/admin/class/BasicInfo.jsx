@@ -7,7 +7,7 @@ import { getStudent, deleteCourse } from "../../../services/courseService";
 const inputStyle = {
   border: "none",
   color: "#722ed1",
-  width: "100%"
+  width: "100%",
 };
 
 class BasicInfo extends Component {
@@ -15,28 +15,28 @@ class BasicInfo extends Component {
     super(props);
     this.state = {
       viewClassMate: false,
-      students: []
+      students: [],
     };
   }
 
-  componentDidUpdate = async prevProps => {
+  componentDidUpdate = async (prevProps) => {
     const { course } = this.props;
 
     if (course._id !== prevProps.course._id) {
       const { data: students } = await getStudent(course._id);
       this.setState({
-        students
+        students,
       });
     }
   };
 
   toggleDrawer = () => {
     this.setState({
-      viewClassMate: !this.state.viewClassMate
+      viewClassMate: !this.state.viewClassMate,
     });
   };
 
-  handleDelete = async id => {
+  handleDelete = async (id) => {
     try {
       await deleteCourse(id);
       message.success("Class has been deleted!");
@@ -170,7 +170,7 @@ class BasicInfo extends Component {
                 style={{
                   float: "right",
                   marginTop: "2em",
-                  marginRight: "0.5em"
+                  marginRight: "0.5em",
                 }}
               >
                 Delete

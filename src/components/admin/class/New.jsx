@@ -11,7 +11,7 @@ class New extends Component {
       onSubmitAnnounce,
       onSubmitHomework,
       onChange,
-      new: value
+      new: value,
     } = this.props;
 
     return (
@@ -30,7 +30,7 @@ class New extends Component {
           footer={
             <div
               style={{
-                textAlign: "right"
+                textAlign: "right",
               }}
             >
               <Button onClick={onClose} style={{ marginRight: 8 }}>
@@ -55,7 +55,7 @@ class New extends Component {
               <Input.TextArea
                 value={value.content}
                 name="content"
-                onChange={e => {
+                onChange={(e) => {
                   onChange("content", e.target.value);
                 }}
                 rows={8}
@@ -70,7 +70,7 @@ class New extends Component {
                 <DatePicker
                   name="deadline"
                   showTime
-                  onChange={e => {
+                  onChange={(e) => {
                     onChange("deadline", e);
                   }}
                   value={value.deadline}

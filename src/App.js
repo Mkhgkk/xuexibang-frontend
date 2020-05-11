@@ -7,6 +7,7 @@ import RegisterPage from "./routes/RegisterPage";
 import Information from "./routes/Information";
 import Dashboard from "./routes/Dashboard";
 import Mypage from "./routes/Mypage";
+import { getCurrentUser } from "./services/authService";
 import UserContext from "./context/userContext";
 import { getUserDetail } from "./services/userService";
 
@@ -14,15 +15,17 @@ class App extends Component {
   state = {};
 
   async componentDidMount() {
+    const auth = getCurrentUser();
     const { data: user } = await getUserDetail();
-    this.setState({ user });
+    this.setState({ auth, user });
   }
 
   render() {
+    const { auth } = this.state;
     return (
       <UserContext.Provider value={{ currentUser: this.state.user }}>
         <div className="App">
-          <NavBar />
+          <NavBar auth={auth} />
           <Switch>
             <Route path="/userDetail" component={Information} />
             <Route path="/dashboard" component={Dashboard} />

@@ -23,14 +23,14 @@ class NavBar extends Component {
         authService.logout();
         window.location.replace("/login");
       },
-      onCancel() {}
+      onCancel() {},
     });
   };
 
   render() {
     return (
       <UserContext.Consumer>
-        {value => (
+        {(value) => (
           <Layout className="layout">
             <Header
               style={{
@@ -39,7 +39,7 @@ class NavBar extends Component {
                 backgroundColor: "white",
                 position: "fixed",
                 width: "100%",
-                zIndex: "1"
+                zIndex: "1",
               }}
             >
               <div className="logo">
@@ -61,7 +61,7 @@ class NavBar extends Component {
                       <Avatar
                         style={{
                           marginRight: "0.5em",
-                          backgroundColor: "#9254de"
+                          backgroundColor: "#9254de",
                         }}
                         icon={<UserOutlined />}
                       />
