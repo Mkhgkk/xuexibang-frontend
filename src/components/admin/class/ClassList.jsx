@@ -16,7 +16,7 @@ class ClassList extends Component {
     return (
       <div style={{ overflow: "scroll", height: "80vh" }}>
         {courses.map(course => (
-          <ClassCard course={course} />
+          <ClassCard course={course} key={course._id} />
         ))}
       </div>
     );

@@ -8,7 +8,7 @@ class CreateClass extends Component {
         <h2 style={{ textAlign: "center", marginBottom: "1em" }}>
           Create new class
         </h2>
-        <ClassForm />
+        <ClassForm history={this.props.history} />
       </div>
     );
   }

@@ -88,7 +88,9 @@ class SchoolForm extends Component {
                 }
               >
                 {schoolOptions.map(x => (
-                  <Option value={x._id}>{x.name}</Option>
+                  <Option value={x._id} key={x._id}>
+                    {x.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>
@@ -112,7 +114,9 @@ class SchoolForm extends Component {
                 }
               >
                 {majorOptions.map(x => (
-                  <Option value={x._id}>{x.name}</Option>
+                  <Option value={x._id} key={x._id}>
+                    {x.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>

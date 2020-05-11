@@ -52,12 +52,12 @@ class Homework extends Component {
   };
 
   render() {
-    const { auth, listData, onOpenEdit } = this.props;
+    const { auth, listData, onOpenEdit, type } = this.props;
     return (
       <div style={{ overflow: "scroll", height: "60vh" }}>
         <ListCard
           listData={listData}
-          mode="Homework"
+          mode={type}
           auth={auth}
           commentValue={this.state.commentValue}
           replyValue={this.state.replyValue}

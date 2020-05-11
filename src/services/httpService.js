@@ -1,5 +1,6 @@
 import axios from "axios";
 import logger from "./logService";
+import { message } from "antd";
 
 // axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.baseURL = "http://localhost:5000/api";
@@ -12,6 +13,7 @@ axios.interceptors.response.use(null, error => {
 
   if (!expectedError) {
     logger.log(error);
+    message.error("An unexpected error occurred.");
   }
   return Promise.reject(error);
 });

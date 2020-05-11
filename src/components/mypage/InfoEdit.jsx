@@ -61,7 +61,9 @@ class InfoEdit extends Component {
               }
             >
               {schoolOptions.map(x => (
-                <Option value={x._id}>{x.name}</Option>
+                <Option value={x._id} key={x._id}>
+                  {x.name}
+                </Option>
               ))}
             </Select>
           </Space>
@@ -85,7 +87,9 @@ class InfoEdit extends Component {
               }
             >
               {majorOptions.map(x => (
-                <Option value={x._id}>{x.name}</Option>
+                <Option value={x._id} key={x._id}>
+                  {x.name}
+                </Option>
               ))}
             </Select>
           </Space>

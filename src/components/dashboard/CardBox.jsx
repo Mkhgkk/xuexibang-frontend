@@ -188,7 +188,7 @@ class CardBox extends Component {
                       justifyContent: "center"
                     }}
                   >
-                    <div style={{ height: "40px" }}>
+                    <div style={{ height: "40px", margin: "0 auto" }}>
                       <Tag
                         color={feed.type === "homework" ? "orange" : "green"}
                       >
@@ -232,6 +232,8 @@ class CardBox extends Component {
                   <Actions
                     onClick={() => this.handleCommentClick(feed._id)}
                     commentCount={2}
+                    deadline={feed.deadline}
+                    type={feed.type}
                   />
                   {feed.comment && (
                     <React.Fragment>

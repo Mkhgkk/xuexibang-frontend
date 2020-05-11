@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { List, Avatar } from "antd";
-import { MessageOutlined, DeleteOutlined } from "@ant-design/icons";
+import { MessageOutlined } from "@ant-design/icons";
 import CommentBox from "./../../dashboard/commentBox";
 import CommentSection from "./../../dashboard/commentSection";
 import moment from "moment";

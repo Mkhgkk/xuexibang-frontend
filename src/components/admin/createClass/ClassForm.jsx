@@ -105,6 +105,7 @@ class ClassForm extends Component {
       await newCourse(data);
       message.success(`${data.name} has been created successfully.`);
       this.setState({ data: {} });
+      this.props.history.replace("/dashboard/admin/classes");
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
         message.error(ex.response.data);
@@ -159,7 +160,9 @@ class ClassForm extends Component {
                     }
                   >
                     {schoolOptions.map(x => (
-                      <Option value={x._id}>{x.name}</Option>
+                      <Option value={x._id} key={x._id}>
+                        {x.name}
+                      </Option>
                     ))}
                   </Select>
                 </Form.Item>
@@ -181,7 +184,9 @@ class ClassForm extends Component {
                     }
                   >
                     {majorOptions.map(x => (
-                      <Option value={x._id}>{x.name}</Option>
+                      <Option value={x._id} key={x._id}>
+                        {x.name}
+                      </Option>
                     ))}
                   </Select>
                 </Form.Item>
@@ -225,7 +230,9 @@ class ClassForm extends Component {
                     onChange={e => this.handleValue(e, "semester")}
                   >
                     {semester.map(s => (
-                      <Option value={s}>{s}</Option>
+                      <Option value={s} key={s}>
+                        {s}
+                      </Option>
                     ))}
                   </Select>
                 </Form.Item>

@@ -1,11 +1,39 @@
 import React, { Component } from "react";
 import { Card, Tooltip } from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { ClockCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { black } from "color-name";
 
 class HomeworkCard extends Component {
+  daysRemaining = () => {
+    const deadline = moment(this.props.homework.deadline);
+    const todaysdate = moment();
+    const daysleft = deadline.diff(todaysdate, "days");
+    if (daysleft === 0) {
+      return (
+        <div>
+          <ClockCircleOutlined style={{ color: "red", marginRight: "0.5em" }} />
+          In 24hours
+        </div>
+      );
+    } else if (daysleft > 0) {
+      return (
+        <div>
+          <ClockCircleOutlined
+            style={{ color: "orange", marginRight: "0.5em" }}
+          />
+          {daysleft === 1 ? daysleft + "day left" : daysleft + "days left"}
+        </div>
+      );
+    } else
+      return (
+        <div>
+          <ClockCircleOutlined style={{ marginRight: "0.5em" }} />
+          Past due
+        </div>
+      );
+  };
+
   render() {
     const { Meta } = Card;
     const { homework, type } = this.props;
@@ -13,18 +41,17 @@ class HomeworkCard extends Component {
     return (
       <Card
         style={{ width: 300 }}
-        actions={[
-          <QuestionCircleOutlined key="question" />,
-          type === 1 && (
-            <div>
-              Deadline:
-              <br />
-              {moment(homework.deadline)
+        actions={
+          type === 1 && [
+            <Tooltip
+              title={`Deadline: ${moment(homework.deadline)
                 .add(0, "days")
-                .calendar()}
-            </div>
-          )
-        ]}
+                .calendar()} `}
+            >
+              <div>{this.daysRemaining()}</div>
+            </Tooltip>
+          ]
+        }
       >
         <Meta
           title={[

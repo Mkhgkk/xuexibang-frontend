@@ -122,9 +122,9 @@ class Classes extends Component {
         <Spin spinning={loading}>
           <Row gutter={[32, 24]}>
             {myCourses.map(v => (
-              <Col span={6}>
+              <Col span={6} key={v._id}>
                 <Link to={`/dashboard/classes/${v._id}`}>
-                  <Class key={v._id} course={v} />
+                  <Class course={v} />
                 </Link>
               </Col>
             ))}

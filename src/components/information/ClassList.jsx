@@ -44,7 +44,10 @@ class ClassList extends Component {
               {courses &&
                 courses.map(course => (
                   <>
-                    <List.Item style={{ backgroundColor: "white" }}>
+                    <List.Item
+                      style={{ backgroundColor: "white" }}
+                      key={course._id}
+                    >
                       <Col span={5}>
                         <Avatar size={50} src={course.thumbnail} />
                       </Col>
