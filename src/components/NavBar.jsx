@@ -4,16 +4,12 @@ import { NavLink, Link } from "react-router-dom";
 import { FrownTwoTone, UserOutlined } from "@ant-design/icons";
 import authService from "../services/authService";
 import UserContext from "../context/userContext";
+import logo from "../image/logo.png";
 
 const { confirm } = Modal;
 const { Header } = Layout;
 
 class NavBar extends Component {
-  // componentDidMount = () => {
-  //   const { userName } = this.context;
-  //   console.log(userName);
-  // };
-
   showConfirm = () => {
     confirm({
       title: "Do you want to logout 学习帮?",
@@ -43,7 +39,13 @@ class NavBar extends Component {
               }}
             >
               <div className="logo">
-                <Link to="/">作业帮</Link>
+                <Link to="/dashboard/feeds">
+                  <img
+                    src={logo}
+                    style={{ width: 70, marginLeft: "1em" }}
+                    alt="logo"
+                  />
+                </Link>
               </div>
 
               {value.currentUser ? (

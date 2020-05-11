@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Card, Button, message } from "antd";
 import BasicInfo from "./BasicInfo";
-import Notification from "./Notification";
 import Homework from "./Homework";
 import New from "./New";
 import Edit from "./Edit";
@@ -289,9 +288,10 @@ class ClassDetail extends Component {
         />
       ),
       tab2: (
-        <Notification
+        <Homework
           courseId={course._id}
           auth={auth}
+          type="Announcement"
           listData={announcement}
           onOpenEdit={this.onOpenEdit}
         />
@@ -300,6 +300,7 @@ class ClassDetail extends Component {
         <Homework
           courseId={course._id}
           auth={auth}
+          type="Homework"
           listData={homework}
           onOpenEdit={this.onOpenEdit}
         />
