@@ -14,7 +14,7 @@ class Mypage extends Component {
     editMode: false,
     user: {},
     university: "",
-    major: ""
+    major: "",
   };
 
   componentDidMount = async () => {
@@ -24,13 +24,13 @@ class Mypage extends Component {
     this.setState({
       user,
       university: university.name,
-      major: major.name
+      major: major.name,
     });
   };
 
   onClick = () => {
     this.setState({
-      editMode: !this.state.editMode
+      editMode: !this.state.editMode,
     });
   };
 
@@ -54,7 +54,7 @@ class Mypage extends Component {
     }
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     const { user } = this.state;
     try {
       await userService.changeUserInfo(user);
@@ -79,7 +79,7 @@ class Mypage extends Component {
             backgroundImage: `url(${background})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "500px",
-            backgroundPosition: "left bottom"
+            backgroundPosition: "left bottom",
           }}
         >
           <Card
@@ -89,7 +89,7 @@ class Mypage extends Component {
               paddingLeft: "4em",
               paddingRight: "4em",
               position: "relative",
-              top: 80
+              top: 80,
             }}
           >
             {editMode ? (

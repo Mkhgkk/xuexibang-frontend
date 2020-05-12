@@ -3,12 +3,13 @@ import {
   MailOutlined,
   UserOutlined,
   RocketOutlined,
-  NodeIndexOutlined
+  NodeIndexOutlined,
 } from "@ant-design/icons";
 import { Space } from "antd";
 import InfoEdit from "./InfoEdit";
 
 const Infopart = ({ editMode, user, onChange, onValue, university, major }) => {
+  console.log(user);
   return (
     <div style={{ paddingRight: "2em" }}>
       <p>

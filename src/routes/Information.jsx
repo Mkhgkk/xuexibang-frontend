@@ -6,18 +6,18 @@ import ClassesForm from "../components/information/ClassesForm";
 
 class Information extends Component {
   state = {
-    currentStep: 0
+    currentStep: 0,
   };
 
-  onStepsChange = currentStep => {
+  onStepsChange = (currentStep) => {
     this.setState({ currentStep });
   };
 
-  onNextButton = e => {
+  onNextButton = (e) => {
     this.setState({ currentStep: this.state.currentStep + 1 });
   };
 
-  onBackButton = e => {
+  onBackButton = (e) => {
     this.setState({ currentStep: this.state.currentStep - 1 });
   };
 
@@ -34,7 +34,7 @@ class Information extends Component {
               margin: "24px 16px 0",
               minHeight: "100vh",
               paddingBottom: "16px",
-              paddingTop: "9vh"
+              paddingTop: "9vh",
             }}
           >
             <div
@@ -44,7 +44,7 @@ class Information extends Component {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                paddingTop: "2em"
+                paddingTop: "2em",
               }}
             >
               <h1 style={{ marginBottom: "2em" }}>
@@ -55,7 +55,7 @@ class Information extends Component {
                 onChange={this.onStepsChange}
                 style={{
                   textAlign: "left",
-                  width: "80%"
+                  width: "80%",
                 }}
               >
                 <Step
