@@ -43,7 +43,7 @@ class Actions extends Component {
             display: "flex",
             justifyContent: "space-between",
             marginLeft: "50px",
-            marginRight: "50px"
+            marginRight: "50px",
           }}
         >
           <span onClick={onClick} style={{ cursor: "pointer" }}>

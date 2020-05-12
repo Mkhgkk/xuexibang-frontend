@@ -6,28 +6,27 @@ import New from "./New";
 import Edit from "./Edit";
 import { PlusOutlined } from "@ant-design/icons";
 import * as courseService from "../../../services/courseService";
+import { getCurrentUser } from "../../../services/authService";
 import * as feedService from "../../../services/feedService";
 import moment from "moment";
-import UserContext from "../../../context/userContext";
-import { Redirect } from "react-router-dom";
+import CommentContext from "./../../../context/commentContext";
 
 const tabList = [
   {
     key: "tab1",
-    tab: "Basic Info"
+    tab: "Basic Info",
   },
   {
     key: "tab2",
-    tab: "Announcement"
+    tab: "Announcement",
   },
   {
     key: "tab3",
-    tab: "Homework"
-  }
+    tab: "Homework",
+  },
 ];
 
 class ClassDetail extends Component {
-  static contextType = UserContext;
   state = {
     key: "tab1",
     noTitleKey: "app",
@@ -35,26 +34,21 @@ class ClassDetail extends Component {
     newMode: "",
     infoEditMode: false,
     course: {},
+    auth: {},
     announcement: [],
     homework: [],
     new: { content: "", deadline: "" },
     viewEdit: false,
-    feed: {}
+    feed: {},
   };
 
   componentDidMount = async () => {
-    try {
-      const id = this.props.match.params.id;
-      const { data: course } = await courseService.getCourse(id);
-      const { data: announcement } = await feedService.getAnnouncementById(id);
-      const { data: homework } = await feedService.getHomeworkById(id);
-
-      this.setState({ course, announcement, homework });
-    } catch (ex) {
-      if (ex.response && ex.response.status === 404)
-        message.error("No classes with the given Id");
-      this.props.history.replace("/dashboard/admin/classes");
-    }
+    const id = this.props.match.params.id;
+    const { data: course } = await courseService.getCourse(id);
+    const { data: announcement } = await feedService.getAnnouncementById(id);
+    const { data: homework } = await feedService.getHomeworkById(id);
+    const auth = getCurrentUser();
+    this.setState({ course, auth, announcement, homework });
   };
 
   componentDidUpdate = async () => {
@@ -68,9 +62,13 @@ class ClassDetail extends Component {
         announcement,
         homework,
         key: "tab1",
-        infoEditMode: false
+        infoEditMode: false,
       });
     }
+  };
+
+  updateState = (key, val) => {
+    this.setState({ [key]: val });
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -79,7 +77,7 @@ class ClassDetail extends Component {
     this.setState({ course });
   };
 
-  handleSubmit = async e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const { course } = this.state;
 
@@ -96,36 +94,36 @@ class ClassDetail extends Component {
     this.setState({ [type]: key });
   };
 
-  onMakeNew = mode => {
+  onMakeNew = (mode) => {
     this.setState({ newMode: mode });
   };
 
   showDrawer = () => {
     this.setState({
-      newModal: true
+      newModal: true,
     });
   };
 
   onClose = () => {
     this.setState({
-      newModal: false
+      newModal: false,
     });
   };
 
   handleEdit = () => {
     this.setState({
-      infoEditMode: !this.state.infoEditMode
+      infoEditMode: !this.state.infoEditMode,
     });
   };
 
-  onSubmitAnnounce = async e => {
+  onSubmitAnnounce = async (e) => {
     e.preventDefault();
     const { course } = this.state;
 
     const feed = {
       type: "announcement",
       course: course._id,
-      content: this.state.new.content
+      content: this.state.new.content,
     };
     try {
       await feedService.newFeed(feed);
@@ -141,7 +139,7 @@ class ClassDetail extends Component {
     }
   };
 
-  onSubmitHomework = async e => {
+  onSubmitHomework = async (e) => {
     e.preventDefault();
     const { course } = this.state;
 
@@ -150,7 +148,7 @@ class ClassDetail extends Component {
         type: "homework",
         course: course._id,
         content: this.state.new.content,
-        deadline: this.state.new.deadline.toJSON()
+        deadline: this.state.new.deadline.toJSON(),
       };
       try {
         await feedService.newFeed(feed);
@@ -177,7 +175,7 @@ class ClassDetail extends Component {
     this.setState({ new: newFeed });
   };
 
-  onSaveAnnounce = async e => {
+  onSaveAnnounce = async (e) => {
     e.preventDefault();
     const { feed, course } = this.state;
 
@@ -195,7 +193,7 @@ class ClassDetail extends Component {
     }
   };
 
-  onSaveHomework = async e => {
+  onSaveHomework = async (e) => {
     e.preventDefault();
     const { feed, course } = this.state;
 
@@ -203,7 +201,7 @@ class ClassDetail extends Component {
       ? {
           content: feed.content,
           deadline: feed.deadline.toJSON(),
-          _id: feed._id
+          _id: feed._id,
         }
       : { content: feed.content, deadline: feed.deadline, _id: feed._id };
 
@@ -225,21 +223,21 @@ class ClassDetail extends Component {
     this.setState({ feed });
   };
 
-  onOpenEdit = feed => {
+  onOpenEdit = (feed) => {
     this.setState({ viewEdit: true, feed });
   };
 
   onCloseEdit = () => {
     this.setState({
       viewEdit: false,
-      feed: {}
+      feed: {},
     });
   };
 
-  onDeleteAnnounce = async id => {
+  onDeleteAnnounce = async (id) => {
     const originalAnnouncement = this.state.announcement;
 
-    const announcement = originalAnnouncement.filter(a => a._id !== id);
+    const announcement = originalAnnouncement.filter((a) => a._id !== id);
     this.setState({ announcement });
 
     try {
@@ -254,10 +252,10 @@ class ClassDetail extends Component {
     }
   };
 
-  onDeleteHomework = async id => {
+  onDeleteHomework = async (id) => {
     const originalHomework = this.state.homework;
 
-    const homework = originalHomework.filter(a => a._id !== id);
+    const homework = originalHomework.filter((a) => a._id !== id);
     this.setState({ homework });
 
     try {
@@ -273,20 +271,18 @@ class ClassDetail extends Component {
   };
 
   render() {
-    const { currentUser } = this.context;
-
-    if (currentUser && !currentUser.isAdmin)
-      return <Redirect to="/forbidden" />;
+    const { updateState } = this;
     const {
       key,
       newModal,
       infoEditMode,
       newMode,
       course,
+      auth,
       announcement,
       homework,
       feed,
-      viewEdit
+      viewEdit,
     } = this.state;
     const contentList = {
       tab1: (
@@ -300,7 +296,8 @@ class ClassDetail extends Component {
       tab2: (
         <Homework
           courseId={course._id}
-          type="Announcement"
+          auth={auth}
+          type="announcement"
           listData={announcement}
           onOpenEdit={this.onOpenEdit}
         />
@@ -308,76 +305,79 @@ class ClassDetail extends Component {
       tab3: (
         <Homework
           courseId={course._id}
-          type="Homework"
+          auth={auth}
+          type="homework"
           listData={homework}
           onOpenEdit={this.onOpenEdit}
         />
-      )
+      ),
     };
 
     return (
-      <div>
-        <Card
-          style={{ width: "100%" }}
-          title={course.name}
-          extra={
-            key === "tab1" ? (
-              <Button onClick={this.handleEdit}>
-                {infoEditMode ? "Cancel" : "Edit"}
-              </Button>
-            ) : key === "tab2" ? (
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.onMakeNew("Announcement");
-                  this.showDrawer();
-                }}
-              >
-                <PlusOutlined />
-                New Announcement
-              </Button>
-            ) : (
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.onMakeNew("Homework");
-                  this.showDrawer();
-                }}
-              >
-                <PlusOutlined />
-                New Homework
-              </Button>
-            )
-          }
-          tabList={tabList}
-          activeTabKey={key}
-          onTabChange={key => {
-            this.onTabChange(key, "key");
-          }}
-        >
-          {contentList[key]}
-        </Card>
-        <New
-          visible={newModal}
-          onClose={this.onClose}
-          mode={newMode}
-          course={course}
-          onSubmitAnnounce={this.onSubmitAnnounce}
-          onSubmitHomework={this.onSubmitHomework}
-          onChange={this.onNewChange}
-          new={this.state.new}
-        />
-        <Edit
-          visible={viewEdit}
-          onClose={this.onCloseEdit}
-          data={feed}
-          onChange={this.onChangeEdit}
-          onSubmitAnnounce={this.onSaveAnnounce}
-          onSubmitHomework={this.onSaveHomework}
-          onDeleteAnnounce={this.onDeleteAnnounce}
-          onDeleteHomework={this.onDeleteHomework}
-        />
-      </div>
+      <CommentContext.Provider value={{ state: this.state, updateState }}>
+        <div>
+          <Card
+            style={{ width: "100%" }}
+            title={course.name}
+            extra={
+              key === "tab1" ? (
+                <Button onClick={this.handleEdit}>
+                  {infoEditMode ? "Cancel" : "Edit"}
+                </Button>
+              ) : key === "tab2" ? (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.onMakeNew("Announcement");
+                    this.showDrawer();
+                  }}
+                >
+                  <PlusOutlined />
+                  New Announcement
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.onMakeNew("Homework");
+                    this.showDrawer();
+                  }}
+                >
+                  <PlusOutlined />
+                  New Homework
+                </Button>
+              )
+            }
+            tabList={tabList}
+            activeTabKey={key}
+            onTabChange={(key) => {
+              this.onTabChange(key, "key");
+            }}
+          >
+            {contentList[key]}
+          </Card>
+          <New
+            visible={newModal}
+            onClose={this.onClose}
+            mode={newMode}
+            course={course}
+            onSubmitAnnounce={this.onSubmitAnnounce}
+            onSubmitHomework={this.onSubmitHomework}
+            onChange={this.onNewChange}
+            new={this.state.new}
+          />
+          <Edit
+            visible={viewEdit}
+            onClose={this.onCloseEdit}
+            data={feed}
+            onChange={this.onChangeEdit}
+            onSubmitAnnounce={this.onSaveAnnounce}
+            onSubmitHomework={this.onSaveHomework}
+            onDeleteAnnounce={this.onDeleteAnnounce}
+            onDeleteHomework={this.onDeleteHomework}
+          />
+        </div>
+      </CommentContext.Provider>
     );
   }
 }
