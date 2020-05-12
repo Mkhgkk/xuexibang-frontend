@@ -4,12 +4,12 @@ import ListCard from "./ListCard";
 class Homework extends Component {
   state = {
     commentValue: "",
-    replyValue: ""
+    replyValue: "",
   };
 
-  handleCommentToggle = itemId => {
+  handleCommentToggle = (itemId) => {
     const listData = [...this.state.listData];
-    const index = listData.map(item => item._id).indexOf(itemId);
+    const index = listData.map((item) => item._id).indexOf(itemId);
     listData[index]["commentToggler"] = listData[index]["commentToggler"]
       ? false
       : true;
@@ -17,57 +17,73 @@ class Homework extends Component {
     this.setState({ listData });
   };
 
-  handleCommentSubmit = _id => {
+  handleCommentSubmit = (_id) => {
     const listData = [...this.state.listData];
-    const item = listData.filter(item => item._id === _id);
+    const item = listData.filter((item) => item._id === _id);
 
     item[0].comments = [
       { _id: new Date(), content: this.state.commentValue, replies: [] },
-      ...item[0].comments
+      ...item[0].comments,
     ];
     this.setState({ listData: listData, commentValue: "" });
   };
 
   handleReplySubmit = (itemId, commentId) => {
     const listData = [...this.state.listData];
-    const index = listData.map(item => item._id).indexOf(itemId);
+    const index = listData.map((item) => item._id).indexOf(itemId);
     const item = listData[index];
     const commentIndex = item.comments
-      .map(comment => comment._id)
+      .map((comment) => comment._id)
       .indexOf(commentId);
     const comment = item.comments[commentIndex];
     comment["replies"] = [
       { _id: new Date(), content: this.state.replyValue },
-      ...comment["replies"]
+      ...comment["replies"],
     ];
     this.setState({ listData: listData, replyValue: "" });
   };
 
-  handleCommentChange = e => {
+  handleCommentChange = (e) => {
     this.setState({ commentValue: e.target.value });
   };
 
-  handleReplyChange = e => {
+  handleReplyChange = (e) => {
     this.setState({ replyValue: e.target.value });
   };
 
   render() {
-    const { listData, onOpenEdit, type } = this.props;
+    const { auth, listData, onOpenEdit, type } = this.props;
     return (
-      <div style={{ overflow: "scroll", height: "60vh" }}>
-        <ListCard
-          listData={listData}
-          mode={type}
-          commentValue={this.state.commentValue}
-          replyValue={this.state.replyValue}
-          handleCommentSubmit={this.handleCommentSubmit}
-          handleReplySubmit={this.handleReplySubmit}
-          handleCommentChange={this.handleCommentChange}
-          handleReplyChange={this.handleReplyChange}
-          onCommentToggle={this.handleCommentToggle}
-          onOpenEdit={onOpenEdit}
-        />
-      </div>
+      <React.Fragment>
+        <div style={{ overflow: "scroll", height: "60vh" }}>
+          <ListCard
+            listData={listData}
+            mode={type}
+            auth={auth}
+            commentValue={this.state.commentValue}
+            replyValue={this.state.replyValue}
+            handleCommentSubmit={this.handleCommentSubmit}
+            handleReplySubmit={this.handleReplySubmit}
+            handleCommentChange={this.handleCommentChange}
+            handleReplyChange={this.handleReplyChange}
+            onCommentToggle={this.handleCommentToggle}
+            onOpenEdit={onOpenEdit}
+          />
+        </div>
+        {/* <UserContext.Consumer>
+              {(value) => (
+                feed.comment && (<CommentBox
+                onCommentSubmit={() => this.handleCommentSubmit(feed._id)}
+                commentButtonLoading={feed.commentButtonLoading}
+                disableCommentButton={() => this.disableCommentButton(feed._id)}
+                submitButtonDisabled={feed.submitButtonDisabled}
+                value={feed.commentValue}
+                onCommentChange={(e) => this.handleCommentChange(e, feed._id)}
+                currentUser={value.currentUser}
+                />)
+              )}
+            </UserContext.Consumer> */}
+      </React.Fragment>
     );
   }
 }
