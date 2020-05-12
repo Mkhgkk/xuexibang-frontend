@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ClassCard from "./ClassCard";
 import { getAdminCourses } from "../../../services/courseService";
-import { Empty, message } from "antd";
+import { Empty } from "antd";
 import AdminLoading from "./AdminLoading";
 
 class ClassList extends Component {
@@ -16,7 +16,7 @@ class ClassList extends Component {
       const { data: courses } = await getAdminCourses();
       this.setState({ courses, loading: false });
     } catch (ex) {
-      message.error("Something went to wrong");
+      console.log(ex);
     }
   };
 

@@ -28,7 +28,7 @@ class CardBox extends Component {
       const { data } = await getFeeds();
       this.setState({ feeds: data, loading: false });
     } catch (ex) {
-      message.error("Something went wrong!");
+      console.log(ex);
     }
   };
 

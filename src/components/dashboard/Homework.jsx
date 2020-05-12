@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Divider, Empty, message } from "antd";
+import { Row, Col, Divider, Empty } from "antd";
 import HomeworkCard from "./HomeworkCard";
 import { getHomework } from "../../services/feedService";
 import moment from "moment";
@@ -21,7 +21,7 @@ class Homework extends Component {
         .reverse();
       this.setState({ pending, duePast, loading: false });
     } catch (ex) {
-      message.error("Something went wrong!");
+      console.log(ex);
     }
   };
 

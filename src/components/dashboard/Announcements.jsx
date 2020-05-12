@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Divider, Empty, message } from "antd";
+import { Row, Col, Divider, Empty } from "antd";
 import HomeworkCard from "./HomeworkCard";
 import { getAnnouncement } from "../../services/feedService";
 import HomeworkLoading from "./HomeworkLoading";
@@ -16,7 +16,7 @@ class Announcements extends Component {
       const { data: announcement } = await getAnnouncement();
       this.setState({ announcement, loading: false });
     } catch (ex) {
-      message.error("Something went wrong!");
+      console.log(ex);
     }
   };
 

@@ -31,7 +31,7 @@ class Classes extends Component {
         fetchLoading: false
       });
     } catch (ex) {
-      message.error("Something went to wrong");
+      console.log(ex);
     }
   };
 
