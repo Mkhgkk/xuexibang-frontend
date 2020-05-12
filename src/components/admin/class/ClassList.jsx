@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import ClassCard from "./ClassCard";
 import { getAdminCourses } from "../../../services/courseService";
-<<<<<<< HEAD
-import { Empty } from "antd";
 import AdminLoading from "./AdminLoading";
-=======
->>>>>>> faf61631c8afc8d1d31e4461e91558b2e66c08c6
 
 class ClassList extends Component {
   state = {
     courses: [],
+    loading: false
   };
 
   componentDidMount = async () => {
@@ -22,10 +19,11 @@ class ClassList extends Component {
     }
   };
   render() {
-    const { courses } = this.state;
+    const { courses, loading } = this.state;
     return (
       <div style={{ overflow: "scroll", height: "80vh" }}>
-        {courses.map((course) => (
+        {loading && <AdminLoading />}
+        {courses.map(course => (
           <ClassCard course={course} key={course._id} />
         ))}
       </div>
