@@ -1,38 +1,43 @@
 import React, { Component } from "react";
-import { Row, Col, Divider, message } from "antd";
+import { Row, Col, Divider, Empty, message } from "antd";
 import HomeworkCard from "./HomeworkCard";
 import { getAnnouncement } from "../../services/feedService";
+import HomeworkLoading from "./HomeworkLoading";
 
 class Announcements extends Component {
   state = {
-    announcement: []
+    announcement: [],
+    loading: false
   };
 
   componentDidMount = async () => {
-    const { data: announcement } = await getAnnouncement();
-    this.setState({ announcement });
+    this.setState({ loading: true });
+    try {
+      const { data: announcement } = await getAnnouncement();
+      this.setState({ announcement, loading: false });
+    } catch (ex) {
+      message.error("Something went wrong!");
+    }
   };
 
-  // handleDelete = value => {
-  //   const keys = [...this.state.keys];
-  //   keys.pop();
-  //   this.setState({ keys });
-  //   message.success("Class has been deleted!");
-  // };
-
   render() {
-    const { announcement } = this.state;
+    const { announcement, loading } = this.state;
     return (
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>Announcements</h1>
 
-        <Divider
-          orientation="center"
-          style={{ color: "#333", fontWeight: "normal" }}
-        >
-          Latest
-        </Divider>
-
+        {loading ? (
+          <HomeworkLoading />
+        ) : announcement.length === 0 ? (
+          <Empty description="No announcement" style={{ marginTop: "10%" }} />
+        ) : (
+          <Divider
+            orientation="center"
+            style={{ color: "#333", fontWeight: "normal" }}
+          >
+            Latest
+          </Divider>
+        )}
         <Row gutter={[32, 24]}>
           {announcement.map(v => (
             <Col span={6}>

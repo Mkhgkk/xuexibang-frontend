@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
-  SettingOutlined,
+  SettingOutlined
 } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import UserContext from "../context/userContext";
@@ -17,7 +17,7 @@ class SideBar extends Component {
 
     return (
       <UserContext.Consumer>
-        {(value) => (
+        {value => (
           <Sider
             theme="light"
             style={{
@@ -25,7 +25,7 @@ class SideBar extends Component {
               position: "relative ",
               top: "8vh",
               position: "fixed",
-              paddingTop: "1em",
+              paddingTop: "1em"
             }}
           >
             <Menu
@@ -73,7 +73,7 @@ class SideBar extends Component {
                   </NavLink>
                 </Menu.Item>
               </SubMenu>
-              {value.currentUser && value.currentUser.isAdmin && (
+              {value.auth && value.auth.isAdmin && (
                 <SubMenu
                   key="admin"
                   title={

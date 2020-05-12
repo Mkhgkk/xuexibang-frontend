@@ -19,14 +19,14 @@ class NavBar extends Component {
         authService.logout();
         window.location.replace("/login");
       },
-      onCancel() {},
+      onCancel() {}
     });
   };
 
   render() {
     return (
       <UserContext.Consumer>
-        {(value) => (
+        {value => (
           <Layout className="layout">
             <Header
               style={{
@@ -36,39 +36,38 @@ class NavBar extends Component {
                 position: "fixed",
                 width: "100%",
                 zIndex: "1",
+                boxShadow: "0 1px 1px #f0f0f0"
               }}
             >
               <div className="logo">
                 <Link to="/dashboard/feeds">
-                  <img
-                    src={logo}
-                    style={{ width: 70, marginLeft: "1em" }}
-                    alt="logo"
-                  />
+                  <img src={logo} style={{ width: 70 }} alt="logo" />
                 </Link>
               </div>
 
-              {value.currentUser ? (
+              {value.auth ? (
                 <Menu theme="light" mode="horizontal">
                   <NavLink
                     to="/mypage"
                     style={{ color: "#595959", marginRight: "2em" }}
                   >
-                    {value.currentUser.avatar ? (
+                    {value.currentUser && value.currentUser.avatar ? (
                       <Avatar
                         style={{ marginRight: "0.5em" }}
-                        src={value.currentUser.avatar}
+                        src={value.currentUser && value.currentUser.avatar}
                       />
                     ) : (
                       <Avatar
                         style={{
                           marginRight: "0.5em",
-                          backgroundColor: "#9254de",
+                          backgroundColor: "#9254de"
                         }}
                         icon={<UserOutlined />}
                       />
                     )}
-                    <span>{value.currentUser.userName}</span>
+                    <span>
+                      {value.currentUser && value.currentUser.userName}
+                    </span>
                   </NavLink>
 
                   <span

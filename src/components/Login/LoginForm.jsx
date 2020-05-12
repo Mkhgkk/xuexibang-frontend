@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import auth from "../../services/authService";
 
 class LoginForm extends Component {
@@ -17,7 +17,6 @@ class LoginForm extends Component {
   };
 
   render() {
-    // if (auth.getCurrentUser()) return <Redirect to="/dashboard/feeds" />;
     return (
       <Form
         name="normal_login"

@@ -22,19 +22,25 @@ class ClassDetails extends Component {
   };
 
   componentDidMount = async () => {
-    const id = this.props.match.params.id;
-    const { data: user } = await userSerivce.getUserDetail();
-    const { data: course } = await courseService.getCourse(id);
-    const { data: students } = await courseService.getStudent(id);
-    const { data: homework } = await feedService.getHomeworkById(id);
-    const { data: announcement } = await feedService.getAnnouncementById(id);
-    this.setState({
-      course,
-      students,
-      homework,
-      announcement,
-      myCourses: user.courses
-    });
+    try {
+      const id = this.props.match.params.id;
+      const { data: user } = await userSerivce.getUserDetail();
+      const { data: course } = await courseService.getCourse(id);
+      const { data: students } = await courseService.getStudent(id);
+      const { data: homework } = await feedService.getHomeworkById(id);
+      const { data: announcement } = await feedService.getAnnouncementById(id);
+      this.setState({
+        course,
+        students,
+        homework,
+        announcement,
+        myCourses: user.courses
+      });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        message.error("No classes with the given Id");
+      this.props.history.replace("/dashboard/classes");
+    }
   };
 
   toggleDrawer = () => {

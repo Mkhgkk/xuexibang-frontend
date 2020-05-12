@@ -3,10 +3,13 @@ import { Row, Col } from "antd";
 import ClassList from "../components/admin/class/ClassList";
 import ClassDetail from "../components/admin/class/ClassDetail";
 import { Route } from "react-router-dom";
+import UserContext from "../context/userContext";
 
 class AdminClass extends Component {
+  static contextType = UserContext;
   render() {
-    const { auth } = this.props;
+    const { currentUser } = this.context;
+
     return (
       <div>
         <h2 style={{ marginBottom: "1em" }}>List of classes I manage</h2>
@@ -18,7 +21,7 @@ class AdminClass extends Component {
             <Route
               path="/dashboard/admin/classes/:id"
               component={ClassDetail}
-              auth={auth}
+              auth={currentUser}
             />
           </Col>
         </Row>

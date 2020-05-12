@@ -6,9 +6,10 @@ import New from "./New";
 import Edit from "./Edit";
 import { PlusOutlined } from "@ant-design/icons";
 import * as courseService from "../../../services/courseService";
-import { getCurrentUser } from "../../../services/authService";
 import * as feedService from "../../../services/feedService";
 import moment from "moment";
+import UserContext from "../../../context/userContext";
+import { Redirect } from "react-router-dom";
 
 const tabList = [
   {
@@ -26,6 +27,7 @@ const tabList = [
 ];
 
 class ClassDetail extends Component {
+  static contextType = UserContext;
   state = {
     key: "tab1",
     noTitleKey: "app",
@@ -33,7 +35,6 @@ class ClassDetail extends Component {
     newMode: "",
     infoEditMode: false,
     course: {},
-    auth: {},
     announcement: [],
     homework: [],
     new: { content: "", deadline: "" },
@@ -42,12 +43,18 @@ class ClassDetail extends Component {
   };
 
   componentDidMount = async () => {
-    const id = this.props.match.params.id;
-    const { data: course } = await courseService.getCourse(id);
-    const { data: announcement } = await feedService.getAnnouncementById(id);
-    const { data: homework } = await feedService.getHomeworkById(id);
-    const auth = getCurrentUser();
-    this.setState({ course, auth, announcement, homework });
+    try {
+      const id = this.props.match.params.id;
+      const { data: course } = await courseService.getCourse(id);
+      const { data: announcement } = await feedService.getAnnouncementById(id);
+      const { data: homework } = await feedService.getHomeworkById(id);
+
+      this.setState({ course, announcement, homework });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        message.error("No classes with the given Id");
+      this.props.history.replace("/dashboard/admin/classes");
+    }
   };
 
   componentDidUpdate = async () => {
@@ -266,13 +273,16 @@ class ClassDetail extends Component {
   };
 
   render() {
+    const { currentUser } = this.context;
+
+    if (currentUser && !currentUser.isAdmin)
+      return <Redirect to="/forbidden" />;
     const {
       key,
       newModal,
       infoEditMode,
       newMode,
       course,
-      auth,
       announcement,
       homework,
       feed,
@@ -290,7 +300,6 @@ class ClassDetail extends Component {
       tab2: (
         <Homework
           courseId={course._id}
-          auth={auth}
           type="Announcement"
           listData={announcement}
           onOpenEdit={this.onOpenEdit}
@@ -299,7 +308,6 @@ class ClassDetail extends Component {
       tab3: (
         <Homework
           courseId={course._id}
-          auth={auth}
           type="Homework"
           listData={homework}
           onOpenEdit={this.onOpenEdit}

@@ -11,7 +11,8 @@ const ClassCard = ({ course }) => {
         style={{ width: 280, marginBottom: "1em", opacity: "0.8" }}
         size="small"
       >
-        <p>{course.time}</p>
+        <p>{course.laoshi}</p>
+        <p style={{ marginTop: "-0.8em" }}>{course.time}</p>
       </Card>
     </Link>
   );

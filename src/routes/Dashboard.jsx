@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 import CardBox from "../components/dashboard/CardBox";
 import SideBar from "../components/SideBar";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Classes from "../components/dashboard/Classes";
 import Homework from "../components/dashboard/Homework";
 import Announcements from "../components/dashboard/Announcements";
@@ -33,6 +33,7 @@ class Dashboard extends Component {
             <Route path="/dashboard/homework" component={Homework} />
             <Route path="/dashboard/admin/classes" component={AdminClass} />
             <Route path="/dashboard/admin/create" component={CreateClass} />
+            <Redirect from="/dashboard/admin" to="/dashboard/admin/classes" />
           </Switch>
         </Content>
       </Layout>

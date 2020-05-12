@@ -8,14 +8,22 @@ class Actions extends Component {
     const deadline = moment(this.props.deadline);
     const todaysdate = moment();
     const daysleft = deadline.diff(todaysdate, "days");
-    if (daysleft === 0) {
+
+    if (!moment().isBefore(this.props.deadline)) {
+      return (
+        <div>
+          <ClockCircleOutlined style={{ marginRight: "0.5em" }} />
+          Past due
+        </div>
+      );
+    } else if (daysleft === 0) {
       return (
         <div>
           <ClockCircleOutlined style={{ color: "red", marginRight: "0.5em" }} />
           In 24hours
         </div>
       );
-    } else if (daysleft > 0) {
+    } else {
       return (
         <div>
           <ClockCircleOutlined
@@ -24,13 +32,7 @@ class Actions extends Component {
           {daysleft === 1 ? daysleft + "day left" : daysleft + "days left"}
         </div>
       );
-    } else
-      return (
-        <div>
-          <ClockCircleOutlined style={{ marginRight: "0.5em" }} />
-          Past due
-        </div>
-      );
+    }
   };
   render() {
     const { deadline, onClick, commentCount, type } = this.props;

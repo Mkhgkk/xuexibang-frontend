@@ -2,21 +2,17 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 import RegisterForm from "../components/register/RegisterForm";
 import photo from "../image/register.svg";
-import EmailSent from "../components/register/EmailSent";
+import UserContext from "../context/userContext";
+import { Redirect } from "react-router-dom";
 
 const { Content } = Layout;
 
 class RegisterPage extends Component {
-  state = {
-    emailSent: false
-  };
-
-  showEmailSent = () => {
-    this.setState({ emailSent: true });
-  };
+  static contextType = UserContext;
 
   render() {
-    const { emailSent } = this.state;
+    const { currentUser } = this.context;
+    if (currentUser) return <Redirect to="/dashboard/feeds" />;
 
     return (
       <Layout>
@@ -38,14 +34,8 @@ class RegisterPage extends Component {
               alignItems: "center"
             }}
           >
-            {emailSent ? (
-              <EmailSent />
-            ) : (
-              <>
-                <RegisterForm showEmailSent={this.showEmailSent} />
-                <img src={photo} alt="login" style={{ width: "28%" }} />
-              </>
-            )}
+            <RegisterForm />
+            <img src={photo} alt="login" style={{ width: "28%" }} />
           </div>
         </Content>
       </Layout>

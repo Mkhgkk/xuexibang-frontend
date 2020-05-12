@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Input, Button, Checkbox, message } from "antd";
 import * as userSerivce from "../../services/userService";
 import auth from "../../services/authService";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class RegisterForm extends Component {
   onSubmit = async values => {
@@ -15,7 +15,6 @@ class RegisterForm extends Component {
       auth.loginWithJwt(response.data);
 
       window.location = "/userDetail";
-      // this.props.showEmailSent();
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         message.error(ex.response.data);
@@ -24,8 +23,6 @@ class RegisterForm extends Component {
   };
 
   render() {
-    // if (auth.getCurrentUser()) return <Redirect to="/dashboard/feeds" />;
-
     return (
       <Form
         name="register"

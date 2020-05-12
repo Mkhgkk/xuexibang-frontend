@@ -2,11 +2,17 @@ import React, { Component } from "react";
 import { Layout } from "antd";
 import LoginForm from "../components/Login/LoginForm";
 import photo from "../image/login.svg";
+import UserContext from "../context/userContext";
+import { Redirect } from "react-router-dom";
 
 const { Content } = Layout;
 
 class LoginPage extends Component {
+  static contextType = UserContext;
   render() {
+    const { auth } = this.context;
+    if (auth) return <Redirect to="/dashboard/feeds" />;
+
     return (
       <Layout>
         <Content
