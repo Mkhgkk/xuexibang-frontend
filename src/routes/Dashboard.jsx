@@ -9,6 +9,7 @@ import Announcements from "../components/dashboard/Announcements";
 import ClassDetails from "../components/dashboard/ClassDetails";
 import AdminClass from "./AdminClass";
 import CreateClass from "./CreateClass";
+import ChatIcon from "../components/chat/ChatIcon";
 
 class Dashboard extends Component {
   render() {
@@ -16,6 +17,7 @@ class Dashboard extends Component {
     return (
       <Layout>
         <SideBar {...this.props} />
+        <ChatIcon />
         <Content
           style={{
             margin: "24px 16px 0",
