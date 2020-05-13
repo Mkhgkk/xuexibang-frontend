@@ -9,14 +9,22 @@ class HomeworkCard extends Component {
     const deadline = moment(this.props.homework.deadline);
     const todaysdate = moment();
     const daysleft = deadline.diff(todaysdate, "days");
-    if (daysleft === 0) {
+
+    if (!moment().isBefore(moment(this.props.homework.deadline), "minute")) {
+      return (
+        <div>
+          <ClockCircleOutlined style={{ marginRight: "0.5em" }} />
+          Past due
+        </div>
+      );
+    } else if (daysleft === 0) {
       return (
         <div>
           <ClockCircleOutlined style={{ color: "red", marginRight: "0.5em" }} />
           In 24hours
         </div>
       );
-    } else if (daysleft > 0) {
+    } else {
       return (
         <div>
           <ClockCircleOutlined
@@ -25,13 +33,7 @@ class HomeworkCard extends Component {
           {daysleft === 1 ? daysleft + "day left" : daysleft + "days left"}
         </div>
       );
-    } else
-      return (
-        <div>
-          <ClockCircleOutlined style={{ marginRight: "0.5em" }} />
-          Past due
-        </div>
-      );
+    }
   };
 
   render() {
@@ -49,7 +51,7 @@ class HomeworkCard extends Component {
                 .calendar()} `}
             >
               <div>{this.daysRemaining()}</div>
-            </Tooltip>,
+            </Tooltip>
           ]
         }
       >
@@ -65,7 +67,7 @@ class HomeworkCard extends Component {
             </Link>,
             <h5 style={{ fontWeight: "normal" }}>
               {moment(homework.datePosted).calendar()}
-            </h5>,
+            </h5>
           ]}
           description={[<div>{homework.content}</div>]}
         />

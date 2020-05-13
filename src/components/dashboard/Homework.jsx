@@ -15,7 +15,9 @@ class Homework extends Component {
     this.setState({ loading: true });
     try {
       const { data: homework } = await getHomework();
-      const pending = homework.filter(h => moment().isBefore(h.deadline));
+      const pending = homework.filter(h =>
+        moment().isBefore(moment(h.deadline), "minute")
+      );
       const duePast = homework
         .filter(h => !moment().isBefore(h.deadline))
         .reverse();

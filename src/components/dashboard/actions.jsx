@@ -9,7 +9,7 @@ class Actions extends Component {
     const todaysdate = moment();
     const daysleft = deadline.diff(todaysdate, "days");
 
-    if (!moment().isBefore(this.props.deadline)) {
+    if (!moment().isBefore(moment(this.props.deadline), "minute")) {
       return (
         <div>
           <ClockCircleOutlined style={{ marginRight: "0.5em" }} />
@@ -43,7 +43,7 @@ class Actions extends Component {
             display: "flex",
             justifyContent: "space-between",
             marginLeft: "50px",
-            marginRight: "50px",
+            marginRight: "50px"
           }}
         >
           <span onClick={onClick} style={{ cursor: "pointer" }}>
