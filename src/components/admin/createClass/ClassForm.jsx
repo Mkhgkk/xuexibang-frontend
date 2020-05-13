@@ -8,7 +8,7 @@ import {
   Row,
   Button,
   Upload,
-  message
+  message,
 } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { getUniversities } from "../../../services/universityService";
@@ -17,7 +17,7 @@ import { newCourse } from "../../../services/courseService";
 
 const layout = {
   labelCol: { span: 5 },
-  wrapperCol: { span: 16 }
+  wrapperCol: { span: 16 },
 };
 
 const { Option } = Select;
@@ -51,37 +51,44 @@ class ClassForm extends Component {
       "2021 Spring",
       "2021 Fall",
       "2022 Spring",
-      "2022 Fall"
+      "2022 Fall",
     ],
-    data: {}
+    data: {},
   };
 
   componentDidMount = async () => {
     const { data: schoolOptions } = await getUniversities();
     const { data: majorOptions } = await getMajors();
 
-    this.setState({ schoolOptions, majorOptions });
+    const token = localStorage.getItem("token");
+
+    this.setState({
+      schoolOptions,
+      majorOptions,
+      token: { "x-auth-token": token },
+    });
   };
 
-  handleUpload = info => {
+  handleUpload = (info) => {
     if (info.file.status === "uploading") {
       this.setState({ loading: true });
       return;
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => {
+      getBase64(info.file.originFileObj, (imageUrl) => {
         this.setState({
+          data: { ...this.state.data, thumbnail: info.file.response },
           imageUrl,
-          loading: false
+          loading: false,
         });
       });
     }
   };
 
-  onChangeThumb = e => {
+  onChangeThumb = (e) => {
     this.setState({
-      thumbnail: e.target.value
+      thumbnail: e.target.value,
     });
   };
 
@@ -97,7 +104,7 @@ class ClassForm extends Component {
     this.setState({ data });
   };
 
-  onSubmit = async e => {
+  onSubmit = async (e) => {
     e.preventDefault();
     const { data } = this.state;
     try {
@@ -118,7 +125,7 @@ class ClassForm extends Component {
       semester,
       loading,
       imageUrl,
-      data
+      data,
     } = this.state;
 
     const uploadButton = (
@@ -141,7 +148,7 @@ class ClassForm extends Component {
                 <Form.Item
                   label="University"
                   rules={[
-                    { required: true, message: "Please input university!" }
+                    { required: true, message: "Please input university!" },
                   ]}
                   initialValues={data}
                 >
@@ -151,14 +158,14 @@ class ClassForm extends Component {
                     value={data.university}
                     placeholder="Select university"
                     optionFilterProp="children"
-                    onChange={e => this.handleValue(e, "university")}
+                    onChange={(e) => this.handleValue(e, "university")}
                     filterOption={(input, option) =>
                       option.children
                         .toLowerCase()
                         .indexOf(input.toLowerCase()) >= 0
                     }
                   >
-                    {schoolOptions.map(x => (
+                    {schoolOptions.map((x) => (
                       <Option value={x._id} key={x._id}>
                         {x.name}
                       </Option>
@@ -175,14 +182,14 @@ class ClassForm extends Component {
                     value={data.major}
                     placeholder="Select Major"
                     optionFilterProp="children"
-                    onChange={e => this.handleValue(e, "major")}
+                    onChange={(e) => this.handleValue(e, "major")}
                     filterOption={(input, option) =>
                       option.children
                         .toLowerCase()
                         .indexOf(input.toLowerCase()) >= 0
                     }
                   >
-                    {majorOptions.map(x => (
+                    {majorOptions.map((x) => (
                       <Option value={x._id} key={x._id}>
                         {x.name}
                       </Option>
@@ -193,7 +200,7 @@ class ClassForm extends Component {
                 <Form.Item
                   label="Class Name"
                   rules={[
-                    { required: true, message: "Please input class name!" }
+                    { required: true, message: "Please input class name!" },
                   ]}
                 >
                   <Input
@@ -207,7 +214,7 @@ class ClassForm extends Component {
                 <Form.Item
                   label="Class number"
                   rules={[
-                    { required: true, message: "Please input class number!" }
+                    { required: true, message: "Please input class number!" },
                   ]}
                 >
                   <Input
@@ -221,14 +228,14 @@ class ClassForm extends Component {
                 <Form.Item
                   label="Semester"
                   rules={[
-                    { required: false, message: "Please Choose semester" }
+                    { required: false, message: "Please Choose semester" },
                   ]}
                 >
                   <Select
                     placeholder="Choose semester"
-                    onChange={e => this.handleValue(e, "semester")}
+                    onChange={(e) => this.handleValue(e, "semester")}
                   >
-                    {semester.map(s => (
+                    {semester.map((s) => (
                       <Option value={s} key={s}>
                         {s}
                       </Option>
@@ -294,11 +301,13 @@ class ClassForm extends Component {
                 </Form.Item>
                 <Form.Item label="Thumbnail" rules={[{ required: false }]}>
                   <Upload
-                    name="thumbnail"
+                    name="avatar"
                     listType="picture-card"
                     className="avatar-uploader"
                     showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    action="http://localhost:5000/api/courses/thumbnail"
+                    headers={this.state.token}
                     beforeUpload={beforeUpload}
                     onChange={this.handleUpload}
                   >
@@ -317,7 +326,7 @@ class ClassForm extends Component {
                 <Form.Item
                   style={{
                     float: "right",
-                    marginRight: "2em"
+                    marginRight: "2em",
                   }}
                 >
                   <Button
