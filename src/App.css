@@ -17,3 +17,68 @@
 .cursor:hover {
   cursor: pointer;
 }
+
+.bubbleYou {
+  position: relative;
+  background-color: #22075e;
+  display: inline-block;
+  font-size: 0.9em;
+  color: white;
+  max-width: 70%;
+  margin-bottom: 1em;
+  margin-left: 0.7em;
+  border-radius: 7px;
+  padding: 0.7em;
+  float: left;
+  clear: both;
+}
+.bubbleYou:after {
+  content: "";
+  border: 5px solid transparent;
+  border-right-color: #22075e;
+  border-left: 0;
+  position: absolute;
+  left: -5px;
+  top: 10px;
+}
+
+.bubbleMe {
+  position: relative;
+  background-color: white;
+  display: inline-block;
+  font-size: 0.9em;
+  color: #22075e;
+  max-width: 70%;
+  margin-bottom: 1em;
+  margin-right: 0.7em;
+  border-radius: 7px;
+  padding: 0.7em;
+  float: right;
+  clear: both;
+}
+
+.bubbleMe:after {
+  content: "";
+  border: 5px solid transparent;
+  border-left-color: white;
+  border-right: 0;
+  position: absolute;
+  right: -5px;
+  top: 10px;
+}
+
+/* .chatlist {
+  position: fixed;
+  animation-timing-function: ease-out;
+  animation-name: slidein;
+  animation-duration: 0.7s;
+}
+
+@keyframes slidein {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+} */
