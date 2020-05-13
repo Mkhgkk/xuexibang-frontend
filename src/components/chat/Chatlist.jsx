@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Avatar, Col, Badge } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 class Chatlist extends Component {
   render() {
@@ -22,7 +23,10 @@ class Chatlist extends Component {
       <div style={divStyle}>
         <Col span={7}>
           <Badge dot={true} status="warning">
-            <Avatar style={{ marginLeft: "0.7em" }} />
+            <Avatar
+              style={{ marginLeft: "0.5em", backgroundColor: "#b2b2b2" }}
+              icon={<UserOutlined />}
+            />
           </Badge>
         </Col>
         <Col span={17}>

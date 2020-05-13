@@ -103,7 +103,7 @@ class Classes extends Component {
         </Button>
         <h1 style={{ textAlign: "center", marginBottom: "2em" }}>My Classes</h1>
         {fetchLoading ? (
-          <HomeworkLoading />
+          <HomeworkLoading row={8} />
         ) : editMode ? (
           <div style={{ marginBottom: "2em" }}>
             <Form

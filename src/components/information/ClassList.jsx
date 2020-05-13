@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { List, Avatar, Col, Spin, Tooltip, Empty } from "antd";
 import { PlusCircleTwoTone, MinusCircleOutlined } from "@ant-design/icons";
 import ClassDrawer from "./ClassDrawer";
+import defaultThumbnail from "../../image/thumbnail4.svg";
 
 class ClassList extends Component {
   state = { visible: false };
@@ -49,7 +50,15 @@ class ClassList extends Component {
                       key={course._id}
                     >
                       <Col span={5}>
-                        <Avatar size={50} src={course.thumbnail} />
+                        <Avatar
+                          size={50}
+                          src={
+                            course.thumbnail
+                              ? course.thumbnail
+                              : defaultThumbnail
+                          }
+                          alt="thumbnail"
+                        />
                       </Col>
                       <Col
                         span={12}

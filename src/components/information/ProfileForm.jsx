@@ -28,7 +28,7 @@ class ProfileForm extends Component {
     imageUrl: "",
     userName: "",
     ready: false,
-    token: {},
+    token: {}
   };
 
   componentDidMount = async () => {
@@ -38,31 +38,31 @@ class ProfileForm extends Component {
       imageUrl: user.avatar,
       userName: user.userName,
       ready: true,
-      token: { "x-auth-token": token },
+      token: { "x-auth-token": token }
     });
   };
 
-  handleAvatarChange = (info) => {
+  handleAvatarChange = info => {
     if (info.file.status === "uploading") {
       this.setState({ loading: true });
       return;
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (imageUrl) =>
+      getBase64(info.file.originFileObj, imageUrl =>
         this.setState({
           imageUrl,
-          loading: false,
+          loading: false
         })
       );
     }
   };
 
   handleSubmit = async () => {
-    const { userName, imageUrl } = this.state;
+    const { userName } = this.state;
 
     try {
-      await userSerivce.changeUserInfo({ userName, avatar: imageUrl });
+      await userSerivce.changeUserInfo({ userName });
       if (userName) this.props.onNextButton();
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
@@ -91,10 +91,10 @@ class ProfileForm extends Component {
               paddingBottom: "1em",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
+              alignItems: "center"
             }}
             initialValues={{
-              ["userName"]: userName,
+              ["userName"]: userName
             }}
           >
             <Form.Item name="profile Image" style={{ marginLeft: "10%" }}>
@@ -106,7 +106,6 @@ class ProfileForm extends Component {
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 action="http://localhost:5000/api/users/avatar"
                 headers={this.state.token}
                 beforeUpload={beforeUpload}
@@ -129,7 +128,7 @@ class ProfileForm extends Component {
                 placeholder="username"
                 name="userName"
                 value={userName}
-                onChange={(e) => this.setState({ userName: e.target.value })}
+                onChange={e => this.setState({ userName: e.target.value })}
               />
             </Form.Item>
 

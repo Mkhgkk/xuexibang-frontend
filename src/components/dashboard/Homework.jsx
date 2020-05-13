@@ -32,7 +32,7 @@ class Homework extends Component {
       <React.Fragment>
         <h1 style={{ textAlign: "center" }}>My Homework</h1>
         {loading ? (
-          <HomeworkLoading />
+          <HomeworkLoading row={3} />
         ) : pending.length === 0 && duePast.length === 0 ? (
           <Empty description="No homework" style={{ marginTop: "10%" }} />
         ) : (

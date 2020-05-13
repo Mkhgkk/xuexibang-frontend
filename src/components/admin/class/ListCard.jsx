@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { List, Avatar, Spin, message } from "antd";
-import { MessageOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+  MessageOutlined,
+  LoadingOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 import CommentBox from "./../../dashboard/commentBox";
 import CommentSection from "./../../dashboard/commentSection";
 import moment from "moment";
@@ -16,7 +20,7 @@ class ListCard extends Component {
   state = {
     viewEdit: false,
     box: false,
-    data: this.props.listData,
+    data: this.props.listData
   };
 
   componentDidMount = () => {
@@ -31,7 +35,7 @@ class ListCard extends Component {
 
   disableCommentButton = (feedId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
     feed.submitButtonDisabled = true;
     // this.setState({ feeds });
     this.context.updateState(mode, feeds);
@@ -39,7 +43,7 @@ class ListCard extends Component {
 
   handleCommentClick = (feedId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
     feed.comment = feed.comment === true ? false : true;
     feed.commmentLoading = feed.commmentLoading === true ? false : true;
     this.context.updateState(mode, feeds);
@@ -47,7 +51,7 @@ class ListCard extends Component {
 
   handleCommentChange = (e, feedId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
     feed.commentValue = e.target.value;
     feed.submitButtonDisabled =
       feed.commentValue === "" || undefined ? true : false;
@@ -56,13 +60,13 @@ class ListCard extends Component {
 
   handleCommentSubmit = (feedId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
 
     feed.commentButtonLoading = true;
 
     this.context.updateState(mode, feeds);
 
-    const postAndSetComment = async (feedId) => {
+    const postAndSetComment = async feedId => {
       try {
         const { data } = await postComment(feedId, feed.commentValue);
 
@@ -87,9 +91,9 @@ class ListCard extends Component {
 
   fetchComments = (feedId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
 
-    const setComments = async (feedId) => {
+    const setComments = async feedId => {
       const { data } = await getComments(feedId);
       feed.comments = data;
       feed.commmentLoading = false;
@@ -101,8 +105,8 @@ class ListCard extends Component {
 
   disableReplyButton = (feedId, commentId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
     comment.submitButtonDisabled = true;
     this.context.updateState(mode, feeds);
@@ -110,10 +114,10 @@ class ListCard extends Component {
 
   fetchReplies = (feedId, commentId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
-    const setReplies = async (commentId) => {
+    const setReplies = async commentId => {
       const { data } = await getReplies(commentId);
       comment.replies = data;
       // comment.commmentLoading = false;
@@ -125,8 +129,8 @@ class ListCard extends Component {
 
   handleReplyChange = (e, feedId, commentId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
     comment.replyValue = e.target.value;
 
@@ -138,14 +142,14 @@ class ListCard extends Component {
 
   handleReplySubmit = (feedId, commentId, mode) => {
     let feeds = [...this.context.state[mode]];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
     comment.replyButtonLoading = true;
 
     this.context.updateState(mode, feeds);
 
-    const postAndSetReply = async (commentId) => {
+    const postAndSetReply = async commentId => {
       try {
         const { data } = await postReply(commentId, comment.replyValue);
 
@@ -175,16 +179,22 @@ class ListCard extends Component {
 
     return (
       <CommentContext.Consumer>
-        {(value) => (
+        {value => (
           <List
             itemLayout="vertical"
             size="large"
             dataSource={data}
-            renderItem={(item) => (
+            renderItem={item => (
               <List.Item key={item._id}>
                 <List.Item.Meta
                   avatar={
-                    <Avatar src={item.postedBy && item.postedBy.avatar} />
+                    <Avatar
+                      src={item.postedBy && item.postedBy.avatar}
+                      style={{
+                        backgroundColor: "#9254de"
+                      }}
+                      icon={<UserOutlined />}
+                    />
                   }
                   title={item.postedBy && item.postedBy.userName}
                   description={moment(item.datePosted).calendar()}
@@ -209,7 +219,9 @@ class ListCard extends Component {
                           <div>
                             <p>
                               Deadline:
-                              {moment(item.deadline).add(0, "days").calendar()}
+                              {moment(item.deadline)
+                                .add(0, "days")
+                                .calendar()}
                             </p>
                           </div>
                           <em className="ant-list-item-action-split"></em>
@@ -242,7 +254,7 @@ class ListCard extends Component {
                             value={this.props.commentValue}
                             onCommentChange={this.props.handleCommentChange}
                           />
-                          {item.comments.map((comment) => (
+                          {item.comments.map(comment => (
                             <CommentSection
                               key={comment._id}
                               content={comment.content}
@@ -256,7 +268,7 @@ class ListCard extends Component {
                               }
                             >
                               {comment.replies &&
-                                comment.replies.map((reply) => (
+                                comment.replies.map(reply => (
                                   <CommentSection
                                     key={reply._id}
                                     content={reply.content}
@@ -270,7 +282,7 @@ class ListCard extends Component {
                   )}
                 </div>
                 <UserContext.Consumer>
-                  {(user) => (
+                  {user => (
                     <div>
                       {item.comment && (
                         <React.Fragment>
@@ -284,7 +296,7 @@ class ListCard extends Component {
                             }
                             submitButtonDisabled={item.submitButtonDisabled}
                             value={item.commentValue}
-                            onCommentChange={(e) =>
+                            onCommentChange={e =>
                               this.handleCommentChange(e, item._id, mode)
                             }
                             currentUser={user.currentUser}
@@ -301,12 +313,12 @@ class ListCard extends Component {
 
                           {!item.comments
                             ? this.fetchComments(item._id, mode)
-                            : item.comments.map((comment) => (
+                            : item.comments.map(comment => (
                                 <CommentSection
                                   key={comment._id}
                                   content={comment.content}
                                   replyValue={comment.replyValue}
-                                  onReplyChange={(e) =>
+                                  onReplyChange={e =>
                                     this.handleReplyChange(
                                       e,
                                       item._id,
@@ -350,7 +362,7 @@ class ListCard extends Component {
                                         comment._id,
                                         mode
                                       )
-                                    : comment.replies.map((reply) => (
+                                    : comment.replies.map(reply => (
                                         <CommentSection
                                           key={reply._id}
                                           content={reply.content}

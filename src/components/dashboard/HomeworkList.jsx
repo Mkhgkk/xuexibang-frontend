@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { List, Avatar } from "antd";
 import moment from "moment";
+import { UserOutlined } from "@ant-design/icons";
 
 class HomeworkList extends Component {
   render() {
@@ -13,7 +14,15 @@ class HomeworkList extends Component {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={item.postedBy.avatar} />}
+              avatar={
+                <Avatar
+                  src={item.postedBy.avatar}
+                  style={{
+                    backgroundColor: "#9254de"
+                  }}
+                  icon={<UserOutlined />}
+                />
+              }
               title={[
                 <a href="#">{item.postedBy.userName}</a>,
                 <div style={{ fontWeight: "normal" }}>
@@ -24,7 +33,7 @@ class HomeworkList extends Component {
                 <div>{item.content}</div>,
                 type === 1 && (
                   <div>
-                    Deadline:{" "}
+                    Deadline:
                     {moment(item.deadline)
                       .add(0, "days")
                       .calendar()}

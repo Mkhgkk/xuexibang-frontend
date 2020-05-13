@@ -1,12 +1,19 @@
 import React from "react";
 import { Row, Col, Avatar, Tooltip, Space } from "antd";
-import { MessageOutlined, StarFilled } from "@ant-design/icons";
+import { MessageOutlined, StarFilled, UserOutlined } from "@ant-design/icons";
 
 const StudentList = ({ student, admin }) => {
   return (
     <Row style={{ marginBottom: "1em" }}>
       <Col span={6}>
-        <Avatar size="large" src={student.avatar} />
+        <Avatar
+          size="large"
+          src={student.avatar}
+          style={{
+            backgroundColor: "#9254de"
+          }}
+          icon={<UserOutlined />}
+        />
       </Col>
       <Col
         span={12}

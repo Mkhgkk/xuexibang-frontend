@@ -10,6 +10,7 @@ import ClassmateDrawer from "../admin/class/ClassmateDrawer";
 import * as courseService from "../../services/courseService";
 import * as feedService from "../../services/feedService";
 import * as userSerivce from "../../services/userService";
+import defaultThumbnail from "../../image/thumbnail4.svg";
 
 class ClassDetails extends Component {
   state = {
@@ -72,6 +73,23 @@ class ClassDetails extends Component {
       homework,
       announcement
     } = this.state;
+
+    const thumbnail = course.thumbnail ? (
+      <div style={{ width: 800, height: 400, overflow: "hidden" }}>
+        <img
+          alt="thumbnail"
+          src={course.thumbnail}
+          style={{ width: 800, height: "auto" }}
+        />
+      </div>
+    ) : (
+      <img
+        alt="default"
+        src={defaultThumbnail}
+        style={{ width: 800, height: 400 }}
+      />
+    );
+
     return (
       <div
         style={{
@@ -82,7 +100,7 @@ class ClassDetails extends Component {
       >
         <Card
           style={{ width: 800, margin: "auto" }}
-          cover={<img alt="thumbnail" src={course.thumbnail} />}
+          cover={thumbnail}
           actions={[
             <div onClick={this.toggleDrawer}>
               <TeamOutlined key="share" style={{ marginRight: "1em" }} />

@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import { Comment, Avatar, Form, Button, Input } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
 class ReplyBox extends Component {
   state = {
     value: "",
-    submitting: false,
+    submitting: false
   };
 
   componentDidMount = () => {
     this.props.disableCommentButton();
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
-      value: e.target.value,
+      value: e.target.value
     });
   };
 
@@ -32,7 +33,7 @@ class ReplyBox extends Component {
         <Form.Item>
           <TextArea
             rows={1}
-            onChange={(e) => this.props.onReplyChange(e)}
+            onChange={e => this.props.onReplyChange(e)}
             value={this.props.replyValue}
           />
         </Form.Item>
@@ -56,7 +57,16 @@ class ReplyBox extends Component {
     const { currentUser } = this.props;
     return (
       <Comment
-        avatar={<Avatar src={currentUser.avatar} alt="Han Solo" />}
+        avatar={
+          <Avatar
+            src={currentUser.avatar}
+            alt={currentUser.userName}
+            style={{
+              backgroundColor: "#9254de"
+            }}
+            icon={<UserOutlined />}
+          />
+        }
         content={<Editor />}
       />
     );

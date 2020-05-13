@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Comment, Avatar } from "antd";
-// import CommentBox from "./commentBox";
 import ReplyBox from "./replyBox";
+import { UserOutlined } from "@ant-design/icons";
 
 class CommentSection extends Component {
   state = {
     isReply: false,
-    replyValue: "nihao",
+    replyValue: "nihao"
   };
 
   handleReplyClick = () => {
@@ -14,9 +14,9 @@ class CommentSection extends Component {
     if (this.state.isReply === true) return this.setState({ isReply: false });
   };
 
-  handleReplySubmit = (e) => {
+  handleReplySubmit = e => {
     this.setState({
-      replyValue: e.target.value,
+      replyValue: e.target.value
     });
   };
 
@@ -43,6 +43,10 @@ class CommentSection extends Component {
           <Avatar
             src={this.props.postedBy.avatar}
             alt={this.props.postedBy.userName}
+            style={{
+              backgroundColor: "#9254de"
+            }}
+            icon={<UserOutlined />}
           />
         }
         content={<p>{this.props.content}</p>}

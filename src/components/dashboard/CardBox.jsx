@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Card, Avatar, Tag, Spin, message, Empty } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import CommentSection from "./commentSection";
 import Actions from "./actions";
 import CommentBox from "./commentBox";
@@ -19,7 +19,7 @@ class CardBox extends Component {
     feeds: [],
     loading: false,
     commentValue: "",
-    replyValue: "",
+    replyValue: ""
   };
 
   componentDidMount = async () => {
@@ -32,11 +32,11 @@ class CardBox extends Component {
     }
   };
 
-  fetchComments = (feedId) => {
+  fetchComments = feedId => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
 
-    const setComments = async (feedId) => {
+    const setComments = async feedId => {
       const { data } = await getComments(feedId);
       feed.comments = data;
       feed.commmentLoading = false;
@@ -48,10 +48,10 @@ class CardBox extends Component {
 
   fetchReplies = (feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
-    const setReplies = async (commentId) => {
+    const setReplies = async commentId => {
       const { data } = await getReplies(commentId);
       comment.replies = data;
       // comment.commmentLoading = false;
@@ -61,9 +61,9 @@ class CardBox extends Component {
     setReplies(commentId);
   };
 
-  handleCommentClick = (feedId) => {
+  handleCommentClick = feedId => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
     feed.comment = feed.comment === true ? false : true;
     feed.commmentLoading = feed.commmentLoading === true ? false : true;
     this.setState({ feeds });
@@ -71,38 +71,38 @@ class CardBox extends Component {
 
   handleCommentChange = (e, feedId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
     feed.commentValue = e.target.value;
     feed.submitButtonDisabled =
       feed.commentValue === "" || undefined ? true : false;
     this.setState({ feeds });
   };
 
-  disableCommentButton = (feedId) => {
+  disableCommentButton = feedId => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
     feed.submitButtonDisabled = true;
     this.setState({ feeds });
   };
 
   disableReplyButton = (feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
     comment.submitButtonDisabled = true;
     this.setState({ feeds });
   };
 
-  handleCommentSubmit = (feedId) => {
+  handleCommentSubmit = feedId => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
+    let feed = feeds.find(feed => feed._id === feedId);
 
     feed.commentButtonLoading = true;
 
     this.setState({ feeds });
 
-    const postAndSetComment = async (feedId) => {
+    const postAndSetComment = async feedId => {
       try {
         const { data } = await postComment(feedId, feed.commentValue);
 
@@ -127,8 +127,8 @@ class CardBox extends Component {
 
   handleReplyChange = (e, feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
     comment.replyValue = e.target.value;
 
@@ -140,14 +140,14 @@ class CardBox extends Component {
 
   handleReplySubmit = (feedId, commentId) => {
     let feeds = [...this.state.feeds];
-    let feed = feeds.find((feed) => feed._id === feedId);
-    let comment = feed.comments.find((comment) => comment._id === commentId);
+    let feed = feeds.find(feed => feed._id === feedId);
+    let comment = feed.comments.find(comment => comment._id === commentId);
 
     comment.replyButtonLoading = true;
 
     this.setState({ feeds });
 
-    const postAndSetReply = async (commentId) => {
+    const postAndSetReply = async commentId => {
       try {
         const { data } = await postReply(commentId, comment.replyValue);
 
@@ -175,7 +175,7 @@ class CardBox extends Component {
 
     return (
       <UserContext.Consumer>
-        {(value) => (
+        {value => (
           <React.Fragment>
             {loading ? (
               <FeedLoading />
@@ -184,7 +184,7 @@ class CardBox extends Component {
                 {feeds.length === 0 && (
                   <Empty description="No feed" style={{ marginTop: "10%" }} />
                 )}
-                {feeds.map((feed) => (
+                {feeds.map(feed => (
                   <Card
                     key={feed._id}
                     style={{ width: "60%", margin: "0 auto", marginTop: 16 }}
@@ -194,7 +194,7 @@ class CardBox extends Component {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyContent: "center"
                       }}
                     >
                       <div style={{ height: "40px", margin: "0 auto" }}>
@@ -215,19 +215,25 @@ class CardBox extends Component {
                     <div
                       style={{
                         display: "flex",
-                        alignItems: "center",
+                        alignItems: "center"
                       }}
                     >
-                      <Avatar src={feed.postedBy.avatar} />
+                      <Avatar
+                        src={feed.postedBy.avatar}
+                        style={{
+                          backgroundColor: "#9254de"
+                        }}
+                        icon={<UserOutlined />}
+                      />
                       <div
                         style={{
                           marginLeft: "1em",
-                          textAlign: "left",
+                          textAlign: "left"
                         }}
                       >
                         <h2
                           style={{
-                            margin: 0,
+                            margin: 0
                             // paddingLeft: "0.5em",
                             // fontWeight: "bolder",
                           }}
@@ -260,7 +266,7 @@ class CardBox extends Component {
                           }
                           submitButtonDisabled={feed.submitButtonDisabled}
                           value={feed.commentValue}
-                          onCommentChange={(e) =>
+                          onCommentChange={e =>
                             this.handleCommentChange(e, feed._id)
                           }
                           currentUser={value.currentUser}
@@ -274,12 +280,12 @@ class CardBox extends Component {
                         {/* commets */}
                         {!feed.comments
                           ? this.fetchComments(feed._id)
-                          : feed.comments.map((comment) => (
+                          : feed.comments.map(comment => (
                               <CommentSection
                                 key={comment._id}
                                 content={comment.content}
                                 replyValue={comment.replyValue}
-                                onReplyChange={(e) =>
+                                onReplyChange={e =>
                                   this.handleReplyChange(
                                     e,
                                     feed._id,
@@ -308,7 +314,7 @@ class CardBox extends Component {
                           )} */}
                                 {!comment.replies
                                   ? this.fetchReplies(feed._id, comment._id)
-                                  : comment.replies.map((reply) => (
+                                  : comment.replies.map(reply => (
                                       <CommentSection
                                         key={reply._id}
                                         content={reply.content}

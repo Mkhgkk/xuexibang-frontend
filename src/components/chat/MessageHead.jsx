@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { LeftOutlined, CloseOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LeftOutlined,
+  CloseOutlined,
+  RightOutlined
+} from "@ant-design/icons";
 import { Col, Avatar } from "antd";
 
 class MessageHead extends Component {
@@ -30,7 +35,13 @@ class MessageHead extends Component {
             )}
           </Col>
           <Col span={4}>
-            <Avatar size={35} />
+            <Avatar
+              size={35}
+              style={{
+                backgroundColor: "#9254de"
+              }}
+              icon={<UserOutlined />}
+            />
           </Col>
           <Col
             span={15}

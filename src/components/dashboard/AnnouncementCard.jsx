@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Avatar, Popconfirm, message } from "antd";
+import { Card, Popconfirm } from "antd";
 import { QuestionCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 
 class AnnouncementCard extends Component {
@@ -10,12 +10,6 @@ class AnnouncementCard extends Component {
     return (
       <Card
         style={{ width: 300 }}
-        // cover={
-        //   <img
-        //     alt="example"
-        //     src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-        //   />
-        // }
         actions={[
           <QuestionCircleOutlined key="question" />,
           <Popconfirm
@@ -24,16 +18,10 @@ class AnnouncementCard extends Component {
             icon={<QuestionCircleOutlined style={{ color: "red" }} />}
           >
             <DeleteOutlined key="ellipsis" />
-          </Popconfirm>,
+          </Popconfirm>
         ]}
       >
-        <Meta
-          //   avatar={
-          //     <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-          //   }
-          title="Data Structure"
-          description="This is the description"
-        />
+        <Meta title="Data Structure" description="This is the description" />
       </Card>
     );
   }

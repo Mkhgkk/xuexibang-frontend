@@ -25,9 +25,10 @@ class ChatListBox extends Component {
             style={{
               backgroundColor: "#120338",
               border: "none",
-              paddingLeft: "0.5em",
+              paddingLeft: "5%",
               color: "#bfbfbf",
-              borderRadius: "5px"
+              borderRadius: "5px",
+              width: "90%"
             }}
           />
         </div>

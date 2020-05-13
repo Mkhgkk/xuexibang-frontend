@@ -27,7 +27,7 @@ class Announcements extends Component {
         <h1 style={{ textAlign: "center" }}>Announcements</h1>
 
         {loading ? (
-          <HomeworkLoading />
+          <HomeworkLoading row={3} />
         ) : announcement.length === 0 ? (
           <Empty description="No announcement" style={{ marginTop: "10%" }} />
         ) : (
