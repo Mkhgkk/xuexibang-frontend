@@ -12,6 +12,9 @@ class CommentSection extends Component {
   handleReplyClick = () => {
     if (this.state.isReply === false) return this.setState({ isReply: true });
     if (this.state.isReply === true) return this.setState({ isReply: false });
+
+    // if (this.state.replies === false) return this.setState({ replies: true });
+    // if (this.state.replies === true) return this.setState({ replies: false });
   };
 
   handleReplySubmit = e => {
@@ -64,7 +67,7 @@ class CommentSection extends Component {
             currentUser={currentUser}
           />
         )}
-        {this.props.children}
+        {isReply && this.props.children}
       </Comment>
     );
   }
