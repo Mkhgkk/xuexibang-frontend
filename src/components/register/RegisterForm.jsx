@@ -35,7 +35,7 @@ class RegisterForm extends Component {
         </p>
         <Form.Item
           name="email"
-          label="E-mail"
+          label="Email"
           rules={[
             {
               type: "email",

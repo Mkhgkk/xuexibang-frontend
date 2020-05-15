@@ -30,9 +30,12 @@ class HomeworkList extends Component {
                 </div>
               ]}
               description={[
-                <div>{item.content}</div>,
+                <div>
+                  {" "}
+                  <pre style={{ whiteSpace: "pre-wrap" }}>{item.content}</pre>
+                </div>,
                 type === 1 && (
-                  <div>
+                  <div style={{ color: "black", marginBottom: "1em" }}>
                     Deadline:
                     {moment(item.deadline)
                       .add(0, "days")

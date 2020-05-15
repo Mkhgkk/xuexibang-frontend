@@ -23,10 +23,6 @@ class ListCard extends Component {
     data: this.props.listData
   };
 
-  componentDidMount = () => {
-    console.log(this.context);
-  };
-
   componentDidUpdate = () => {
     if (this.props.listData !== this.state.data) {
       this.setState({ data: this.props.listData });
@@ -200,7 +196,9 @@ class ListCard extends Component {
                   description={moment(item.datePosted).calendar()}
                 />
                 <div>
-                  <di>{item.content}</di>
+                  <div>
+                    <pre style={{ whiteSpace: "pre-wrap" }}>{item.content}</pre>
+                  </div>
 
                   <div>
                     <ul className="ant-list-item-action">

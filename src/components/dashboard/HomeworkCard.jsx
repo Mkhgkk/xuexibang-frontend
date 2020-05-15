@@ -69,7 +69,20 @@ class HomeworkCard extends Component {
               {moment(homework.datePosted).calendar()}
             </h5>
           ]}
-          description={[<div>{homework.content}</div>]}
+          description={[
+            <div>
+              <pre
+                style={{
+                  whiteSpace: "pre-wrap",
+                  height: 200,
+                  overflow: "scroll",
+                  paddingRight: "1em"
+                }}
+              >
+                {homework.content}
+              </pre>
+            </div>
+          ]}
         />
       </Card>
     );

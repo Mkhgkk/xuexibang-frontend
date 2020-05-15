@@ -245,8 +245,15 @@ class CardBox extends Component {
                         </p>
                       </div>
                     </div>
-                    <p style={{ margin: "30px 50px 30px 50px" }}>
-                      {feed.content}
+                    <p
+                      style={{
+                        margin: "30px 50px 30px 50px",
+                        overflow: "auto"
+                      }}
+                    >
+                      <pre style={{ whiteSpace: "pre-wrap" }}>
+                        {feed.content}
+                      </pre>
                     </p>
                     <Actions
                       onClick={() => this.handleCommentClick(feed._id)}

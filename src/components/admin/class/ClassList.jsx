@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ClassCard from "./ClassCard";
 import { getAdminCourses } from "../../../services/courseService";
 import AdminLoading from "./AdminLoading";
+import { Empty } from "antd";
 
 class ClassList extends Component {
   state = {
@@ -22,7 +23,16 @@ class ClassList extends Component {
     const { courses, loading } = this.state;
     return (
       <div style={{ overflow: "scroll", height: "80vh" }}>
-        {loading && <AdminLoading />}
+        {loading ? (
+          <AdminLoading />
+        ) : (
+          courses.length === 0 && (
+            <Empty
+              description="No class"
+              style={{ position: "absolute", left: "150%", top: "25%" }}
+            />
+          )
+        )}
         {courses.map(course => (
           <ClassCard course={course} key={course._id} />
         ))}

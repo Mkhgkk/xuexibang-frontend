@@ -14,16 +14,16 @@ import CommentContext from "./../../../context/commentContext";
 const tabList = [
   {
     key: "tab1",
-    tab: "Basic Info",
+    tab: "Basic Info"
   },
   {
     key: "tab2",
-    tab: "Announcement",
+    tab: "Announcement"
   },
   {
     key: "tab3",
-    tab: "Homework",
-  },
+    tab: "Homework"
+  }
 ];
 
 class ClassDetail extends Component {
@@ -39,7 +39,7 @@ class ClassDetail extends Component {
     homework: [],
     new: { content: "", deadline: "" },
     viewEdit: false,
-    feed: {},
+    feed: {}
   };
 
   componentDidMount = async () => {
@@ -62,7 +62,7 @@ class ClassDetail extends Component {
         announcement,
         homework,
         key: "tab1",
-        infoEditMode: false,
+        infoEditMode: false
       });
     }
   };
@@ -77,13 +77,14 @@ class ClassDetail extends Component {
     this.setState({ course });
   };
 
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     e.preventDefault();
     const { course } = this.state;
 
     try {
       await courseService.saveCourse(course);
       this.handleEdit();
+      message.success("Changes have been saved!");
     } catch (ex) {
       if (ex.response && ex.response.status === 400)
         message.error(ex.response.data);
@@ -94,36 +95,36 @@ class ClassDetail extends Component {
     this.setState({ [type]: key });
   };
 
-  onMakeNew = (mode) => {
+  onMakeNew = mode => {
     this.setState({ newMode: mode });
   };
 
   showDrawer = () => {
     this.setState({
-      newModal: true,
+      newModal: true
     });
   };
 
   onClose = () => {
     this.setState({
-      newModal: false,
+      newModal: false
     });
   };
 
   handleEdit = () => {
     this.setState({
-      infoEditMode: !this.state.infoEditMode,
+      infoEditMode: !this.state.infoEditMode
     });
   };
 
-  onSubmitAnnounce = async (e) => {
+  onSubmitAnnounce = async e => {
     e.preventDefault();
     const { course } = this.state;
 
     const feed = {
       type: "announcement",
       course: course._id,
-      content: this.state.new.content,
+      content: this.state.new.content
     };
     try {
       await feedService.newFeed(feed);
@@ -139,7 +140,7 @@ class ClassDetail extends Component {
     }
   };
 
-  onSubmitHomework = async (e) => {
+  onSubmitHomework = async e => {
     e.preventDefault();
     const { course } = this.state;
 
@@ -148,7 +149,7 @@ class ClassDetail extends Component {
         type: "homework",
         course: course._id,
         content: this.state.new.content,
-        deadline: this.state.new.deadline.toJSON(),
+        deadline: this.state.new.deadline.toJSON()
       };
       try {
         await feedService.newFeed(feed);
@@ -175,7 +176,7 @@ class ClassDetail extends Component {
     this.setState({ new: newFeed });
   };
 
-  onSaveAnnounce = async (e) => {
+  onSaveAnnounce = async e => {
     e.preventDefault();
     const { feed, course } = this.state;
 
@@ -193,7 +194,7 @@ class ClassDetail extends Component {
     }
   };
 
-  onSaveHomework = async (e) => {
+  onSaveHomework = async e => {
     e.preventDefault();
     const { feed, course } = this.state;
 
@@ -201,7 +202,7 @@ class ClassDetail extends Component {
       ? {
           content: feed.content,
           deadline: feed.deadline.toJSON(),
-          _id: feed._id,
+          _id: feed._id
         }
       : { content: feed.content, deadline: feed.deadline, _id: feed._id };
 
@@ -223,21 +224,21 @@ class ClassDetail extends Component {
     this.setState({ feed });
   };
 
-  onOpenEdit = (feed) => {
+  onOpenEdit = feed => {
     this.setState({ viewEdit: true, feed });
   };
 
   onCloseEdit = () => {
     this.setState({
       viewEdit: false,
-      feed: {},
+      feed: {}
     });
   };
 
-  onDeleteAnnounce = async (id) => {
+  onDeleteAnnounce = async id => {
     const originalAnnouncement = this.state.announcement;
 
-    const announcement = originalAnnouncement.filter((a) => a._id !== id);
+    const announcement = originalAnnouncement.filter(a => a._id !== id);
     this.setState({ announcement });
 
     try {
@@ -252,10 +253,10 @@ class ClassDetail extends Component {
     }
   };
 
-  onDeleteHomework = async (id) => {
+  onDeleteHomework = async id => {
     const originalHomework = this.state.homework;
 
-    const homework = originalHomework.filter((a) => a._id !== id);
+    const homework = originalHomework.filter(a => a._id !== id);
     this.setState({ homework });
 
     try {
@@ -282,7 +283,7 @@ class ClassDetail extends Component {
       announcement,
       homework,
       feed,
-      viewEdit,
+      viewEdit
     } = this.state;
     const contentList = {
       tab1: (
@@ -310,7 +311,7 @@ class ClassDetail extends Component {
           listData={homework}
           onOpenEdit={this.onOpenEdit}
         />
-      ),
+      )
     };
 
     return (
@@ -350,7 +351,7 @@ class ClassDetail extends Component {
             }
             tabList={tabList}
             activeTabKey={key}
-            onTabChange={(key) => {
+            onTabChange={key => {
               this.onTabChange(key, "key");
             }}
           >

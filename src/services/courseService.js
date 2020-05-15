@@ -32,6 +32,7 @@ export function newCourse(course) {
 
 export function saveCourse(course) {
   return http.put(apiEndPoint + "/" + course._id, {
+    _id: course._id,
     laoshi: course.laoshi,
     weeks: course.weeks,
     time: course.time,

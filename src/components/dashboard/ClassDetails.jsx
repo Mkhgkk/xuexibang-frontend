@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Divider, Popconfirm, message } from "antd";
+import { Card, Divider, Popconfirm, message, Descriptions } from "antd";
 import {
   DeleteOutlined,
   QuestionCircleOutlined,
@@ -118,14 +118,40 @@ class ClassDetails extends Component {
           <Meta
             title={course.name}
             description={[
-              <div>Class number: {course.number}</div>,
-              <div>Semester:{course.semester}</div>,
-              <div>Teacher' name: {course.laoshi}</div>,
-              <div>Weeks: {course.weeks}</div>,
-              <div>Time: {course.time}</div>,
-              <div>Classroom: {course.classroom}</div>,
-              <div>QQ group: {course.qqNumber}</div>,
-              <div>Notes: {course.notes}</div>,
+              // <div>Class number: {course.number}</div>,
+              // <div>Semester:{course.semester}</div>,
+              // <div>Teacher' name: {course.laoshi}</div>,
+              // <div>Weeks: {course.weeks}</div>,
+              // <div>Time: {course.time}</div>,
+              // <div>Classroom: {course.classroom}</div>,
+              // <div>QQ group: {course.qqNumber}</div>,
+              // <div>Notes: {course.notes}</div>,
+              <Descriptions layout="vertical" style={{ marginTop: "1em" }}>
+                <Descriptions.Item label="Class number">
+                  {course.number}
+                </Descriptions.Item>
+                <Descriptions.Item label="Semester">
+                  {course.semester}
+                </Descriptions.Item>
+                <Descriptions.Item label="Laoshi">
+                  {course.laoshi}
+                </Descriptions.Item>
+                <Descriptions.Item label="Weeks">
+                  {course.weeks}
+                </Descriptions.Item>
+                <Descriptions.Item label="Time">
+                  {course.time}
+                </Descriptions.Item>
+                <Descriptions.Item label="Classroom">
+                  {course.classroom}
+                </Descriptions.Item>
+                <Descriptions.Item label="QQ gruop">
+                  {course.qqNumber}
+                </Descriptions.Item>
+                <Descriptions.Item label="Notes" span={2}>
+                  {course.notes}
+                </Descriptions.Item>
+              </Descriptions>,
               <Divider
                 orientation="center"
                 style={{ color: "#333", fontWeight: "normal" }}

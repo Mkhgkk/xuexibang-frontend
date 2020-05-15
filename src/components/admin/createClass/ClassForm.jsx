@@ -104,9 +104,17 @@ class ClassForm extends Component {
     this.setState({ data });
   };
 
-  onSubmit = async e => {
-    e.preventDefault();
+  onSubmit = async value => {
+    console.log(value);
+    // e.preventDefault();
     const { data } = this.state;
+    // if (
+    //   data.university &&
+    //   data.major &&
+    //   data.name &&
+    //   data.number &&
+    //   data.semester
+    // ) {
     try {
       await newCourse(data);
       message.success(`${data.name} has been created successfully.`);
@@ -116,6 +124,7 @@ class ClassForm extends Component {
       if (ex.response && ex.response.status === 400)
         message.error(ex.response.data);
     }
+    // } else message.error("Please fill every required field");
   };
 
   render() {
@@ -140,17 +149,18 @@ class ClassForm extends Component {
         {data && (
           <Form
             {...layout}
-            hideRequiredMark
             style={{ paddingTop: "2em", paddingLeft: "3em" }}
+            onFinish={this.onSubmit}
+            hideRequiredMark
           >
             <Row>
               <Col span={12}>
                 <Form.Item
                   label="University"
+                  name="university"
                   rules={[
                     { required: true, message: "Please input university!" }
                   ]}
-                  initialValues={data}
                 >
                   <Select
                     name="university"
@@ -173,6 +183,7 @@ class ClassForm extends Component {
                   </Select>
                 </Form.Item>
                 <Form.Item
+                  name="major"
                   label="Major"
                   rules={[{ required: true, message: "Please input major!" }]}
                 >
@@ -198,6 +209,7 @@ class ClassForm extends Component {
                 </Form.Item>
 
                 <Form.Item
+                  name="name"
                   label="Class Name"
                   rules={[
                     { required: true, message: "Please input class name!" }
@@ -212,6 +224,7 @@ class ClassForm extends Component {
                 </Form.Item>
 
                 <Form.Item
+                  name="number"
                   label="Class number"
                   rules={[
                     { required: true, message: "Please input class number!" }
@@ -226,6 +239,7 @@ class ClassForm extends Component {
                 </Form.Item>
 
                 <Form.Item
+                  name="semester"
                   label="Semester"
                   rules={[
                     { required: false, message: "Please Choose semester" }
@@ -243,16 +257,24 @@ class ClassForm extends Component {
                   </Select>
                 </Form.Item>
 
-                <Form.Item label="Professor" rules={[{ required: false }]}>
+                <Form.Item
+                  name="laoshi"
+                  label="Laoshi"
+                  rules={[{ required: false }]}
+                >
                   <Input
-                    placeholder="Enter professor"
+                    placeholder="Enter laoshi"
                     name="laoshi"
                     onChange={this.handleChange}
                     value={data.laoshi}
                   />
                 </Form.Item>
 
-                <Form.Item label="Class week" rules={[{ required: false }]}>
+                <Form.Item
+                  name="weeks"
+                  label="Class week"
+                  rules={[{ required: false }]}
+                >
                   <Input
                     placeholder="Enter class Week"
                     name="weeks"
@@ -263,7 +285,11 @@ class ClassForm extends Component {
               </Col>
 
               <Col span={12}>
-                <Form.Item label="Class time" rules={[{ required: false }]}>
+                <Form.Item
+                  name="time"
+                  label="Class time"
+                  rules={[{ required: false }]}
+                >
                   <Input
                     placeholder="Enter class time"
                     name="time"
@@ -272,7 +298,11 @@ class ClassForm extends Component {
                   />
                 </Form.Item>
 
-                <Form.Item label="Classroom" rules={[{ required: false }]}>
+                <Form.Item
+                  name="classroom"
+                  label="Classroom"
+                  rules={[{ required: false }]}
+                >
                   <Input
                     placeholder="Enter classroom"
                     name="classroom"
@@ -281,7 +311,11 @@ class ClassForm extends Component {
                   />
                 </Form.Item>
 
-                <Form.Item label="QQ number" rules={[{ required: false }]}>
+                <Form.Item
+                  name="qqNumber"
+                  label="QQ number"
+                  rules={[{ required: false }]}
+                >
                   <Input
                     placeholder="Enter QQ number"
                     name="qqNumber"
@@ -291,15 +325,23 @@ class ClassForm extends Component {
                   />
                 </Form.Item>
 
-                <Form.Item label="Note" rules={[{ required: false }]}>
+                <Form.Item
+                  name="notes"
+                  label="Notes"
+                  rules={[{ required: false }]}
+                >
                   <Input.TextArea
-                    placeholder="Enter note"
+                    placeholder="Enter notes"
                     name="notes"
                     onChange={this.handleChange}
                     value={data.notes}
                   />
                 </Form.Item>
-                <Form.Item label="Thumbnail" rules={[{ required: false }]}>
+                <Form.Item
+                  name="thumbnail"
+                  label="Thumbnail"
+                  rules={[{ required: false }]}
+                >
                   <Upload
                     name="avatar"
                     listType="picture-card"
@@ -331,7 +373,7 @@ class ClassForm extends Component {
                   <Button
                     type="primary"
                     htmlType="submit"
-                    onClick={this.onSubmit}
+                    // onClick={this.onSubmit}
                   >
                     Create class
                   </Button>
