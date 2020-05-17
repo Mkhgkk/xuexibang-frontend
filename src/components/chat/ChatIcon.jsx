@@ -6,7 +6,7 @@ import QueueAnim from "rc-queue-anim";
 
 class ChatIcon extends Component {
   state = {
-    messenger: false
+    messenger: true
   };
 
   messengerToggle = () => {

@@ -6,15 +6,26 @@ import QueueAnim from "rc-queue-anim";
 
 class Chat extends Component {
   state = {
-    listOpen: false
+    listOpen: true,
+    list: [
+      { _id: "1", userName: "anmengning" },
+      { _id: "2", userName: "Joy" },
+      { _id: "3", userName: "Yaho" }
+    ],
+    currentChatId: ""
   };
 
   listToggle = () => {
     this.setState({ listOpen: !this.state.listOpen });
   };
+  openChat = id => {
+    this.setState({ currentChatId: id });
+  };
+
   render() {
-    const { listOpen } = this.state;
+    const { listOpen, list, currentChatId } = this.state;
     const { onClose } = this.props;
+
     return (
       <div
         style={{
@@ -26,7 +37,12 @@ class Chat extends Component {
         <QueueAnim className="queue-simple">
           {listOpen && (
             <Col key="a" className="chatlist">
-              <ChatListBox listOpen={listOpen} />
+              <ChatListBox
+                listOpen={listOpen}
+                data={list}
+                openChat={this.openChat}
+                currentChatId={currentChatId}
+              />
             </Col>
           )}
         </QueueAnim>
@@ -35,6 +51,7 @@ class Chat extends Component {
             listOpen={listOpen}
             listToggle={this.listToggle}
             onClose={onClose}
+            chatId={currentChatId}
           />
         </Col>
       </div>

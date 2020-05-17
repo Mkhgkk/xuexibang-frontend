@@ -9,12 +9,13 @@ import { Col, Avatar } from "antd";
 
 class MessageHead extends Component {
   render() {
-    const { listOpen, listToggle, onClose } = this.props;
+    const { listOpen, listToggle, onClose, you } = this.props;
+
     return (
       <div
         style={{
           backgroundColor: "white",
-          height: "12%",
+          height: 54,
           boxShadow: "0px 0px 5px 0px #bfbfbf"
         }}
       >
@@ -36,6 +37,7 @@ class MessageHead extends Component {
           </Col>
           <Col span={4}>
             <Avatar
+              src={you && you.avatar}
               size={35}
               style={{
                 backgroundColor: "#9254de"
@@ -51,7 +53,7 @@ class MessageHead extends Component {
               height: "100%"
             }}
           >
-            <p style={{ margin: 0 }}> Anmengning</p>
+            <p style={{ margin: 0 }}>{you && you.userName}</p>
           </Col>
           <Col span={2}>
             <CloseOutlined style={{ color: "#bfbfbf" }} onClick={onClose} />

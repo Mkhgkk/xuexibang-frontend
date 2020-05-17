@@ -4,23 +4,15 @@ import { UserOutlined } from "@ant-design/icons";
 
 class Chatlist extends Component {
   render() {
-    const divStyle = this.props.active
-      ? {
-          height: 50,
-          borderBottom: "1px solid #391085",
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: "#120338"
-        }
-      : {
-          height: 50,
-          borderBottom: "1px solid #391085",
-          display: "flex",
-          alignItems: "center"
-        };
+    const { active, data, openChat } = this.props;
 
     return (
-      <div style={divStyle}>
+      <div
+        className={active ? "chatlistdiv activeChat" : "chatlistdiv"}
+        onClick={() => {
+          openChat(data._id);
+        }}
+      >
         <Col span={7}>
           <Badge dot={true} status="warning">
             <Avatar
@@ -38,7 +30,7 @@ class Chatlist extends Component {
               margin: 0
             }}
           >
-            Anmengning
+            {data.userName}
           </p>
           <p
             style={{

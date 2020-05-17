@@ -66,3 +66,74 @@
   right: -4.5px;
   top: 10px;
 }
+
+.sendIcon {
+  margin-left: 0.5em;
+  color: #bfbfbf;
+  border-radius: 50%;
+}
+
+.sendIcon:hover {
+  color: #722ed1;
+  cursor: pointer;
+}
+
+.chatlistdiv {
+  height: 50px;
+  border-bottom: 1px solid #391085;
+  display: flex;
+  align-items: center;
+}
+.activeChat {
+  background-color: #120338;
+}
+.chatlistdiv:hover {
+  background-color: #120338;
+}
+.typingDiv {
+  display: flex;
+  align-items: center;
+  min-height: 35px;
+}
+.typing {
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  margin-right: 1px;
+  margin-left: 1px;
+}
+
+.one {
+  background-color: #d3adf7;
+  animation-name: typingAni;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  transition-timing-function: ease-out;
+}
+
+.two {
+  background-color: #9254de;
+  animation-name: typingAni;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.3s;
+  transition-timing-function: ease-out;
+}
+
+.three {
+  background-color: #531dab;
+  animation-name: typingAni;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-delay: 0.6s;
+  transition-timing-function: ease-out;
+}
+
+@keyframes typingAni {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
